@@ -9,6 +9,7 @@ import {
 } from "@radix-ui/react-icons";
 import { ThemeToggle } from "./theme-provider";
 import { NavButton } from "@/components/ui/button";
+import { navButtonIconDim } from "@/lib/utils";
 
 export default function NavBar() {
   return (
@@ -29,7 +30,12 @@ export default function NavBar() {
       </div>
       <div className="flex justify-end gap-1.5 items-center">
         <NavButton
-          icon={<InfoCircledIcon height={20} width={20} />}
+          icon={
+            <InfoCircledIcon
+              height={navButtonIconDim}
+              width={navButtonIconDim}
+            />
+          }
           popoverContent={<div>hi</div>}
         />
         <NavButton
@@ -39,7 +45,10 @@ export default function NavBar() {
               href="https://github.com/mattbolanos/spotify-stream-app"
               rel="noopener noreferrer"
             >
-              <GitHubLogoIcon height={20} width={20} />
+              <GitHubLogoIcon
+                height={navButtonIconDim}
+                width={navButtonIconDim}
+              />
             </a>
           }
         />
@@ -50,7 +59,11 @@ export default function NavBar() {
               href="https://www.buymeacoffee.com/mattbolanos"
               rel="noopener noreferrer"
             >
-              <HeartFilledIcon height={20} width={20} color="red" />
+              <HeartFilledIcon
+                height={navButtonIconDim}
+                width={navButtonIconDim}
+                color="red"
+              />
             </a>
           }
         />
