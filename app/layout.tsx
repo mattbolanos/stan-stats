@@ -7,7 +7,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Listenerify",
+  title: "Chart.ml | Explore Spotify monthly listener trends",
   description: "Explore Spotify monthly listener trends",
 };
 
