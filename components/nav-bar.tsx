@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -17,7 +15,7 @@ export default function NavBar() {
       <div className="flex items-center max-w-screen-2xl">
         <div className="flex items-center space-x-2 nav-logo">
           <Image src="/spotify-color.svg" alt="logo" width={24} height={24} />
-          <span className="font-bold">SonoGraph</span>
+          <span className="font-bold">Listener-ify</span>
         </div>
         <nav className="flex items-center gap-4 text-sm lg:gap-6">
           <Link href="/" legacyBehavior passHref>
