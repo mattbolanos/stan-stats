@@ -8,10 +8,11 @@ import {
   InfoCircledIcon,
 } from "@radix-ui/react-icons";
 import { ThemeToggle } from "./theme-provider";
+import { NavButton } from "@/components/ui/button";
 
 export default function NavBar() {
   return (
-    <nav className="flex items-center justify-between px-8 py-4">
+    <nav className="flex items-center justify-between px-6 py-2">
       <div className="flex items-center max-w-screen-2xl">
         <div className="flex items-center space-x-2 nav-logo">
           <Image src="/spotify-color.svg" alt="logo" width={24} height={24} />
@@ -26,10 +27,34 @@ export default function NavBar() {
           </Link>
         </nav>
       </div>
-      <div className="flex justify-end gap-4 items-center">
-        <InfoCircledIcon height={24} width={24} />
-        <GitHubLogoIcon height={24} width={24} />
-        <HeartFilledIcon height={24} width={24} color="red" />
+      <div className="flex justify-end gap-1.5 items-center">
+        <NavButton
+          icon={<InfoCircledIcon height={20} width={20} />}
+          popoverContent={<div>hi</div>}
+        />
+        <NavButton
+          icon={
+            <a
+              target="_blank"
+              href="https://github.com/mattbolanos/spotify-stream-app"
+              rel="noopener noreferrer"
+            >
+              <GitHubLogoIcon height={20} width={20} />
+            </a>
+          }
+        />
+        <NavButton
+          icon={
+            <a
+              target="_blank"
+              href="https://www.buymeacoffee.com/mattbolanos"
+              rel="noopener noreferrer"
+            >
+              <HeartFilledIcon height={20} width={20} color="red" />
+            </a>
+          }
+        />
+
         <ThemeToggle />
       </div>
     </nav>
