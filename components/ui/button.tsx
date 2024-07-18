@@ -81,7 +81,11 @@ const NavButton: React.FC<NavButtonProps> = ({
   }
 
   return (
-    <Button size="sm" variant="ghost" onClick={onClick ? onClick : undefined}>
+    <Button 
+      size="sm" 
+      variant="ghost" 
+      onClick={onClick ?? undefined}
+    >
       {icon}
     </Button>
   );
