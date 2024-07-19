@@ -7,9 +7,40 @@ import {
 } from "@radix-ui/react-icons";
 import { ThemeToggle } from "./theme-provider";
 import { NavButton } from "@/components/ui/button";
-import { navButtonIconDim } from "@/lib/utils";
+import { formatTotalArtists, navButtonIconDim } from "@/lib/utils";
+import { supabase } from "@/lib/supabase";
+import { cache } from "react";
 
-export default function NavBar() {
+const getTotalArtists = cache(async () => {
+  const { count } = await supabase
+    .from("spotify-artists-meta")
+    .select("id", { count: "exact", head: true });
+  return count;
+});
+
+function infoPopoverContent(totalArtists: number) {
+  return (
+    <div className="flex flex-col gap-2.5 px-1">
+      <h2 className="text-md font-bold">
+        Why Can&apos;t I Find my Favorite Artist?
+      </h2>
+      <p className="text-sm">
+        We use Spotify&apos;s API Search endpoint to find popular artists. For
+        each search, we include the top 1000 most popular artists that Spotify
+        suggests.
+      </p>
+      <span className="text-sm">
+        Right now, our database includes{" "}
+        <span className="font-bold">{formatTotalArtists(totalArtists)}</span>{" "}
+        unique artists.
+      </span>
+    </div>
+  );
+}
+
+export default async function NavBar() {
+  const totalArtists = await getTotalArtists();
+
   return (
     <nav className="flex items-center justify-between px-6 py-2">
       <div className="flex items-center max-w-screen-2xl">
@@ -34,7 +65,7 @@ export default function NavBar() {
               width={navButtonIconDim}
             />
           }
-          popoverContent={<div>hi</div>}
+          popoverContent={infoPopoverContent(totalArtists ?? 0)}
         />
         <NavButton
           icon={

@@ -75,17 +75,13 @@ const NavButton: React.FC<NavButtonProps> = ({
     return (
       <Popover>
         <PopoverTrigger asChild>{buttonContent}</PopoverTrigger>
-        <PopoverContent>{popoverContent}</PopoverContent>
+        <PopoverContent className="mr-5">{popoverContent}</PopoverContent>
       </Popover>
     );
   }
 
   return (
-    <Button 
-      size="sm" 
-      variant="ghost" 
-      onClick={onClick ?? undefined}
-    >
+    <Button size="sm" variant="ghost" onClick={onClick ?? undefined}>
       {icon}
     </Button>
   );
