@@ -12,7 +12,10 @@ async function getArtistStreams(artistIds: string[]) {
 }
 
 export default async function Home() {
-  const streams = await getArtistStreams(["1Xyo4u8uXC1ZmMpatF05PJ"]);
+  const streams = await getArtistStreams([
+    "1Xyo4u8uXC1ZmMpatF05PJ",
+    "06HL4z0CvFAxyc27GXpf02",
+  ]);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">

@@ -1,6 +1,6 @@
 "use client";
 
-import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
+import { CartesianGrid, Legend, Line, LineChart, XAxis, YAxis } from "recharts";
 
 import {
   Card,
@@ -37,6 +37,9 @@ export function ExploreChart({ chartData }: { chartData: any[] }) {
     );
     const min = Math.min(...allValues);
     const max = Math.max(...allValues);
+
+    setActiveLines(ids.map((id) => String(id)));
+
     return {
       uniqueIds: ids,
       yAxisMin: Math.floor(min),
@@ -53,6 +56,19 @@ export function ExploreChart({ chartData }: { chartData: any[] }) {
       return config;
     }, {} as ChartConfig);
   }, [uniqueIds]);
+
+  const parseId = (entryValue: string): string => {
+    return entryValue.split(" ")[1];
+  };
+
+  const handleLegendClick = (entry: any) => {
+    const entryId = parseId(entry.value);
+    if (entry.inactive) {
+      setActiveLines([...activeLines, entryId]);
+    } else {
+      setActiveLines(activeLines.filter((id) => id !== entryId));
+    }
+  };
 
   return (
     <Card>
@@ -85,10 +101,7 @@ export function ExploreChart({ chartData }: { chartData: any[] }) {
               domain={[yAxisMin, yAxisMax]}
               tickFormatter={(value) => formatMonthlyListeners(Number(value))}
             />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
-            />
+            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             {uniqueIds.map((id, index) => (
               <Line
                 key={id}
@@ -103,6 +116,7 @@ export function ExploreChart({ chartData }: { chartData: any[] }) {
                 hide={activeLines.length > 0 && !activeLines.includes(id)}
               />
             ))}
+            <Legend onClick={handleLegendClick} />
           </LineChart>
         </ChartContainer>
       </CardContent>
