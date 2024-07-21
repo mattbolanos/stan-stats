@@ -21,6 +21,11 @@ const getTotalArtists = cache(async () => {
 function infoPopoverContent(totalArtists: number) {
   return (
     <div className="flex flex-col gap-2.5 px-1">
+      <h2 className="text-md font-bold">What is this site?</h2>
+      <p className="text-sm">
+        Chart.ml is a web app that visualizes the monthly listener counts for
+        artists on Spotify. The data is updated daily.
+      </p>
       <h2 className="text-md font-bold">
         Why Can&apos;t I Find my Favorite Artist?
       </h2>
