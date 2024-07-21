@@ -1,12 +1,11 @@
 "use client";
 
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -16,29 +15,50 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { useState, useMemo } from "react";
 
-const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
-];
+function formatMonthlyListeners(value: number): string {
+  // if > 1M, show in millions
+  if (value >= 1_000_000) {
+    return `${(value / 1_000_000).toFixed(1)}M`;
+  } else if (value >= 1_000) {
+    return `${(value / 1_000).toFixed(1)}K`;
+  }
+  return String(value);
+}
 
-const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "hsl(var(--chart-1))",
-  },
-} satisfies ChartConfig;
+export function ExploreChart({ chartData }: { chartData: any[] }) {
+  const [activeLines, setActiveLines] = useState<string[]>([]);
 
-export function ExploreChart() {
+  const { uniqueIds, yAxisMin, yAxisMax } = useMemo(() => {
+    const ids = Array.from(new Set(chartData.map((item) => item.id)));
+    const allValues = chartData.flatMap((item) =>
+      Object.values(item).filter((val) => typeof val === "number")
+    );
+    const min = Math.min(...allValues);
+    const max = Math.max(...allValues);
+    return {
+      uniqueIds: ids,
+      yAxisMin: Math.floor(min),
+      yAxisMax: Math.ceil(max),
+    };
+  }, [chartData]);
+
+  const chartConfig = useMemo(() => {
+    return uniqueIds.reduce((config, id, index) => {
+      config[id] = {
+        label: `ID ${id}`,
+        color: `hsl(var(--chart-${index + 1}))`,
+      };
+      return config;
+    }, {} as ChartConfig);
+  }, [uniqueIds]);
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Line Chart - Linear</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>Multi-Line Chart</CardTitle>
+        <CardDescription>Monthly Listeners by ID</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -48,38 +68,44 @@ export function ExploreChart() {
             margin={{
               left: 12,
               right: 12,
+              top: 20,
+              bottom: 20,
             }}
           >
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="month"
+              dataKey="updated_at"
               tickLine={false}
               axisLine={false}
               tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
+            />
+            <YAxis
+              tickLine={false}
+              axisLine={false}
+              domain={[yAxisMin, yAxisMax]}
+              tickFormatter={(value) => formatMonthlyListeners(Number(value))}
             />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
-            <Line
-              dataKey="desktop"
-              type="linear"
-              stroke="var(--color-desktop)"
-              strokeWidth={2}
-              dot={false}
-            />
+            {uniqueIds.map((id, index) => (
+              <Line
+                key={id}
+                type="linear"
+                dataKey={(entry) =>
+                  entry.id === id ? entry.monthly_listeners : null
+                }
+                stroke={`hsl(var(--chart-${index + 1}))`}
+                strokeWidth={2}
+                dot={false}
+                name={`ID ${id}`}
+                hide={activeLines.length > 0 && !activeLines.includes(id)}
+              />
+            ))}
           </LineChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none">
-          Trending up by 5.2% this month
-        </div>
-        <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
-        </div>
-      </CardFooter>
     </Card>
   );
 }

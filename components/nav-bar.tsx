@@ -18,16 +18,6 @@ const getTotalArtists = cache(async () => {
   return count;
 });
 
-async function getArtistStreams() {
-  "use server";
-
-  const { data } = await supabase
-    .from("spotify-artists-streams")
-    .select("*")
-    .eq("id", "1Xyo4u8uXC1ZmMpatF05PJ");
-  return data;
-}
-
 function infoPopoverContent(totalArtists: number) {
   return (
     <div className="flex flex-col gap-2.5 px-1">
@@ -55,8 +45,6 @@ function infoPopoverContent(totalArtists: number) {
 
 export default async function NavBar() {
   const totalArtists = await getTotalArtists();
-  const streams = await getArtistStreams();
-  console.log(streams);
 
   return (
     <nav className="flex items-center justify-between px-6 py-2">
