@@ -27,7 +27,160 @@ function formatMonthlyListeners(value: number): string {
   return String(value);
 }
 
-export function ExploreChart({ chartData }: { chartData: any[] }) {
+const chartData = [
+  {
+    id: "06HL4z0CvFAxyc27GXpf02",
+    updated_at: "2024-07-06",
+    monthly_listeners: 98253313,
+  },
+  {
+    id: "06HL4z0CvFAxyc27GXpf02",
+    updated_at: "2024-07-07",
+    monthly_listeners: 97872504,
+  },
+  {
+    id: "06HL4z0CvFAxyc27GXpf02",
+    updated_at: "2024-07-08",
+    monthly_listeners: 97747535,
+  },
+  {
+    id: "06HL4z0CvFAxyc27GXpf02",
+    updated_at: "2024-07-09",
+    monthly_listeners: 97645137,
+  },
+  {
+    id: "06HL4z0CvFAxyc27GXpf02",
+    updated_at: "2024-07-10",
+    monthly_listeners: 97545519,
+  },
+  {
+    id: "06HL4z0CvFAxyc27GXpf02",
+    updated_at: "2024-07-11",
+    monthly_listeners: 97403133,
+  },
+  {
+    id: "06HL4z0CvFAxyc27GXpf02",
+    updated_at: "2024-07-12",
+    monthly_listeners: 97266707,
+  },
+  {
+    id: "06HL4z0CvFAxyc27GXpf02",
+    updated_at: "2024-07-13",
+    monthly_listeners: 97345792,
+  },
+  {
+    id: "06HL4z0CvFAxyc27GXpf02",
+    updated_at: "2024-07-14",
+    monthly_listeners: 97345792,
+  },
+  {
+    id: "06HL4z0CvFAxyc27GXpf02",
+    updated_at: "2024-07-15",
+    monthly_listeners: 97253261,
+  },
+  {
+    id: "06HL4z0CvFAxyc27GXpf02",
+    updated_at: "2024-07-16",
+    monthly_listeners: 97259057,
+  },
+  {
+    id: "06HL4z0CvFAxyc27GXpf02",
+    updated_at: "2024-07-17",
+    monthly_listeners: 97335815,
+  },
+  {
+    id: "06HL4z0CvFAxyc27GXpf02",
+    updated_at: "2024-07-18",
+    monthly_listeners: 97335815,
+  },
+  {
+    id: "06HL4z0CvFAxyc27GXpf02",
+    updated_at: "2024-07-19",
+    monthly_listeners: 97347211,
+  },
+  {
+    id: "06HL4z0CvFAxyc27GXpf02",
+    updated_at: "2024-07-20",
+    monthly_listeners: 97351489,
+  },
+  {
+    id: "1Xyo4u8uXC1ZmMpatF05PJ",
+    updated_at: "2024-07-06",
+    monthly_listeners: 105899712,
+  },
+  {
+    id: "1Xyo4u8uXC1ZmMpatF05PJ",
+    updated_at: "2024-07-07",
+    monthly_listeners: 105549578,
+  },
+  {
+    id: "1Xyo4u8uXC1ZmMpatF05PJ",
+    updated_at: "2024-07-08",
+    monthly_listeners: 105434896,
+  },
+  {
+    id: "1Xyo4u8uXC1ZmMpatF05PJ",
+    updated_at: "2024-07-09",
+    monthly_listeners: 105364685,
+  },
+  {
+    id: "1Xyo4u8uXC1ZmMpatF05PJ",
+    updated_at: "2024-07-10",
+    monthly_listeners: 105297594,
+  },
+  {
+    id: "1Xyo4u8uXC1ZmMpatF05PJ",
+    updated_at: "2024-07-11",
+    monthly_listeners: 105239769,
+  },
+  {
+    id: "1Xyo4u8uXC1ZmMpatF05PJ",
+    updated_at: "2024-07-12",
+    monthly_listeners: 105243025,
+  },
+  {
+    id: "1Xyo4u8uXC1ZmMpatF05PJ",
+    updated_at: "2024-07-13",
+    monthly_listeners: 105220661,
+  },
+  {
+    id: "1Xyo4u8uXC1ZmMpatF05PJ",
+    updated_at: "2024-07-14",
+    monthly_listeners: 105220661,
+  },
+  {
+    id: "1Xyo4u8uXC1ZmMpatF05PJ",
+    updated_at: "2024-07-15",
+    monthly_listeners: 105164957,
+  },
+  {
+    id: "1Xyo4u8uXC1ZmMpatF05PJ",
+    updated_at: "2024-07-16",
+    monthly_listeners: 105174314,
+  },
+  {
+    id: "1Xyo4u8uXC1ZmMpatF05PJ",
+    updated_at: "2024-07-17",
+    monthly_listeners: 105135896,
+  },
+  {
+    id: "1Xyo4u8uXC1ZmMpatF05PJ",
+    updated_at: "2024-07-18",
+    monthly_listeners: 105135896,
+  },
+  {
+    id: "1Xyo4u8uXC1ZmMpatF05PJ",
+    updated_at: "2024-07-19",
+    monthly_listeners: 105049169,
+  },
+  {
+    id: "1Xyo4u8uXC1ZmMpatF05PJ",
+    updated_at: "2024-07-20",
+    monthly_listeners: 105041520,
+  },
+];
+
+export function ExploreChart() {
   const [activeLines, setActiveLines] = useState<string[]>([]);
 
   const { uniqueIds, yAxisMin, yAxisMax } = useMemo(() => {
@@ -45,7 +198,7 @@ export function ExploreChart({ chartData }: { chartData: any[] }) {
       yAxisMin: Math.floor(min),
       yAxisMax: Math.ceil(max),
     };
-  }, [chartData]);
+  }, []);
 
   const chartConfig = useMemo(() => {
     return uniqueIds.reduce((config, id, index) => {
