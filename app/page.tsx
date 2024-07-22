@@ -1,7 +1,9 @@
 import { ExploreChart } from "@/components/explore-chart";
 import { supabase } from "@/lib/supabase";
+import { ArtistSample } from "@/lib/types";
 
-async function getArtistSample(): Promise<string[]> {
+async function getArtistSample(): Promise<ArtistSample[]> {
+  "use server";
   // First, get the total count of rows
   const { count, error: countError } = await supabase
     .from("spotify-artists-meta")
@@ -15,24 +17,24 @@ async function getArtistSample(): Promise<string[]> {
   if (count <= 1000) {
     const { data, error } = await supabase
       .from("spotify-artists-meta")
-      .select("id");
+      .select("id, name, image");
 
     if (error) {
       throw error;
     }
 
-    return data.map((row) => row.id);
+    return data;
   }
 
   // For larger datasets, use pagination
-  let allIds: string[] = [];
+  let allData: ArtistSample[] = [];
   let page = 0;
   const pageSize = Math.min(1000, Math.ceil(count / 10)); // Adjust page size based on total count
 
-  while (allIds.length < count) {
+  while (allData.length < count) {
     const { data, error } = await supabase
       .from("spotify-artists-meta")
-      .select("id")
+      .select("id, name, image")
       .range(page * pageSize, (page + 1) * pageSize - 1);
 
     if (error) {
@@ -42,11 +44,11 @@ async function getArtistSample(): Promise<string[]> {
       break;
     }
 
-    allIds = allIds.concat(data.map((row) => row.id));
+    allData = allData.concat(data);
     page++;
   }
 
-  return allIds;
+  return allData;
 }
 
 export default async function Home() {
