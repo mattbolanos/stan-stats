@@ -1,13 +1,15 @@
 "use client";
 
-import { supabase } from "@/lib/supabase";
+import { ArtistSample } from "@/lib/types";
 
-// async function getArtistStreams(artistIds: string[]) {
-//   "use server";
-
-//   const { data } = await supabase
-//     .from("spotify-artists-streams")
-//     .select("*")
-//     .in("id", artistIds);
-//   return data;
-// }
+export default function ExploreArtistSelect({
+  artistSample,
+}: {
+  artistSample: ArtistSample[];
+}) {
+  return (
+    <div className="flex flex-col items-center justify-center w-full h-full">
+      <h1 className="text-4xl font-bold">Explore Artists</h1>
+    </div>
+  );
+}

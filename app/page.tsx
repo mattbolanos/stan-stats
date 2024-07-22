@@ -1,3 +1,4 @@
+import ExploreArtistSelect from "@/components/explore-artist-select";
 import { ExploreChart } from "@/components/explore-chart";
 import { supabase } from "@/lib/supabase";
 import { ArtistSample } from "@/lib/types";
@@ -29,7 +30,7 @@ async function getArtistSample(): Promise<ArtistSample[]> {
   // For larger datasets, use pagination
   let allData: ArtistSample[] = [];
   let page = 0;
-  const pageSize = Math.min(1000, Math.ceil(count / 10)); // Adjust page size based on total count
+  const pageSize = Math.min(1000, Math.ceil(count / 10));
 
   while (allData.length < count) {
     const { data, error } = await supabase
@@ -56,6 +57,7 @@ export default async function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <ExploreArtistSelect artistSample={artistSample} />
       <ExploreChart />
     </main>
   );
