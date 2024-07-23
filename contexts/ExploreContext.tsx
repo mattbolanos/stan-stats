@@ -4,6 +4,7 @@ import { ContextAction, ExploreState, ProviderProps } from "./types";
 // default values
 const defaultState: ExploreState = {
   artistStreams: [],
+  selectedArtists: [{ selectIndex: 0, artistId: "" }],
 };
 
 // create context
@@ -37,10 +38,13 @@ function playerReducer(
   action: ContextAction
 ): ExploreState {
   switch (action.type) {
-    case "SET_ARTIST_STREAMS":
+    // add selected artist
+    case "ADD_ARTIST":
       return {
         ...state,
-        artistStreams: action.payload,
+        selectedArtists: state.selectedArtists
+          .filter((artist) => artist.selectIndex !== action.payload.selectIndex)
+          .concat(action.payload),
       };
 
     default:

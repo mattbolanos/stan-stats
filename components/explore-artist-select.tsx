@@ -17,63 +17,60 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { CaretSortIcon } from "@radix-ui/react-icons";
-import commandScore from "command-score";
+import { useExploreDispatch, useExplore } from "@/contexts/ExploreContext";
+
+const ITEMS_PER_PAGE = 50;
 
 export default function ExploreArtistSelect({
   artistSample = [],
+  selectIndex,
 }: {
-  artistSample?: ArtistSample[];
+  artistSample: ArtistSample[];
+  selectIndex: number;
 }) {
+  const { selectedArtists } = useExplore();
   const [value, setValue] = useState("");
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(20);
+
+  const [loading, setLoading] = useState(false);
+  const exploreDispatch = useExploreDispatch();
   const observerTarget = useRef(null);
+
+  // Initialize Fuse.js for fuzzy searching
+  const fuse = useMemo(
+    () =>
+      new Fuse(artistSample, {
+        keys: ["name"],
+        threshold: 0.3,
+      }),
+    [artistSample]
+  );
 
   const filteredArtists = useMemo(() => {
     if (!search) {
-      return artistSample.slice(0, limit);
+      return artistSample.slice(0, (page + 1) * ITEMS_PER_PAGE);
     }
 
-    return artistSample
-      .map((artist) => ({
-        ...artist,
-        score: commandScore(artist.name, search),
-      }))
-      .filter((artist) => artist.score > 0)
-      .sort((a, b) => b.score - a.score)
-      .slice(0, limit);
-  }, [artistSample, search, limit]);
+    return fuse
+      .search(search)
+      .slice(0, (page + 1) * ITEMS_PER_PAGE)
+      .map((result) => result.item);
+  }, [artistSample, search, page, fuse]);
 
-  const loadMore = useCallback(() => {
-    setLimit((prevLimit) => prevLimit + 20);
-  }, []);
-
-  const handleObserver = useCallback(
-    (entries: IntersectionObserverEntry[]) => {
-      const target = entries[0];
-      if (
-        target.isIntersecting &&
-        filteredArtists.length < artistSample.length
-      ) {
-        loadMore();
-      }
-    },
-    [loadMore, filteredArtists.length, artistSample.length]
-  );
-
-  useEffect(() => {
-    const option = {
-      root: null,
-      rootMargin: "20px",
-      threshold: 1.0,
-    };
-    const observer = new IntersectionObserver(handleObserver, option);
-    if (observerTarget.current) {
-      observer.observe(observerTarget.current);
-    }
-    return () => observer.disconnect();
-  }, [handleObserver]);
+  const handleSelect = (value: string) => {
+    setValue(value);
+    setOpen(false);
+    exploreDispatch?.({
+      type: "ADD_ARTIST",
+      payload: {
+        artistId: value,
+        selectIndex: selectIndex,
+      },
+    });
+  };
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -84,7 +81,7 @@ export default function ExploreArtistSelect({
           aria-expanded={open}
           className="w-[200px] justify-between"
         >
-          {value
+          {selectedArtists.find((artist) => artist.selectIndex === selectIndex)
             ? artistSample.find((artist) => artist.id === value)?.name
             : "Select artist..."}
           <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -92,25 +89,23 @@ export default function ExploreArtistSelect({
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
+          <CommandInput
+            placeholder="Search artist..."
+            className="h-9"
+            value={search}
+            onValueChange={(newSearch) => {
+              setSearch(newSearch);
+              setPage(0);
+            }}
+          />
           <CommandList className="max-h-[200px] overflow-y-auto">
-            <CommandInput
-              placeholder="Search artist..."
-              className="h-9"
-              onValueChange={setSearch}
-            />
             <CommandEmpty>No artists found.</CommandEmpty>
             <CommandGroup>
-              {filteredArtists.map((artist, index) => (
+              {filteredArtists.map((artist) => (
                 <CommandItem
                   key={artist.id}
                   value={artist.name}
-                  onSelect={(currentValue) => {
-                    setValue(currentValue === value ? "" : artist.id);
-                    setOpen(false);
-                  }}
-                  ref={
-                    index === filteredArtists.length - 1 ? observerTarget : null
-                  }
+                  onSelect={handleSelect}
                 >
                   {artist.name}
                 </CommandItem>

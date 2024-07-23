@@ -1,3 +1,4 @@
+import { ArtistStreams } from "@/lib/types";
 import { ReactNode } from "react";
 
 export interface ContextAction {
@@ -10,9 +11,9 @@ export interface ProviderProps {
 }
 
 export interface ExploreState {
-  artistStreams: {
-    id: string;
-    monthly_listeners: number;
-    updated_at: string;
+  artistStreams: ArtistStreams[];
+  selectedArtists: {
+    artistId: string;
+    selectIndex: number;
   }[];
 }
