@@ -1,7 +1,7 @@
 "use client";
 
 import { ArtistSample } from "@/lib/types";
-import { useMemo, useState } from "react";
+import { SetStateAction, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -18,21 +18,6 @@ import {
 } from "@/components/ui/popover";
 import { CaretSortIcon } from "@radix-ui/react-icons";
 import { useExploreDispatch, useExplore } from "@/contexts/ExploreContext";
-import { supabase } from "@/lib/supabase";
-
-async function searchArtists(query: string): Promise<ArtistSample[]> {
-  const { data, error } = await supabase
-    .from("spotify-artists-meta")
-    .select("id, name")
-    .textSearch("name", query)
-    .range(0, 20);
-
-  if (error) {
-    throw error;
-  }
-
-  return data;
-}
 
 export default function ExploreArtistSelect({
   defaultArtistSample = [],
@@ -46,14 +31,29 @@ export default function ExploreArtistSelect({
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const exploreDispatch = useExploreDispatch();
+  const [artists, setArtists] = useState(defaultArtistSample);
+  const [loading, setLoading] = useState(false);
 
-  const filteredArtists = useMemo(() => {
-    if (!search) {
-      return defaultArtistSample;
+  const handleSearch = async (value: string) => {
+    if (!value) {
+      setArtists(defaultArtistSample);
+      return;
     }
 
-    return searchArtists(search);
-  }, [search, defaultArtistSample]);
+    setLoading(true);
+    try {
+      const response = await fetch(`/api/search-artist?query=${value}`);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data: SetStateAction<ArtistSample[]> = await response.json();
+      setArtists(data);
+    } catch (err) {
+      setArtists([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSelect = (value: string) => {
     setValue(value);
@@ -83,17 +83,20 @@ export default function ExploreArtistSelect({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
-        <Command>
+        <Command shouldFilter={false}>
           <CommandInput
             placeholder="Search artist..."
             className="h-9"
             value={search}
-            onValueChange={setSearch}
+            onValueChange={(value) => {
+              setSearch(value);
+              handleSearch(value);
+            }}
           />
           <CommandList className="max-h-[200px] overflow-y-auto">
             <CommandEmpty>No artists found.</CommandEmpty>
             <CommandGroup>
-              {filteredArtists.map((artist) => (
+              {artists.map((artist) => (
                 <CommandItem
                   key={artist.id}
                   keywords={[artist.name]}
