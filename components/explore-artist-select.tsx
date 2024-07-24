@@ -1,7 +1,7 @@
 "use client";
 
 import { ArtistSample } from "@/lib/types";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -18,12 +18,27 @@ import {
 } from "@/components/ui/popover";
 import { CaretSortIcon } from "@radix-ui/react-icons";
 import { useExploreDispatch, useExplore } from "@/contexts/ExploreContext";
+import { supabase } from "@/lib/supabase";
+
+async function searchArtists(query: string): Promise<ArtistSample[]> {
+  const { data, error } = await supabase
+    .from("spotify-artists-meta")
+    .select("id, name")
+    .textSearch("name", query)
+    .range(0, 20);
+
+  if (error) {
+    throw error;
+  }
+
+  return data;
+}
 
 export default function ExploreArtistSelect({
-  artistSample = [],
+  defaultArtistSample = [],
   selectIndex,
 }: {
-  artistSample: ArtistSample[];
+  defaultArtistSample: ArtistSample[];
   selectIndex: number;
 }) {
   const { selectedArtists } = useExplore();
@@ -31,6 +46,14 @@ export default function ExploreArtistSelect({
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const exploreDispatch = useExploreDispatch();
+
+  const filteredArtists = useMemo(() => {
+    if (!search) {
+      return defaultArtistSample;
+    }
+
+    return searchArtists(search);
+  }, [search, defaultArtistSample]);
 
   const handleSelect = (value: string) => {
     setValue(value);
@@ -54,7 +77,7 @@ export default function ExploreArtistSelect({
           className="w-[200px] justify-between"
         >
           {selectedArtists.find((artist) => artist.selectIndex === selectIndex)
-            ? artistSample.find((artist) => artist.id === value)?.name
+            ? defaultArtistSample.find((artist) => artist.id === value)?.name
             : "Select artist..."}
           <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -70,11 +93,11 @@ export default function ExploreArtistSelect({
           <CommandList className="max-h-[200px] overflow-y-auto">
             <CommandEmpty>No artists found.</CommandEmpty>
             <CommandGroup>
-              {artistSample.map((artist) => (
+              {filteredArtists.map((artist) => (
                 <CommandItem
                   key={artist.id}
-                  value={artist.name}
-                  onSelect={handleSelect}
+                  keywords={[artist.name]}
+                  onSelect={() => handleSelect(artist.id)}
                 >
                   {artist.name}
                 </CommandItem>

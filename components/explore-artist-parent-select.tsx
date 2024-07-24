@@ -5,9 +5,9 @@ import { useExplore } from "@/contexts/ExploreContext";
 import ExploreArtistSelect from "./explore-artist-select";
 
 export default function ExploreArtistParentSelect({
-  artistSample = [],
+  defaultArtistSample = [],
 }: {
-  artistSample?: ArtistSample[];
+  defaultArtistSample?: ArtistSample[];
 }) {
   const { selectedArtists } = useExplore();
 
@@ -16,7 +16,7 @@ export default function ExploreArtistParentSelect({
       {selectedArtists.map((artist) => (
         <ExploreArtistSelect
           key={artist.selectIndex}
-          artistSample={artistSample}
+          defaultArtistSample={defaultArtistSample}
           selectIndex={artist.selectIndex}
         />
       ))}
