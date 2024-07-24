@@ -8,7 +8,9 @@ async function getArtistSample(): Promise<ArtistSample[]> {
 
   const { data, error } = await supabase
     .from("spotify-artists-meta")
-    .select("id, name, image");
+    .select("id, name, image")
+    .order("popularity", { ascending: false })
+    .range(0, 1000);
 
   if (error) {
     throw error;
