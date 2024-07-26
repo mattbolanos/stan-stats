@@ -20,7 +20,7 @@ export async function GET(request: Request) {
   }
 
   const { data, error } = await supabase
-    .from("spotify-artists-meta")
+    .from("spotify_artists_meta")
     .select("id, name")
     .ilike("slug", `%${cleanArtistName(query)}%`)
     .order("popularity", { ascending: false })

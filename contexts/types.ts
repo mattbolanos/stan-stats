@@ -15,5 +15,6 @@ export interface ExploreState {
   selectedArtists: {
     artistId: string;
     selectIndex: number;
+    artistName: string;
   }[];
 }

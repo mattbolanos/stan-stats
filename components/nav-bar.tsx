@@ -7,13 +7,13 @@ import {
 } from "@radix-ui/react-icons";
 import { ThemeToggle } from "./theme-provider";
 import { NavButton } from "@/components/ui/button";
-import { formatTotalArtists, navButtonIconDim } from "@/lib/utils";
+import { formatTotalArtists, NAV_BTN_ICON_DIM } from "@/lib/utils";
 import { supabase } from "@/lib/supabase";
 import { cache } from "react";
 
 const getTotalArtists = cache(async () => {
   const { count } = await supabase
-    .from("spotify-artists-meta")
+    .from("spotify_artists_meta")
     .select("id", { count: "exact", head: true });
   return count;
 });
@@ -66,8 +66,8 @@ export default async function NavBar() {
         <NavButton
           icon={
             <InfoCircledIcon
-              height={navButtonIconDim}
-              width={navButtonIconDim}
+              height={NAV_BTN_ICON_DIM}
+              width={NAV_BTN_ICON_DIM}
             />
           }
           popoverContent={infoPopoverContent(totalArtists ?? 0)}
@@ -80,8 +80,8 @@ export default async function NavBar() {
               rel="noopener noreferrer"
             >
               <GitHubLogoIcon
-                height={navButtonIconDim}
-                width={navButtonIconDim}
+                height={NAV_BTN_ICON_DIM}
+                width={NAV_BTN_ICON_DIM}
               />
             </a>
           }
@@ -94,8 +94,8 @@ export default async function NavBar() {
               rel="noopener noreferrer"
             >
               <HeartFilledIcon
-                height={navButtonIconDim}
-                width={navButtonIconDim}
+                height={NAV_BTN_ICON_DIM}
+                width={NAV_BTN_ICON_DIM}
                 color="red"
               />
             </a>

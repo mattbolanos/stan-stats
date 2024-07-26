@@ -62,6 +62,7 @@ export default function ExploreArtistSelect({
       type: "ADD_ARTIST",
       payload: {
         artistId: value,
+        artistName: artists.find((artist) => artist.id === value)?.name,
         selectIndex: selectIndex,
       },
     });
@@ -77,7 +78,9 @@ export default function ExploreArtistSelect({
           className="w-[200px] justify-between"
         >
           {selectedArtists.find((artist) => artist.selectIndex === selectIndex)
-            ? defaultArtistSample.find((artist) => artist.id === value)?.name
+            ? selectedArtists.find(
+                (artist) => artist.selectIndex === selectIndex
+              )?.artistName
             : "Select artist..."}
           <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>

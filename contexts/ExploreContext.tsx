@@ -4,7 +4,7 @@ import { ContextAction, ExploreState, ProviderProps } from "./types";
 // default values
 const defaultState: ExploreState = {
   artistStreams: [],
-  selectedArtists: [{ selectIndex: 0, artistId: "" }],
+  selectedArtists: [{ selectIndex: 0, artistId: "", artistName: "" }],
 };
 
 // create context
