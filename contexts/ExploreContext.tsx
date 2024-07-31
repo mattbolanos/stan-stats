@@ -1,5 +1,6 @@
 import { createContext, useContext, useReducer, Dispatch } from "react";
 import { ContextAction, ExploreState, ProviderProps } from "./types";
+import { ArtistStream } from "@/lib/types";
 
 // default values
 const defaultState: ExploreState = {
@@ -44,6 +45,18 @@ function playerReducer(
         ...state,
         selectedArtists: state.selectedArtists
           .filter((artist) => artist.selectIndex !== action.payload.selectIndex)
+          .concat(action.payload),
+      };
+    // add artist streams
+    case "ADD_ARTIST_STREAMS":
+      const payloadIds = Array.from(
+        new Set(action.payload.map((item: ArtistStream) => item.id))
+      );
+
+      return {
+        ...state,
+        artistStreams: state.artistStreams
+          .filter((item) => !payloadIds.includes(item.id))
           .concat(action.payload),
       };
 

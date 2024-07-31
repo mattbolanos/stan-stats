@@ -27,24 +27,7 @@ async function getRandomDefaultArtist(): Promise<
 > {
   "use server";
 
-  const { count } = await supabase
-    .from("spotify_artists_streams")
-    .select("id", { count: "exact", head: true })
-    .gt("monthly_listeners", DEFAULT_ARTIST_MIN_LISTENERS);
-
-  if (!count) {
-    throw new Error("No artists found");
-  }
-
-  const randomOffset = Math.floor(Math.random() * count);
-
-  const {
-    data,
-    error,
-  }: {
-    data: any;
-    error: PostgrestError | null;
-  } = await supabase
+  const { data, error } = await supabase
     .from("spotify_artists_streams")
     .select(
       `
@@ -53,21 +36,27 @@ async function getRandomDefaultArtist(): Promise<
     `
     )
     .gt("monthly_listeners", DEFAULT_ARTIST_MIN_LISTENERS)
-    .order("id", { ascending: true })
-    .limit(1)
-    .range(randomOffset, randomOffset)
-    .single();
+    .limit(200);
 
   if (error) {
-    throw error;
+    throw new Error("Failed to fetch artists");
   }
+
+  if (!data || data.length === 0) {
+    throw new Error("No artists found");
+  }
+
+  // Select a random artist
+  const randomIndex = Math.floor(Math.random() * data.length);
+  const randomArtist: any = data[randomIndex];
 
   return {
     selectIndex: 0,
-    artistId: data.id,
-    artistName: data.spotify_artists_meta.name,
+    artistId: randomArtist.id,
+    artistName: randomArtist.spotify_artists_meta.name,
   };
 }
+
 export default async function Home() {
   const defaultArtistSample = await getDefaultArtistSample();
   const defaultArtist = await getRandomDefaultArtist();

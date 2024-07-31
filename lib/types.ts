@@ -3,7 +3,7 @@ export interface ArtistSample {
   name: string;
 }
 
-export interface ArtistStreams {
+export interface ArtistStream {
   id: string;
   updated_at: string;
   monthly_listeners: number;
