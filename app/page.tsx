@@ -4,7 +4,6 @@ import { ExploreState } from "@/contexts/types";
 import { supabase } from "@/lib/supabase";
 import { ArtistSample } from "@/lib/types";
 import { DEFAULT_ARTIST_MIN_LISTENERS } from "@/lib/utils";
-import { PostgrestError } from "@supabase/supabase-js";
 
 async function getDefaultArtistSample(): Promise<ArtistSample[]> {
   "use server";
@@ -13,7 +12,7 @@ async function getDefaultArtistSample(): Promise<ArtistSample[]> {
     .from("spotify_artists_meta")
     .select("id, name")
     .order("popularity", { ascending: false })
-    .range(0, 20);
+    .range(0, 30);
 
   if (error) {
     throw error;

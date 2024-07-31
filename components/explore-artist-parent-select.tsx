@@ -5,6 +5,8 @@ import { useExplore, useExploreDispatch } from "@/contexts/ExploreContext";
 import ExploreArtistSelect from "./explore-artist-select";
 import { ExploreState } from "@/contexts/types";
 import { useEffect } from "react";
+import { PlusIcon } from "@radix-ui/react-icons";
+import { Button } from "./ui/button";
 
 async function fetchArtistStreams(artistIds: string[] | undefined) {
   if (!artistIds) {
@@ -36,14 +38,13 @@ export default function ExploreArtistParentSelect({
       });
       fetchArtistStreams([defaultArtist?.artistId])
         .then((data) => {
-          console.log(data);
           exploreDispatch?.({
             type: "ADD_ARTIST_STREAMS",
             payload: data,
           });
         })
         .catch((error) => {
-          console.error(error);
+          throw error;
         });
     } else {
       fetchArtistStreams(selectedArtists.map((artist) => artist.artistId))
@@ -54,13 +55,13 @@ export default function ExploreArtistParentSelect({
           });
         })
         .catch((error) => {
-          console.error(error);
+          throw error;
         });
     }
   }, [selectedArtists, exploreDispatch, defaultArtist]);
 
   return (
-    <>
+    <div className="flex items-center gap-2">
       {selectedArtists.map((artist) => (
         <ExploreArtistSelect
           key={artist.selectIndex}
@@ -68,6 +69,9 @@ export default function ExploreArtistParentSelect({
           selectIndex={artist.selectIndex}
         />
       ))}
-    </>
+      <Button size="sm" variant="outline">
+        <PlusIcon stroke="green" />
+      </Button>
+    </div>
   );
 }
