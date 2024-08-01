@@ -39,8 +39,10 @@ const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
 
 const CommandInput = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Input>,
-  React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
->(({ className, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input> & {
+    endContent: React.ReactNode;
+  }
+>(({ className, endContent, ...props }, ref) => (
   <div className="flex items-center border-b px-3" cmdk-input-wrapper="">
     <MagnifyingGlassIcon className="mr-2 h-4 w-4 shrink-0 opacity-50" />
     <CommandPrimitive.Input
@@ -51,6 +53,7 @@ const CommandInput = React.forwardRef<
       )}
       {...props}
     />
+    <span className="h-4 w-4 shrink-0 opacity-50">{endContent}</span>
   </div>
 ));
 

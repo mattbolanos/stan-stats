@@ -1,7 +1,7 @@
 "use client";
 
 import { ArtistSample } from "@/lib/types";
-import { SetStateAction, useState } from "react";
+import { SetStateAction, useCallback, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -20,6 +20,7 @@ import { CaretSortIcon } from "@radix-ui/react-icons";
 import { useExploreDispatch, useExplore } from "@/contexts/ExploreContext";
 import { fetchArtistStreams } from "./explore-artist-parent-select";
 import { Spinner } from "./ui/spinner";
+import { DEFAULT_ARTIST_SAMPLE_SIZE } from "@/lib/utils";
 
 export default function ExploreArtistSelect({
   defaultArtistSample = [],
@@ -35,14 +36,65 @@ export default function ExploreArtistSelect({
   const exploreDispatch = useExploreDispatch();
   const [artists, setArtists] = useState(defaultArtistSample);
   const [loading, setLoading] = useState(false);
+  const [listSize, setListSize] = useState<number>(DEFAULT_ARTIST_SAMPLE_SIZE);
+  const [hasMore, setHasMore] = useState(true);
+  const listRef = useRef<HTMLDivElement | null>(null);
+
+  const scrollToTop = () => {
+    if (listRef.current) {
+      listRef.current.scrollTo({
+        top: 0,
+      });
+    }
+  };
+
+  const handleScroll = useCallback(async () => {
+    const list = listRef.current;
+    if (list) {
+      const { scrollTop, scrollHeight, clientHeight } = list;
+
+      if (
+        (scrollHeight - (scrollTop + clientHeight)) / scrollHeight < 0.1 &&
+        !loading &&
+        hasMore
+      ) {
+        try {
+          setLoading(true);
+          const nextSize = listSize + DEFAULT_ARTIST_SAMPLE_SIZE;
+          const response = await fetch(
+            `/api/artists/search?query=${search}&size=${nextSize}`
+          );
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          const data: ArtistSample[] = await response.json();
+
+          if (data.length === artists.length) {
+            // We've reached the end of the results
+            setHasMore(false);
+          } else {
+            setArtists(data);
+            setListSize(nextSize);
+          }
+        } catch (err) {
+          setArtists([]);
+          setLoading(false);
+        } finally {
+          setLoading(false);
+        }
+      }
+    }
+  }, [listSize, search, loading, hasMore, artists.length]);
 
   const handleSearch = async (value: string) => {
     if (!value) {
       setArtists(defaultArtistSample);
       return;
     }
-
     setLoading(true);
+    setListSize(DEFAULT_ARTIST_SAMPLE_SIZE);
+    setHasMore(true);
+    scrollToTop();
     try {
       const response = await fetch(`/api/artists/search?query=${value}`);
       if (!response.ok) {
@@ -72,8 +124,18 @@ export default function ExploreArtistSelect({
       });
   };
 
+  const handleOnOpenChange = (open: boolean) => {
+    setOpen(open);
+    // if closing, reset limit
+    if (!open) {
+      setListSize(DEFAULT_ARTIST_SAMPLE_SIZE);
+      setArtists(artists.slice(0, DEFAULT_ARTIST_SAMPLE_SIZE));
+      setHasMore(true);
+    }
+  };
+
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover open={open} onOpenChange={handleOnOpenChange}>
       <PopoverTrigger asChild>
         <Button
           variant="outline"
@@ -91,9 +153,10 @@ export default function ExploreArtistSelect({
               : "Select artist..."}
           </p>
           <div className="flex items-center space-x-1">
-            {!selectedArtists.find((artist) => artist.id === value) && (
-              <Spinner />
-            )}
+            {value &&
+              !selectedArtists.find((artist) => artist.id === value) && (
+                <Spinner />
+              )}
             <CaretSortIcon className="h-4 w-4 shrink-0 opacity-50" />
           </div>
         </Button>
@@ -108,8 +171,13 @@ export default function ExploreArtistSelect({
               setSearch(value);
               handleSearch(value);
             }}
+            endContent={loading && <Spinner />}
           />
-          <CommandList className="max-h-[200px] overflow-y-auto">
+          <CommandList
+            className="max-h-[200px] overflow-y-auto"
+            ref={listRef}
+            onScroll={handleScroll}
+          >
             <CommandEmpty>No artists found.</CommandEmpty>
             <CommandGroup>
               {artists.map((artist) => (

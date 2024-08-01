@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabase";
+import { DEFAULT_ARTIST_SAMPLE_SIZE } from "@/lib/utils";
 import { NextResponse } from "next/server";
 
 function cleanArtistName(name: string): string {
@@ -14,9 +15,20 @@ function cleanArtistName(name: string): string {
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const query = searchParams.get("query");
+  const size = Number(searchParams.get("size")) || DEFAULT_ARTIST_SAMPLE_SIZE;
 
   if (!query) {
-    return NextResponse.json([]);
+    const { data, error } = await supabase
+      .from("spotify_artists_meta")
+      .select("id, name")
+      .order("popularity", { ascending: false })
+      .range(0, size);
+
+    if (error) {
+      throw error;
+    }
+
+    return NextResponse.json(data);
   }
 
   const { data, error } = await supabase
@@ -24,7 +36,7 @@ export async function GET(request: Request) {
     .select("id, name")
     .ilike("slug", `%${cleanArtistName(query)}%`)
     .order("popularity", { ascending: false })
-    .range(0, 20);
+    .range(0, size);
 
   if (error) {
     throw error;
