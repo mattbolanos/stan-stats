@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 const THEMES = { light: "", dark: ".dark" } as const;
 
 export type ChartConfig = {
-  [_ in string]: {
+  [key: string]: {
     label?: React.ReactNode;
     icon?: React.ComponentType;
   } & (
@@ -239,7 +239,9 @@ const ChartTooltipContent = React.forwardRef<
                         </span>
                       </div>
                       {item.value && (
-                        <span className="font-mono font-medium tabular-nums text-foreground">
+                        <span
+                          className={`font-mono font-medium tabular-nums text-foreground ml-1.5`}
+                        >
                           {item.value.toLocaleString()}
                         </span>
                       )}
@@ -289,6 +291,9 @@ const ChartLegendContent = React.forwardRef<
           const key = `${nameKey || item.dataKey || "value"}`;
           const itemConfig = getPayloadConfigFromPayload(config, item, key);
 
+          const legendLabel =
+            item.payload?.value?.artistName || itemConfig?.label || item.value;
+
           return (
             <div
               key={item.value}
@@ -306,7 +311,7 @@ const ChartLegendContent = React.forwardRef<
                   }}
                 />
               )}
-              {itemConfig?.label}
+              {legendLabel}
             </div>
           );
         })}

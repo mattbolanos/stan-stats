@@ -17,7 +17,7 @@ export function formatTotalArtists(totalArtists: number) {
 }
 
 export const DEFAULT_ARTIST_MIN_LISTENERS = 10000000 as const;
-export const DEFAULT_ARTIST_SAMPLE_SIZE = 30 as const;
+export const DEFAULT_ARTIST_SAMPLE_SIZE = 100 as const;
 
 export function formatMonthlyListeners(value: number): string {
   if (value >= 1_000_000) {

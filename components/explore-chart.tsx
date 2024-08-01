@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { CartesianGrid, Legend, Line, LineChart, XAxis, YAxis } from "recharts";
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 import {
   Card,
   CardContent,
@@ -14,13 +14,15 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
+  ChartLegend,
+  ChartLegendContent,
 } from "@/components/ui/chart";
 import { useExplore } from "@/contexts/ExploreContext";
 import { formatMonthlyListeners } from "@/lib/utils";
 
 export function ExploreChart() {
   const [activeLines, setActiveLines] = useState<string[]>([]);
-  const { artistStreams } = useExplore();
+  const { artistStreams, selectedArtists } = useExplore();
 
   const { chartData, uniqueIds, yAxisMin, yAxisMax } = useMemo(() => {
     const dataMap = new Map();
@@ -62,15 +64,6 @@ export function ExploreChart() {
     }, {} as ChartConfig);
   }, [uniqueIds]);
 
-  const handleLegendClick = (entry: any) => {
-    const entryId = entry.dataKey;
-    if (activeLines.includes(entryId)) {
-      setActiveLines(activeLines.filter((id) => id !== entryId));
-    } else {
-      setActiveLines([...activeLines, entryId]);
-    }
-  };
-
   return (
     <Card>
       <CardHeader>
@@ -96,7 +89,7 @@ export function ExploreChart() {
               domain={[yAxisMin, yAxisMax]}
               tickFormatter={(value) => formatMonthlyListeners(Number(value))}
             />
-            <ChartTooltip content={<ChartTooltipContent />} />
+            <ChartTooltip content={<ChartTooltipContent indicator="dot" />} />
             {uniqueIds.map((id, index) => (
               <Line
                 key={id}
@@ -105,11 +98,13 @@ export function ExploreChart() {
                 stroke={`hsl(var(--chart-${index + 1}))`}
                 strokeWidth={2}
                 dot={false}
-                name={`ID ${id}`}
+                name={`${
+                  selectedArtists.find((artist) => artist.id === id)?.name
+                }`}
                 hide={!activeLines.includes(String(id))}
               />
             ))}
-            <Legend onClick={handleLegendClick} />
+            <ChartLegend content={<ChartLegendContent nameKey="name" />} />
           </LineChart>
         </ChartContainer>
       </CardContent>
