@@ -19,6 +19,7 @@ import {
 import { CaretSortIcon } from "@radix-ui/react-icons";
 import { useExploreDispatch, useExplore } from "@/contexts/ExploreContext";
 import { fetchArtistStreams } from "./explore-artist-parent-select";
+import { Spinner } from "./ui/spinner";
 
 export default function ExploreArtistSelect({
   defaultArtistSample = [],
@@ -28,7 +29,7 @@ export default function ExploreArtistSelect({
   selectIndex: number;
 }) {
   const { selectedArtists } = useExplore();
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(selectedArtists[selectIndex]?.id);
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const exploreDispatch = useExploreDispatch();
@@ -80,12 +81,21 @@ export default function ExploreArtistSelect({
           aria-expanded={open}
           className="w-[200px] justify-between"
         >
-          {selectedArtists.find((artist) => artist.selectIndex === selectIndex)
-            ? selectedArtists.find(
-                (artist) => artist.selectIndex === selectIndex
-              )?.name
-            : "Select artist..."}
-          <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          <p className="max-w-[150px] truncate">
+            {selectedArtists.find(
+              (artist) => artist.selectIndex === selectIndex
+            )
+              ? selectedArtists.find(
+                  (artist) => artist.selectIndex === selectIndex
+                )?.name
+              : "Select artist..."}
+          </p>
+          <div className="flex items-center space-x-1">
+            {!selectedArtists.find((artist) => artist.id === value) && (
+              <Spinner />
+            )}
+            <CaretSortIcon className="h-4 w-4 shrink-0 opacity-50" />
+          </div>
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
