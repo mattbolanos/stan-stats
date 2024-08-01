@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/popover";
 import { CaretSortIcon } from "@radix-ui/react-icons";
 import { useExploreDispatch, useExplore } from "@/contexts/ExploreContext";
+import { fetchArtistStreams } from "./explore-artist-parent-select";
 
 export default function ExploreArtistSelect({
   defaultArtistSample = [],
@@ -42,7 +43,7 @@ export default function ExploreArtistSelect({
 
     setLoading(true);
     try {
-      const response = await fetch(`/api/search-artist?query=${value}`);
+      const response = await fetch(`/api/artists/search?query=${value}`);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -58,14 +59,16 @@ export default function ExploreArtistSelect({
   const handleSelect = (value: string) => {
     setValue(value);
     setOpen(false);
-    exploreDispatch?.({
-      type: "ADD_ARTIST",
-      payload: {
-        artistId: value,
-        artistName: artists.find((artist) => artist.id === value)?.name,
-        selectIndex: selectIndex,
-      },
-    });
+    fetchArtistStreams(value, selectIndex)
+      .then((data) => {
+        exploreDispatch?.({
+          type: "ADD_ARTIST_DETAILS",
+          payload: data,
+        });
+      })
+      .catch((error) => {
+        throw error;
+      });
   };
 
   return (
@@ -80,7 +83,7 @@ export default function ExploreArtistSelect({
           {selectedArtists.find((artist) => artist.selectIndex === selectIndex)
             ? selectedArtists.find(
                 (artist) => artist.selectIndex === selectIndex
-              )?.artistName
+              )?.name
             : "Select artist..."}
           <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>

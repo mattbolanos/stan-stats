@@ -8,12 +8,17 @@ import { useEffect } from "react";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { Button } from "./ui/button";
 
-async function fetchArtistStreams(artistIds: string[] | undefined) {
-  if (!artistIds) {
+export async function fetchArtistStreams(
+  artistId: string | undefined,
+  selectIndex: number
+) {
+  if (!artistId) {
     return [];
   }
 
-  const response = await fetch(`/api/artist-streams?id=${artistIds.join(",")}`);
+  const response = await fetch(
+    `/api/artists/details?artistId=${artistId}&selectIndex=${selectIndex}`
+  );
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
@@ -31,26 +36,11 @@ export default function ExploreArtistParentSelect({
   const exploreDispatch = useExploreDispatch();
 
   useEffect(() => {
-    if (!selectedArtists.find((artist) => artist.selectIndex === 0)?.artistId) {
-      exploreDispatch?.({
-        type: "ADD_ARTIST",
-        payload: defaultArtist,
-      });
-      fetchArtistStreams([defaultArtist?.artistId])
+    if (!selectedArtists.find((artist) => artist.selectIndex === 0)?.id) {
+      fetchArtistStreams(defaultArtist?.id, 0)
         .then((data) => {
           exploreDispatch?.({
-            type: "ADD_ARTIST_STREAMS",
-            payload: data,
-          });
-        })
-        .catch((error) => {
-          throw error;
-        });
-    } else {
-      fetchArtistStreams(selectedArtists.map((artist) => artist.artistId))
-        .then((data) => {
-          exploreDispatch?.({
-            type: "ADD_ARTIST_STREAMS",
+            type: "ADD_ARTIST_DETAILS",
             payload: data,
           });
         })

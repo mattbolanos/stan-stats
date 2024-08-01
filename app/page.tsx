@@ -28,14 +28,9 @@ async function getRandomDefaultArtist(): Promise<
 
   const { data, error } = await supabase
     .from("spotify_artists_streams")
-    .select(
-      `
-      id,
-      spotify_artists_meta(name)
-    `
-    )
+    .select("id, monthly_listeners.max()")
     .gt("monthly_listeners", DEFAULT_ARTIST_MIN_LISTENERS)
-    .limit(200);
+    .limit(100);
 
   if (error) {
     throw new Error("Failed to fetch artists");
@@ -51,8 +46,7 @@ async function getRandomDefaultArtist(): Promise<
 
   return {
     selectIndex: 0,
-    artistId: randomArtist.id,
-    artistName: randomArtist.spotify_artists_meta.name,
+    id: randomArtist.id,
   };
 }
 

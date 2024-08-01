@@ -13,8 +13,8 @@ export interface ProviderProps {
 export interface ExploreState {
   artistStreams: ArtistStream[];
   selectedArtists: {
-    artistId: string;
+    id: string;
     selectIndex: number;
-    artistName: string;
+    name?: string;
   }[];
 }
