@@ -1,5 +1,6 @@
 import { createContext, useContext, useReducer, Dispatch } from "react";
 import { ContextAction, ExploreState, ProviderProps } from "./types";
+import { getFirstAvailableIndex } from "@/lib/utils";
 
 // default values
 const defaultState: ExploreState = {
@@ -45,26 +46,42 @@ function playerReducer(
         selectedArtists: state.selectedArtists.concat({
           id: "",
           name: "",
-          selectIndex: state.selectedArtists.length,
+          selectIndex: getFirstAvailableIndex(state.selectedArtists),
         }),
       };
+
     // add artist details
     case "ADD_ARTIST_DETAILS":
-      const idToRemove = state.selectedArtists.find(
+      const selectedArtistIdToRemove = state.selectedArtists.find(
         (artist) => artist.selectIndex === action.payload.meta.selectIndex
       )?.id;
 
       return {
         ...state,
         artistStreams: state.artistStreams
-          .filter((stream) => stream.id !== idToRemove)
+          .filter((stream) => stream.id !== selectedArtistIdToRemove)
           .concat(action.payload.streams),
         selectedArtists: state.selectedArtists
           .filter(
             (artist) => artist.selectIndex !== action.payload.meta.selectIndex
           )
-          .concat(action.payload.meta)
-          .sort((a, b) => a.selectIndex - b.selectIndex),
+          .concat(action.payload.meta),
+      };
+
+    // remove artist`
+    case "REMOVE_ARTIST":
+      const removeId = state.selectedArtists.find(
+        (artist) => artist.selectIndex === action.payload
+      )?.id;
+
+      return {
+        ...state,
+        artistStreams: state.artistStreams.filter(
+          (stream) => stream.id !== removeId
+        ),
+        selectedArtists: state.selectedArtists.filter(
+          (artist) => artist.selectIndex !== action.payload
+        ),
       };
 
     default:

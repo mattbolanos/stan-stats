@@ -53,7 +53,7 @@ const CommandInput = React.forwardRef<
       )}
       {...props}
     />
-    <span className="h-4 w-4 shrink-0 opacity-50">{endContent}</span>
+    <span className="h-4 w-4 shrink-0">{endContent}</span>
   </div>
 ));
 

@@ -4,8 +4,9 @@ import { ExploreState } from "@/contexts/types";
 import { supabase } from "@/lib/supabase";
 import { ArtistSample } from "@/lib/types";
 import {
-  DEFAULT_ARTIST_MIN_LISTENERS,
+  DEFAULT_ARTIST_MIN_POPULARITY,
   DEFAULT_ARTIST_SAMPLE_SIZE,
+  fallbackDefaultArtist,
 } from "@/lib/utils";
 
 export async function getDefaultArtistSample(
@@ -32,17 +33,23 @@ async function getRandomDefaultArtist(): Promise<
   "use server";
 
   const { data, error } = await supabase
-    .from("spotify_artists_streams")
-    .select("id, monthly_listeners.max()")
-    .gt("monthly_listeners", DEFAULT_ARTIST_MIN_LISTENERS)
+    .from("spotify_artists_meta")
+    .select("id")
+    .gte("popularity", DEFAULT_ARTIST_MIN_POPULARITY)
     .limit(100);
 
   if (error) {
-    throw new Error("Failed to fetch artists");
+    return {
+      selectIndex: 0,
+      id: fallbackDefaultArtist.id,
+    };
   }
 
   if (!data || data.length === 0) {
-    throw new Error("No artists found");
+    return {
+      selectIndex: 0,
+      id: fallbackDefaultArtist.id,
+    };
   }
 
   // Select a random artist

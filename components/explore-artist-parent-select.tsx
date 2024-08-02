@@ -31,11 +31,11 @@ export default function ExploreArtistParentSelect({
   defaultArtistSample: ArtistSample[];
   defaultArtist: ExploreState["selectedArtists"][0];
 }) {
-  const { selectedArtists } = useExplore();
+  const { selectedArtists, artistStreams } = useExplore();
   const exploreDispatch = useExploreDispatch();
 
   useEffect(() => {
-    if (!selectedArtists.find((artist) => artist.selectIndex === 0)?.id) {
+    if (artistStreams.length < 1 && defaultArtist) {
       fetchArtistStreams(defaultArtist?.id, 0)
         .then((data) => {
           exploreDispatch?.({
@@ -47,7 +47,7 @@ export default function ExploreArtistParentSelect({
           throw error;
         });
     }
-  }, [selectedArtists, exploreDispatch, defaultArtist]);
+  }, [selectedArtists, exploreDispatch, defaultArtist, artistStreams.length]);
 
   return (
     <div className="flex items-center gap-2 flex-wrap px-5 justify-start flex-col sm:flex-row">

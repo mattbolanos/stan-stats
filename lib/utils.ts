@@ -1,3 +1,4 @@
+import { ExploreState } from "@/contexts/types";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -16,7 +17,7 @@ export function formatTotalArtists(totalArtists: number) {
   return new Intl.NumberFormat("en-US").format(roundedNumber) + "+";
 }
 
-export const DEFAULT_ARTIST_MIN_LISTENERS = 20000000 as const;
+export const DEFAULT_ARTIST_MIN_POPULARITY = 80 as const;
 export const DEFAULT_ARTIST_SAMPLE_SIZE = 100 as const;
 
 export function formatMonthlyListeners(value: number): string {
@@ -27,3 +28,18 @@ export function formatMonthlyListeners(value: number): string {
   }
   return String(value);
 }
+
+export function getFirstAvailableIndex(
+  selectedArtists: ExploreState["selectedArtists"]
+) {
+  // Find the first available index
+  let index = 0;
+  while (selectedArtists.find((artist) => artist.selectIndex === index)) {
+    index++;
+  }
+  return index;
+}
+
+export const fallbackDefaultArtist = {
+  id: "6qqNVTkY8uBg9cP3Jd7DAH",
+};

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 import {
   Card,
@@ -21,7 +21,6 @@ import { useExplore } from "@/contexts/ExploreContext";
 import { formatMonthlyListeners } from "@/lib/utils";
 
 export function ExploreChart() {
-  const [activeLines, setActiveLines] = useState<string[]>([]);
   const { artistStreams, selectedArtists } = useExplore();
 
   const { chartData, uniqueIds, yAxisMin, yAxisMax } = useMemo(() => {
@@ -47,8 +46,6 @@ export function ExploreChart() {
     const qualSelectedArtists: string[] = selectedArtists
       .filter((artist) => uniqueIds.includes(artist.id))
       .map((artist) => artist.id);
-
-    setActiveLines(qualSelectedArtists);
 
     return {
       chartData,
@@ -77,6 +74,7 @@ export function ExploreChart() {
       <CardContent>
         <ChartContainer config={chartConfig}>
           <LineChart
+            accessibilityLayer
             data={chartData}
             margin={{ left: 12, right: 12, top: 20, bottom: 20 }}
           >
@@ -94,18 +92,21 @@ export function ExploreChart() {
               tickFormatter={(value) => formatMonthlyListeners(Number(value))}
             />
             <ChartTooltip content={<ChartTooltipContent indicator="dot" />} />
-            {uniqueIds.map((id, index) => (
+            {uniqueIds.map((id) => (
               <Line
                 key={id}
                 type="linear"
                 dataKey={id}
-                stroke={`hsl(var(--chart-${index + 1}))`}
+                stroke={`hsl(var(--chart-${
+                  (selectedArtists.find((artist) => artist.id === id)
+                    ?.selectIndex || 0) + 1
+                }))`}
                 strokeWidth={2}
                 dot={false}
+                animationDuration={800}
                 name={`${
                   selectedArtists.find((artist) => artist.id === id)?.name
                 }`}
-                hide={!activeLines.includes(String(id))}
               />
             ))}
             <ChartLegend content={<ChartLegendContent nameKey="name" />} />

@@ -16,7 +16,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { CaretSortIcon } from "@radix-ui/react-icons";
+import { CaretSortIcon, Cross2Icon } from "@radix-ui/react-icons";
 import { useExploreDispatch, useExplore } from "@/contexts/ExploreContext";
 import { fetchArtistStreams } from "./explore-artist-parent-select";
 import { Spinner } from "./ui/spinner";
@@ -143,21 +143,41 @@ export default function ExploreArtistSelect({
           aria-expanded={open}
           className="w-[200px] justify-between"
         >
-          <p className="max-w-[150px] truncate">
-            {selectedArtists.find(
-              (artist) => artist.selectIndex === selectIndex
-            )
-              ? selectedArtists.find(
-                  (artist) => artist.selectIndex === selectIndex
-                )?.name
-              : "Select artist..."}
-          </p>
-          <div className="flex items-center space-x-1">
-            {value &&
-              !selectedArtists.find((artist) => artist.id === value) && (
+          <div
+            className="h-3 w-3 rounded-[2px] shrink-0"
+            style={{
+              backgroundColor: `hsl(var(--chart-${selectIndex + 1}))`,
+            }}
+          />
+          <div className="flex justify-between w-full ml-2">
+            <p className="max-w-[125px] truncate">
+              {selectedArtists.find(
+                (artist) => artist.selectIndex === selectIndex
+              )
+                ? selectedArtists.find(
+                    (artist) => artist.selectIndex === selectIndex
+                  )?.name
+                : "Select artist..."}
+            </p>
+            <div className="flex items-center space-x-1">
+              {value &&
+              !selectedArtists.find((artist) => artist.id === value) ? (
                 <Spinner />
+              ) : (
+                selectedArtists.filter((artist) => artist.id).length > 1 && (
+                  <Cross2Icon
+                    stroke="red"
+                    onClick={() => {
+                      exploreDispatch?.({
+                        type: "REMOVE_ARTIST",
+                        payload: selectIndex,
+                      });
+                    }}
+                  />
+                )
               )}
-            <CaretSortIcon className="h-4 w-4 shrink-0 opacity-50" />
+              <CaretSortIcon className="h-4 w-4 shrink-0 opacity-50" />
+            </div>
           </div>
         </Button>
       </PopoverTrigger>
