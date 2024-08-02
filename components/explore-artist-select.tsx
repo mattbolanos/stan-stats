@@ -185,6 +185,10 @@ export default function ExploreArtistSelect({
                   key={artist.id}
                   keywords={[artist.name]}
                   onSelect={() => handleSelect(artist.id)}
+                  disabled={
+                    selectedArtists.find((a) => a.id === artist.id) !==
+                    undefined
+                  }
                 >
                   {artist.name}
                 </CommandItem>

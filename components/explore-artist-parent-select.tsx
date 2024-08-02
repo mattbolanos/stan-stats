@@ -51,7 +51,7 @@ export default function ExploreArtistParentSelect({
   }, [selectedArtists, exploreDispatch, defaultArtist]);
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 flex-wrap px-5 justify-start flex-col sm:flex-row">
       {selectedArtists.map((artist) => (
         <ExploreArtistSelect
           key={artist.selectIndex}
@@ -59,9 +59,17 @@ export default function ExploreArtistParentSelect({
           selectIndex={artist.selectIndex}
         />
       ))}
-      <Button size="sm" variant="outline">
-        <PlusIcon stroke="green" />
-      </Button>
+      {selectedArtists.length < 5 && (
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={() => {
+            exploreDispatch?.({ type: "ADD_ARTIST" });
+          }}
+        >
+          <PlusIcon stroke="green" />
+        </Button>
+      )}
     </div>
   );
 }

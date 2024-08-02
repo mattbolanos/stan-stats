@@ -26,6 +26,7 @@ export function ExploreChart() {
 
   const { chartData, uniqueIds, yAxisMin, yAxisMax } = useMemo(() => {
     const dataMap = new Map();
+    const uniqueIds = Array.from(new Set(artistStreams.map((item) => item.id)));
     let min = Infinity;
     let max = -Infinity;
 
@@ -43,16 +44,19 @@ export function ExploreChart() {
       ...values,
     }));
 
-    const uniqueIds = Array.from(new Set(artistStreams.map((item) => item.id)));
-    setActiveLines(uniqueIds.map(String));
+    const qualSelectedArtists: string[] = selectedArtists
+      .filter((artist) => uniqueIds.includes(artist.id))
+      .map((artist) => artist.id);
+
+    setActiveLines(qualSelectedArtists);
 
     return {
       chartData,
-      uniqueIds,
+      uniqueIds: qualSelectedArtists,
       yAxisMin: Math.floor(min),
       yAxisMax: Math.ceil(max),
     };
-  }, [artistStreams]);
+  }, [artistStreams, selectedArtists]);
 
   const chartConfig = useMemo(() => {
     return uniqueIds.reduce((config, id, index) => {

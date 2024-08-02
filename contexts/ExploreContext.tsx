@@ -38,6 +38,16 @@ function playerReducer(
   action: ContextAction
 ): ExploreState {
   switch (action.type) {
+    // add artist
+    case "ADD_ARTIST":
+      return {
+        ...state,
+        selectedArtists: state.selectedArtists.concat({
+          id: "",
+          name: "",
+          selectIndex: state.selectedArtists.length,
+        }),
+      };
     // add artist details
     case "ADD_ARTIST_DETAILS":
       const idToRemove = state.selectedArtists.find(
@@ -53,7 +63,8 @@ function playerReducer(
           .filter(
             (artist) => artist.selectIndex !== action.payload.meta.selectIndex
           )
-          .concat(action.payload.meta),
+          .concat(action.payload.meta)
+          .sort((a, b) => a.selectIndex - b.selectIndex),
       };
 
     default:

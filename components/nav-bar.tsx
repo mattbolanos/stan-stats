@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   GitHubLogoIcon,
+  HamburgerMenuIcon,
   HeartFilledIcon,
   InfoCircledIcon,
 } from "@radix-ui/react-icons";
@@ -50,10 +51,11 @@ export default async function NavBar() {
     <nav className="flex items-center justify-between px-6 py-2">
       <div className="flex items-center max-w-screen-2xl">
         <div className="flex items-center space-x-2 nav-logo">
+          <HamburgerMenuIcon height={24} width={24} className="md:hidden" />
           <Image src="/spotify-color.svg" alt="logo" width={24} height={24} />
           <span className="font-bold">Chart.ml</span>
         </div>
-        <nav className="flex items-center gap-4 text-sm lg:gap-6">
+        <nav className="flex items-center gap-4 text-sm lg:gap-6 md:flex hidden">
           <Link href="/" legacyBehavior passHref>
             Explore
           </Link>

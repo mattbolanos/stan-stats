@@ -98,3 +98,7 @@
 .nav-logo {
   margin-right: 2.5rem;
 }
+
+.sm\:flex-row {
+  flex-direction: column;
+}
