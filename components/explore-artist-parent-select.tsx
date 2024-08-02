@@ -5,7 +5,6 @@ import { useExplore, useExploreDispatch } from "@/contexts/ExploreContext";
 import ExploreArtistSelect from "./explore-artist-select";
 import { ExploreState } from "@/contexts/types";
 import { useEffect } from "react";
-import { PlusIcon } from "@radix-ui/react-icons";
 import { Button } from "./ui/button";
 
 export async function fetchArtistStreams(
@@ -61,13 +60,13 @@ export default function ExploreArtistParentSelect({
       ))}
       {selectedArtists.length < 5 && (
         <Button
-          size="sm"
-          variant="outline"
+          variant="secondary"
+          className="w-[100px] justify-center"
           onClick={() => {
             exploreDispatch?.({ type: "ADD_ARTIST" });
           }}
         >
-          <PlusIcon stroke="green" />
+          Add Artist
         </Button>
       )}
     </div>
