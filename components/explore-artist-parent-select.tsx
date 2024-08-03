@@ -3,8 +3,6 @@
 import { ArtistSample } from "@/lib/types";
 import { useExplore, useExploreDispatch } from "@/contexts/ExploreContext";
 import ExploreArtistSelect from "./explore-artist-select";
-import { ExploreState } from "@/contexts/types";
-import { useEffect } from "react";
 import { Button } from "./ui/button";
 
 export async function fetchArtistStreams(
@@ -26,28 +24,11 @@ export async function fetchArtistStreams(
 
 export default function ExploreArtistParentSelect({
   defaultArtistSample = [],
-  defaultArtist,
 }: {
   defaultArtistSample: ArtistSample[];
-  defaultArtist: ExploreState["selectedArtists"][0];
 }) {
-  const { selectedArtists, artistStreams } = useExplore();
+  const { selectedArtists } = useExplore();
   const exploreDispatch = useExploreDispatch();
-
-  useEffect(() => {
-    if (artistStreams.length < 1 && defaultArtist) {
-      fetchArtistStreams(defaultArtist?.id, 0)
-        .then((data) => {
-          exploreDispatch?.({
-            type: "ADD_ARTIST_DETAILS",
-            payload: data,
-          });
-        })
-        .catch((error) => {
-          throw error;
-        });
-    }
-  }, [selectedArtists, exploreDispatch, defaultArtist, artistStreams.length]);
 
   return (
     <div className="flex items-center gap-2 flex-wrap px-5 justify-start flex-col sm:flex-row">

@@ -66,7 +66,17 @@ function playerReducer(
             (artist) => artist.selectIndex !== action.payload.meta.selectIndex
           )
           .concat(action.payload.meta)
-          .sort((a, b) => (a.id ? (b.id ? 0 : -1) : b.id ? 1 : 0)),
+          // sort by if id is not null
+          // then by selectIndex
+          .sort((a, b) => {
+            if (a.id && !b.id) {
+              return -1;
+            }
+            if (!a.id && b.id) {
+              return 1;
+            }
+            return a.selectIndex - b.selectIndex;
+          }),
       };
 
     // remove artist`

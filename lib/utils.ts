@@ -17,7 +17,6 @@ export function formatTotalArtists(totalArtists: number) {
   return new Intl.NumberFormat("en-US").format(roundedNumber) + "+";
 }
 
-export const DEFAULT_ARTIST_MIN_FOLLOWERS = 20000000 as const;
 export const DEFAULT_ARTIST_SAMPLE_SIZE = 100 as const;
 
 export function formatMonthlyListeners(value: number): string {
@@ -39,7 +38,3 @@ export function getFirstAvailableIndex(
   }
   return index;
 }
-
-export const fallbackDefaultArtist = {
-  id: "6qqNVTkY8uBg9cP3Jd7DAH",
-};

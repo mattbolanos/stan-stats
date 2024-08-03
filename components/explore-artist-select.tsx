@@ -141,7 +141,9 @@ export default function ExploreArtistSelect({
   const validArtists = selectedArtists.filter((artist) => artist.id);
 
   const canDelete =
-    validArtists.length === 1 && validArtists[0].selectIndex === selectIndex
+    (validArtists.length === 1 &&
+      validArtists[0].selectIndex === selectIndex) ||
+    selectedArtists.length === 1
       ? false
       : true;
 
