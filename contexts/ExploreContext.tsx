@@ -65,7 +65,8 @@ function playerReducer(
           .filter(
             (artist) => artist.selectIndex !== action.payload.meta.selectIndex
           )
-          .concat(action.payload.meta),
+          .concat(action.payload.meta)
+          .sort((a, b) => (a.id ? (b.id ? 0 : -1) : b.id ? 1 : 0)),
       };
 
     // remove artist`

@@ -4,7 +4,7 @@ import { ExploreState } from "@/contexts/types";
 import { supabase } from "@/lib/supabase";
 import { ArtistSample } from "@/lib/types";
 import {
-  DEFAULT_ARTIST_MIN_POPULARITY,
+  DEFAULT_ARTIST_MIN_FOLLOWERS,
   DEFAULT_ARTIST_SAMPLE_SIZE,
   fallbackDefaultArtist,
 } from "@/lib/utils";
@@ -35,7 +35,7 @@ async function getRandomDefaultArtist(): Promise<
   const { data, error } = await supabase
     .from("spotify_artists_meta")
     .select("id")
-    .gte("popularity", DEFAULT_ARTIST_MIN_POPULARITY)
+    .gte("followers", DEFAULT_ARTIST_MIN_FOLLOWERS)
     .limit(100);
 
   if (error) {

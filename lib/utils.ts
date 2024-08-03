@@ -17,7 +17,7 @@ export function formatTotalArtists(totalArtists: number) {
   return new Intl.NumberFormat("en-US").format(roundedNumber) + "+";
 }
 
-export const DEFAULT_ARTIST_MIN_POPULARITY = 80 as const;
+export const DEFAULT_ARTIST_MIN_FOLLOWERS = 20000000 as const;
 export const DEFAULT_ARTIST_SAMPLE_SIZE = 100 as const;
 
 export function formatMonthlyListeners(value: number): string {

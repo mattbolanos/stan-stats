@@ -134,6 +134,17 @@ export default function ExploreArtistSelect({
     }
   };
 
+  const validArtistName = selectedArtists.find(
+    (artist) => artist.selectIndex === selectIndex
+  )?.name;
+
+  const validArtists = selectedArtists.filter((artist) => artist.id);
+
+  const canDelete =
+    validArtists.length === 1 && validArtists[0].selectIndex === selectIndex
+      ? false
+      : true;
+
   return (
     <Popover open={open} onOpenChange={handleOnOpenChange}>
       <PopoverTrigger asChild>
@@ -141,7 +152,7 @@ export default function ExploreArtistSelect({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between"
+          className="w-[200px] justify-between px-2"
         >
           <div
             className="h-3 w-3 rounded-[2px] shrink-0"
@@ -149,22 +160,21 @@ export default function ExploreArtistSelect({
               backgroundColor: `hsl(var(--chart-${selectIndex + 1}))`,
             }}
           />
-          <div className="flex justify-between w-full ml-2">
-            <p className="max-w-[125px] truncate">
-              {selectedArtists.find(
-                (artist) => artist.selectIndex === selectIndex
-              )
-                ? selectedArtists.find(
-                    (artist) => artist.selectIndex === selectIndex
-                  )?.name
-                : "Select artist..."}
+          <div className="flex justify-between w-full ml-1.5">
+            <p
+              className={`w-[120px] truncate text-left ${
+                validArtistName ? "" : "text-muted-foreground"
+              }`}
+              style={{ placeSelf: "flex-start" }}
+            >
+              {validArtistName ? validArtistName : "Select artist..."}
             </p>
-            <div className="flex items-center space-x-1">
+            <div className="flex items-center space-x-0.5 ml-1.5">
               {value &&
               !selectedArtists.find((artist) => artist.id === value) ? (
                 <Spinner />
               ) : (
-                selectedArtists.filter((artist) => artist.id).length > 1 && (
+                canDelete && (
                   <Cross2Icon
                     stroke="red"
                     onClick={() => {
@@ -172,7 +182,9 @@ export default function ExploreArtistSelect({
                         type: "REMOVE_ARTIST",
                         payload: selectIndex,
                       });
+                      setValue("");
                     }}
+                    className="cursor-pointer shrink-0"
                   />
                 )
               )}
