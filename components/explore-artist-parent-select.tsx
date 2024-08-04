@@ -31,7 +31,7 @@ export default function ExploreArtistParentSelect({
   const exploreDispatch = useExploreDispatch();
 
   return (
-    <div className="flex items-center gap-3 flex-wrap px-2 sm:px-5 justify-start flex-col sm:flex-row">
+    <div className="flex items-center gap-3 flex-wrap justify-start flex-col sm:flex-row">
       {selectedArtists.map((artist) => (
         <ExploreArtistSelect
           key={artist.selectIndex}

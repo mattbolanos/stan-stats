@@ -47,7 +47,10 @@ export default async function Home() {
   const dateRange = await getDateRange();
 
   return (
-    <main className="flex min-h-fit flex-col items-center justify-between p-24">
+    <main className="flex-1 px-16 pt-5 sm:pt-10">
+      <h1 className="text-3xl sm:text-4xl font-bold pb-10 text-center sm:text-left">
+        Explore
+      </h1>
       <ExploreArtistParentSelect defaultArtistSample={defaultArtistSample} />
       <ExploreChart dateRange={dateRange} />
     </main>
