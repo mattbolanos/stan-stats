@@ -38,3 +38,28 @@ export function getFirstAvailableIndex(
   }
   return index;
 }
+
+function formatDateToMonthYear(
+  date: Date,
+  includeYear: boolean = true
+): string {
+  const options: Intl.DateTimeFormatOptions = { month: "long" };
+
+  if (includeYear) {
+    options.year = "numeric";
+  }
+
+  return date.toLocaleString("en-US", options);
+}
+
+export function formatDateRange(startDate: string, endDate: string): string {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+
+  const startFormatted = formatDateToMonthYear(
+    start,
+    start.getFullYear() !== end.getFullYear()
+  );
+
+  return `${startFormatted} - ${formatDateToMonthYear(end)}`;
+}

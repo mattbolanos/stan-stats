@@ -18,9 +18,17 @@ import {
   ChartLegendContent,
 } from "@/components/ui/chart";
 import { useExplore } from "@/contexts/ExploreContext";
-import { formatMonthlyListeners } from "@/lib/utils";
+import { formatDateRange, formatMonthlyListeners } from "@/lib/utils";
+import Image from "next/image";
 
-export function ExploreChart() {
+export function ExploreChart({
+  dateRange,
+}: {
+  dateRange: {
+    min: string;
+    max: string;
+  };
+}) {
   const { artistStreams, selectedArtists } = useExplore();
 
   const { chartData, uniqueIds, yAxisMin, yAxisMax } = useMemo(() => {
@@ -68,17 +76,28 @@ export function ExploreChart() {
   return (
     <>
       {artistStreams.length > 0 && (
-        <Card>
+        <Card className="min-w-80 max-w-3xl sm:mt-5 mt-32">
           <CardHeader>
-            <CardTitle>Multi-Line Chart</CardTitle>
-            <CardDescription>Monthly Listeners by ID</CardDescription>
+            <CardTitle className="flex items-center gap-1.5">
+              <Image
+                src="/spotify-color.svg"
+                alt="logo"
+                className="w-5 h-5"
+                width={10}
+                height={10}
+              />
+              Monthly Listeners
+            </CardTitle>
+            <CardDescription>
+              {formatDateRange(dateRange.min, dateRange.max)}
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <ChartContainer config={chartConfig}>
               <LineChart
                 accessibilityLayer
                 data={chartData}
-                margin={{ left: 12, right: 12, top: 20, bottom: 20 }}
+                margin={{ left: 0, right: 12, top: 20, bottom: 20 }}
               >
                 <CartesianGrid vertical={false} />
                 <XAxis
@@ -94,6 +113,7 @@ export function ExploreChart() {
                   tickFormatter={(value) =>
                     formatMonthlyListeners(Number(value))
                   }
+                  tickMargin={5}
                 />
                 <ChartTooltip
                   content={<ChartTooltipContent indicator="dot" />}
