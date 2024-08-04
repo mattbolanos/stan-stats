@@ -48,7 +48,7 @@ export default async function NavBar() {
   const totalArtists = await getTotalArtists();
 
   return (
-    <nav className="flex items-center justify-between px-6 py-2">
+    <nav className="flex items-center justify-between px-6 py-3">
       <div className="flex items-center max-w-screen-2xl">
         <div className="flex items-center space-x-2 nav-logo">
           <HamburgerMenuIcon height={24} width={24} className="md:hidden" />

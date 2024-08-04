@@ -66,53 +66,61 @@ export function ExploreChart() {
   }, [uniqueIds]);
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Multi-Line Chart</CardTitle>
-        <CardDescription>Monthly Listeners by ID</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <ChartContainer config={chartConfig}>
-          <LineChart
-            accessibilityLayer
-            data={chartData}
-            margin={{ left: 12, right: 12, top: 20, bottom: 20 }}
-          >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="date"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-            />
-            <YAxis
-              tickLine={false}
-              axisLine={false}
-              domain={[yAxisMin, yAxisMax]}
-              tickFormatter={(value) => formatMonthlyListeners(Number(value))}
-            />
-            <ChartTooltip content={<ChartTooltipContent indicator="dot" />} />
-            {uniqueIds.map((id) => (
-              <Line
-                key={id}
-                type="linear"
-                dataKey={id}
-                stroke={`hsl(var(--chart-${
-                  (selectedArtists.find((artist) => artist.id === id)
-                    ?.selectIndex || 0) + 1
-                }))`}
-                strokeWidth={2}
-                dot={false}
-                animationDuration={800}
-                name={`${
-                  selectedArtists.find((artist) => artist.id === id)?.name
-                }`}
-              />
-            ))}
-            <ChartLegend content={<ChartLegendContent nameKey="name" />} />
-          </LineChart>
-        </ChartContainer>
-      </CardContent>
-    </Card>
+    <>
+      {artistStreams.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Multi-Line Chart</CardTitle>
+            <CardDescription>Monthly Listeners by ID</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ChartContainer config={chartConfig}>
+              <LineChart
+                accessibilityLayer
+                data={chartData}
+                margin={{ left: 12, right: 12, top: 20, bottom: 20 }}
+              >
+                <CartesianGrid vertical={false} />
+                <XAxis
+                  dataKey="date"
+                  tickLine={false}
+                  axisLine={false}
+                  tickMargin={8}
+                />
+                <YAxis
+                  tickLine={false}
+                  axisLine={false}
+                  domain={[yAxisMin, yAxisMax]}
+                  tickFormatter={(value) =>
+                    formatMonthlyListeners(Number(value))
+                  }
+                />
+                <ChartTooltip
+                  content={<ChartTooltipContent indicator="dot" />}
+                />
+                {uniqueIds.map((id) => (
+                  <Line
+                    key={id}
+                    type="linear"
+                    dataKey={id}
+                    stroke={`hsl(var(--chart-${
+                      (selectedArtists.find((artist) => artist.id === id)
+                        ?.selectIndex || 0) + 1
+                    }))`}
+                    strokeWidth={2}
+                    dot={false}
+                    animationDuration={800}
+                    name={`${
+                      selectedArtists.find((artist) => artist.id === id)?.name
+                    }`}
+                  />
+                ))}
+                <ChartLegend content={<ChartLegendContent nameKey="name" />} />
+              </LineChart>
+            </ChartContainer>
+          </CardContent>
+        </Card>
+      )}
+    </>
   );
 }

@@ -186,7 +186,9 @@ export default function ExploreArtistSelect({
                       });
                       setValue("");
                     }}
-                    className="cursor-pointer shrink-0"
+                    height={16}
+                    width={16}
+                    className="cursor-pointer shrink-0 p-0.5"
                   />
                 )
               )}
