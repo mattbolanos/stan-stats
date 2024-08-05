@@ -73,6 +73,14 @@ export function ExploreChart({
     }, {} as ChartConfig);
   }, [uniqueIds]);
 
+  const stepSize = (yAxisMax - yAxisMin) / 4;
+
+  // Generate an array of 5 evenly spaced tick values
+  const customTicks = Array.from(
+    { length: 5 },
+    (_, index) => yAxisMin + stepSize * index
+  );
+
   return (
     <>
       {artistStreams.length > 0 && (
@@ -114,6 +122,7 @@ export function ExploreChart({
                     formatMonthlyListeners(Number(value))
                   }
                   tickMargin={5}
+                  ticks={customTicks}
                 />
                 <ChartTooltip
                   content={<ChartTooltipContent indicator="dot" />}
