@@ -30,7 +30,7 @@ export default function ExploreArtistSelect({
   selectIndex: number;
 }) {
   const { selectedArtists } = useExplore();
-  const [value, setValue] = useState(selectedArtists[selectIndex]?.id);
+  const [value, setValue] = useState("");
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const exploreDispatch = useExploreDispatch();

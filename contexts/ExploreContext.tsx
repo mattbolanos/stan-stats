@@ -5,7 +5,7 @@ import { getFirstAvailableIndex } from "@/lib/utils";
 // default values
 const defaultState: ExploreState = {
   artistStreams: [],
-  selectedArtists: [{ selectIndex: 0, id: "", name: "" }],
+  selectedArtists: [{ selectIndex: 0, id: "FAKE", name: "" }],
 };
 
 // create context

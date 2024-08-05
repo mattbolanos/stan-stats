@@ -73,18 +73,24 @@ export function ExploreChart({
     }, {} as ChartConfig);
   }, [uniqueIds]);
 
-  const stepSize = (yAxisMax - yAxisMin) / 4;
+  const yAxisStep = (yAxisMax - yAxisMin) / 4;
+  const xAxisStep = Math.ceil(chartData.length / 7);
 
   // Generate an array of 5 evenly spaced tick values
-  const customTicks = Array.from(
+  const yAxisTicks = Array.from(
     { length: 5 },
-    (_, index) => yAxisMin + stepSize * index
+    (_, index) => yAxisMin + yAxisStep * index
+  );
+
+  const xAxisTicks = Array.from(
+    { length: 8 },
+    (_, index) => chartData[xAxisStep * index]?.date
   );
 
   return (
     <>
       {artistStreams.length > 0 && (
-        <Card className="min-w-80 max-w-3xl sm:mt-5 mt-32">
+        <Card className="min-w-80 max-w-3xl sm:mt-5 mt-32 mb-10">
           <CardHeader>
             <CardTitle className="flex items-center gap-1.5">
               <Image
@@ -112,7 +118,17 @@ export function ExploreChart({
                   dataKey="date"
                   tickLine={false}
                   axisLine={false}
-                  tickMargin={8}
+                  tickMargin={25}
+                  padding={{ left: 10, right: 10 }}
+                  angle={-45}
+                  ticks={xAxisTicks}
+                  tickFormatter={(value) =>
+                    new Date(value).toLocaleString("default", {
+                      month: "short",
+                      year: "2-digit",
+                      day: "numeric",
+                    })
+                  }
                 />
                 <YAxis
                   tickLine={false}
@@ -122,7 +138,7 @@ export function ExploreChart({
                     formatMonthlyListeners(Number(value))
                   }
                   tickMargin={5}
-                  ticks={customTicks}
+                  ticks={yAxisTicks}
                 />
                 <ChartTooltip
                   content={<ChartTooltipContent indicator="dot" />}
