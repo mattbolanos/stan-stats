@@ -63,3 +63,5 @@ export function formatDateRange(startDate: string, endDate: string): string {
 
   return `${startFormatted} - ${formatDateToMonthYear(end)}`;
 }
+
+export const fallbackDefaultArtist = "1McMsnEElThX1knmY4oliG" as const;

@@ -1,6 +1,5 @@
 import { supabase } from "@/lib/supabase";
 import { DEFAULT_ARTIST_SAMPLE_SIZE } from "@/lib/utils";
-import { NextResponse } from "next/server";
 
 function cleanArtistName(name: string): string {
   return name
@@ -28,7 +27,7 @@ export async function GET(request: Request) {
       throw error;
     }
 
-    return NextResponse.json(data);
+    return Response.json(data);
   }
 
   const { data, error } = await supabase
@@ -42,5 +41,5 @@ export async function GET(request: Request) {
     throw error;
   }
 
-  return NextResponse.json(data);
+  return Response.json(data);
 }

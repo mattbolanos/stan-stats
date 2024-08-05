@@ -51,17 +51,13 @@ export function ExploreChart({
       ...values,
     }));
 
-    const qualSelectedArtists: string[] = selectedArtists
-      .filter((artist) => uniqueIds.includes(artist.id))
-      .map((artist) => artist.id);
-
     return {
       chartData,
-      uniqueIds: qualSelectedArtists,
+      uniqueIds: uniqueIds,
       yAxisMin: Math.floor(min),
       yAxisMax: Math.ceil(max),
     };
-  }, [artistStreams, selectedArtists]);
+  }, [artistStreams]);
 
   const chartConfig = useMemo(() => {
     return uniqueIds.reduce((config, id, index) => {
@@ -88,84 +84,76 @@ export function ExploreChart({
   );
 
   return (
-    <>
-      {artistStreams.length > 0 && (
-        <Card className="min-w-80 max-w-3xl sm:mt-5 mt-32 mb-10">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-1.5">
-              <Image
-                src="/spotify-color.svg"
-                alt="logo"
-                className="w-5 h-5"
-                width={10}
-                height={10}
+    <Card className="min-w-80 max-w-3xl sm:mt-5 mt-10 mb-10">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-1.5">
+          <Image
+            src="/spotify-color.svg"
+            alt="logo"
+            className="w-5 h-5"
+            width={10}
+            height={10}
+          />
+          Monthly Listeners
+        </CardTitle>
+        <CardDescription>
+          {formatDateRange(dateRange.min, dateRange.max)}
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <ChartContainer config={chartConfig}>
+          <LineChart
+            accessibilityLayer
+            data={chartData}
+            margin={{ left: 0, right: 12, top: 20, bottom: 20 }}
+          >
+            <CartesianGrid vertical={false} />
+            <XAxis
+              dataKey="date"
+              tickLine={false}
+              axisLine={false}
+              tickMargin={25}
+              padding={{ left: 10, right: 10 }}
+              angle={-45}
+              ticks={xAxisTicks}
+              tickFormatter={(value) =>
+                new Date(value).toLocaleString("default", {
+                  month: "short",
+                  year: "2-digit",
+                  day: "numeric",
+                })
+              }
+            />
+            <YAxis
+              tickLine={false}
+              axisLine={false}
+              domain={[yAxisMin, yAxisMax]}
+              tickFormatter={(value) => formatMonthlyListeners(Number(value))}
+              tickMargin={5}
+              ticks={yAxisTicks}
+            />
+            <ChartTooltip content={<ChartTooltipContent indicator="dot" />} />
+            {uniqueIds.map((id) => (
+              <Line
+                key={id}
+                type="linear"
+                dataKey={id}
+                stroke={`hsl(var(--chart-${
+                  (selectedArtists.find((artist) => artist.id === id)
+                    ?.selectIndex || 0) + 1
+                }))`}
+                strokeWidth={2}
+                dot={false}
+                animationDuration={800}
+                name={`${
+                  selectedArtists.find((artist) => artist.id === id)?.name
+                }`}
               />
-              Monthly Listeners
-            </CardTitle>
-            <CardDescription>
-              {formatDateRange(dateRange.min, dateRange.max)}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ChartContainer config={chartConfig}>
-              <LineChart
-                accessibilityLayer
-                data={chartData}
-                margin={{ left: 0, right: 12, top: 20, bottom: 20 }}
-              >
-                <CartesianGrid vertical={false} />
-                <XAxis
-                  dataKey="date"
-                  tickLine={false}
-                  axisLine={false}
-                  tickMargin={25}
-                  padding={{ left: 10, right: 10 }}
-                  angle={-45}
-                  ticks={xAxisTicks}
-                  tickFormatter={(value) =>
-                    new Date(value).toLocaleString("default", {
-                      month: "short",
-                      year: "2-digit",
-                      day: "numeric",
-                    })
-                  }
-                />
-                <YAxis
-                  tickLine={false}
-                  axisLine={false}
-                  domain={[yAxisMin, yAxisMax]}
-                  tickFormatter={(value) =>
-                    formatMonthlyListeners(Number(value))
-                  }
-                  tickMargin={5}
-                  ticks={yAxisTicks}
-                />
-                <ChartTooltip
-                  content={<ChartTooltipContent indicator="dot" />}
-                />
-                {uniqueIds.map((id) => (
-                  <Line
-                    key={id}
-                    type="linear"
-                    dataKey={id}
-                    stroke={`hsl(var(--chart-${
-                      (selectedArtists.find((artist) => artist.id === id)
-                        ?.selectIndex || 0) + 1
-                    }))`}
-                    strokeWidth={2}
-                    dot={false}
-                    animationDuration={800}
-                    name={`${
-                      selectedArtists.find((artist) => artist.id === id)?.name
-                    }`}
-                  />
-                ))}
-                <ChartLegend content={<ChartLegendContent nameKey="name" />} />
-              </LineChart>
-            </ChartContainer>
-          </CardContent>
-        </Card>
-      )}
-    </>
+            ))}
+            <ChartLegend content={<ChartLegendContent nameKey="name" />} />
+          </LineChart>
+        </ChartContainer>
+      </CardContent>
+    </Card>
   );
 }

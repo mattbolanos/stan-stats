@@ -4,6 +4,7 @@ import { ArtistSample } from "@/lib/types";
 import { useExplore, useExploreDispatch } from "@/contexts/ExploreContext";
 import ExploreArtistSelect from "./explore-artist-select";
 import { Button } from "./ui/button";
+import { fallbackDefaultArtist } from "@/lib/utils";
 import { useEffect } from "react";
 
 export async function fetchArtistStreams(
@@ -25,17 +26,15 @@ export async function fetchArtistStreams(
 
 export default function ExploreArtistParentSelect({
   defaultArtistSample = [],
-  defaultArtists,
 }: {
   defaultArtistSample: ArtistSample[];
-  defaultArtists: string[];
 }) {
   const { selectedArtists } = useExplore();
   const exploreDispatch = useExploreDispatch();
 
   useEffect(() => {
-    if (selectedArtists[0].id === "FAKE" && defaultArtists.length > 0) {
-      fetchArtistStreams(defaultArtists[0], 0)
+    if (!selectedArtists[0].name && selectedArtists.length === 1) {
+      fetchArtistStreams(fallbackDefaultArtist, 0)
         .then((data) => {
           exploreDispatch?.({
             type: "ADD_ARTIST_DETAILS",
@@ -45,15 +44,8 @@ export default function ExploreArtistParentSelect({
         .catch((error) => {
           throw error;
         });
-
-      fetchArtistStreams(defaultArtists[1], 1).then((data) => {
-        exploreDispatch?.({
-          type: "ADD_ARTIST_DETAILS",
-          payload: data,
-        });
-      });
     }
-  }, [defaultArtists, exploreDispatch, selectedArtists]);
+  }, [selectedArtists, exploreDispatch]);
 
   return (
     <div className="flex items-center gap-3 flex-wrap justify-start flex-col sm:flex-row">

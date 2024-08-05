@@ -1,5 +1,4 @@
 import { supabase } from "@/lib/supabase";
-import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -7,7 +6,7 @@ export async function GET(request: Request) {
   const selectIndex = Number(searchParams.get("selectIndex"));
 
   if (!artistId) {
-    return NextResponse.json([]);
+    return Response.json([]);
   }
 
   const [streamsResult, metaResult] = await Promise.all([
@@ -30,7 +29,7 @@ export async function GET(request: Request) {
     throw metaResult.error;
   }
 
-  return NextResponse.json({
+  return Response.json({
     streams: streamsResult.data,
     meta: {
       id: metaResult.data.id,
