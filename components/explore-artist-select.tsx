@@ -65,7 +65,7 @@ export default function ExploreArtistSelect({
             `/api/artists/search?query=${search}&size=${nextSize}`
           );
           if (!response.ok) {
-            throw new Error("Network response was not ok");
+            return [];
           }
           const data: ArtistSample[] = await response.json();
 
@@ -98,7 +98,7 @@ export default function ExploreArtistSelect({
     try {
       const response = await fetch(`/api/artists/search?query=${value}`);
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        return [];
       }
       const data: SetStateAction<ArtistSample[]> = await response.json();
       setArtists(data);

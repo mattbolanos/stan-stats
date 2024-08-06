@@ -1,6 +1,6 @@
 import { supabase } from "@/lib/supabase";
 
-export async function GET(request: Request) {
+export async function GET(request: Request): Promise<Response> {
   const { searchParams } = new URL(request.url);
   const artistId = searchParams.get("artistId");
   const selectIndex = Number(searchParams.get("selectIndex"));

@@ -5,6 +5,8 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
+    --background-end: 210 20% 92%;
+    --radial-color: 210 30% 75%;
     --foreground: 20 14.3% 4.1%;
 
     --card: 0 0% 100%;
@@ -44,7 +46,9 @@
   }
 
   .dark {
-    --background: 20 14.3% 4.1%;
+    --background: 20 14.3% 2.1%;
+    --background-end: 220 5% 8%;
+    --radial-color: 220 20% 15%;
     --foreground: 60 9.1% 97.8%;
 
     --card: 20 14.3% 4.1%;
@@ -86,6 +90,23 @@
   }
   body {
     @apply bg-background text-foreground;
+    background: radial-gradient(
+        circle at top left,
+        hsl(var(--radial-color) / 0.2) 0%,
+        transparent 70%
+      ),
+      radial-gradient(
+        circle at bottom right,
+        hsl(var(--radial-color) / 0.2) 0%,
+        transparent 70%
+      ),
+      linear-gradient(
+        to bottom right,
+        hsl(var(--background)),
+        hsl(var(--background-end))
+      );
+    background-attachment: fixed;
+    min-height: 100vh;
   }
 }
 

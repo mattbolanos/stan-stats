@@ -1,11 +1,11 @@
 "use client";
 
-import { ArtistSample } from "@/lib/types";
+import { ArtistDetailsResponse, ArtistSample } from "@/lib/types";
 import { useExplore, useExploreDispatch } from "@/contexts/ExploreContext";
 import ExploreArtistSelect from "./explore-artist-select";
 import { Button } from "./ui/button";
-import { fallbackDefaultArtist } from "@/lib/utils";
 import { useEffect } from "react";
+import { FAKE_ARTIST_ID } from "@/lib/utils";
 
 export async function fetchArtistStreams(
   artistId: string | undefined,
@@ -19,33 +19,29 @@ export async function fetchArtistStreams(
     `/api/artists/details?artistId=${artistId}&selectIndex=${selectIndex}`
   );
   if (!response.ok) {
-    throw new Error("Network response was not ok");
+    return [];
   }
   return response.json();
 }
 
 export default function ExploreArtistParentSelect({
   defaultArtistSample = [],
+  defaultDetails,
 }: {
   defaultArtistSample: ArtistSample[];
+  defaultDetails: ArtistDetailsResponse;
 }) {
   const { selectedArtists } = useExplore();
   const exploreDispatch = useExploreDispatch();
 
   useEffect(() => {
-    if (!selectedArtists[0].name && selectedArtists.length === 1) {
-      fetchArtistStreams(fallbackDefaultArtist, 0)
-        .then((data) => {
-          exploreDispatch?.({
-            type: "ADD_ARTIST_DETAILS",
-            payload: data,
-          });
-        })
-        .catch((error) => {
-          throw error;
-        });
+    if (selectedArtists[0].id === FAKE_ARTIST_ID) {
+      exploreDispatch?.({
+        type: "ADD_ARTIST_DETAILS",
+        payload: defaultDetails,
+      });
     }
-  }, [selectedArtists, exploreDispatch]);
+  }, [selectedArtists, exploreDispatch, defaultDetails]);
 
   return (
     <div className="flex items-center gap-3 flex-wrap justify-start flex-col sm:flex-row">

@@ -113,13 +113,13 @@ export function ExploreChart({
               tickLine={false}
               axisLine={false}
               tickMargin={25}
-              padding={{ left: 10, right: 10 }}
-              angle={-45}
+              padding={{ left: 10, right: 25 }}
+              angle={-30}
               ticks={xAxisTicks}
               tickFormatter={(value) =>
                 new Date(value).toLocaleString("default", {
                   month: "short",
-                  year: "2-digit",
+                  year: "numeric",
                   day: "numeric",
                 })
               }

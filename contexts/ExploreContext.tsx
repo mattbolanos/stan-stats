@@ -1,11 +1,11 @@
 import { createContext, useContext, useReducer, Dispatch } from "react";
 import { ContextAction, ExploreState, ProviderProps } from "./types";
-import { getFirstAvailableIndex } from "@/lib/utils";
+import { FAKE_ARTIST_ID, getFirstAvailableIndex } from "@/lib/utils";
 
 // default values
 const defaultState: ExploreState = {
   artistStreams: [],
-  selectedArtists: [{ selectIndex: 0, id: "1McMsnEElThX1knmY4oliG", name: "" }],
+  selectedArtists: [{ selectIndex: 0, id: FAKE_ARTIST_ID, name: "" }],
 };
 
 // create context
@@ -52,6 +52,9 @@ function playerReducer(
 
     // add artist details
     case "ADD_ARTIST_DETAILS":
+      if (!action.payload?.meta) {
+        return state;
+      }
       const selectedArtistIdToRemove = state.selectedArtists.find(
         (artist) => artist.selectIndex === action.payload.meta.selectIndex
       )?.id;

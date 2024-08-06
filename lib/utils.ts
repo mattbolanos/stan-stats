@@ -65,3 +65,5 @@ export function formatDateRange(startDate: string, endDate: string): string {
 }
 
 export const fallbackDefaultArtist = "1McMsnEElThX1knmY4oliG" as const;
+
+export const FAKE_ARTIST_ID = "FAKE";

@@ -11,7 +11,7 @@ function cleanArtistName(name: string): string {
     .trim(); // Trim again in case the previous operations left any whitespace
 }
 
-export async function GET(request: Request) {
+export async function GET(request: Request): Promise<Response> {
   const { searchParams } = new URL(request.url);
   const query = searchParams.get("query");
   const size = Number(searchParams.get("size")) || DEFAULT_ARTIST_SAMPLE_SIZE;

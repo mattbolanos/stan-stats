@@ -8,3 +8,14 @@ export interface ArtistStream {
   updated_at: string;
   monthly_listeners: number;
 }
+
+export interface SelectedArtist {
+  id: string;
+  name: string;
+  selectIndex: number;
+}
+
+export interface ArtistDetailsResponse {
+  streams: ArtistStream[];
+  meta: SelectedArtist;
+}
