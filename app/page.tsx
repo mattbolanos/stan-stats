@@ -83,7 +83,7 @@ export default async function Home() {
   const defaultDetails = await getDefaultDetails();
 
   return (
-    <main className="flex-1 px-16 sm:mt-20 mt-2">
+    <main className="flex-1 px-16 sm:mt-8 mt-2">
       <div className="max-w-2xl flex flex-col">
         <div className="flex flex-col gap-4 my-10 text-center md:text-left min-h-fit">
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">

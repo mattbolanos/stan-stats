@@ -18,9 +18,8 @@ import {
 } from "@/components/ui/popover";
 import { CaretSortIcon, Cross2Icon } from "@radix-ui/react-icons";
 import { useExploreDispatch, useExplore } from "@/contexts/ExploreContext";
-import { fetchArtistStreams } from "./explore-artist-parent-select";
 import { Spinner } from "./ui/spinner";
-import { DEFAULT_ARTIST_SAMPLE_SIZE } from "@/lib/utils";
+import { DEFAULT_ARTIST_SAMPLE_SIZE, fetchArtistDetails } from "@/lib/utils";
 
 export default function ExploreArtistSelect({
   defaultArtistSample = [],
@@ -112,7 +111,7 @@ export default function ExploreArtistSelect({
   const handleSelect = (value: string) => {
     setValue(value);
     setOpen(false);
-    fetchArtistStreams(value, selectIndex)
+    fetchArtistDetails(value, selectIndex)
       .then((data) => {
         exploreDispatch?.({
           type: "ADD_ARTIST_DETAILS",

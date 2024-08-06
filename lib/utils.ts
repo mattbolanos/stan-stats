@@ -70,3 +70,20 @@ export const defaultArtists = [
 ];
 
 export const FAKE_ARTIST_ID = "FAKE";
+
+export async function fetchArtistDetails(
+  artistId: string | undefined,
+  selectIndex: number
+) {
+  if (!artistId) {
+    return [];
+  }
+
+  const response = await fetch(
+    `/api/artists/details?artistId=${artistId}&selectIndex=${selectIndex}`
+  );
+  if (!response.ok) {
+    return [];
+  }
+  return response.json();
+}

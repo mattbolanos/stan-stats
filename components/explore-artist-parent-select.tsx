@@ -8,23 +8,6 @@ import { useEffect } from "react";
 import { FAKE_ARTIST_ID } from "@/lib/utils";
 import { Spinner } from "./ui/spinner";
 
-export async function fetchArtistStreams(
-  artistId: string | undefined,
-  selectIndex: number
-) {
-  if (!artistId) {
-    return [];
-  }
-
-  const response = await fetch(
-    `/api/artists/details?artistId=${artistId}&selectIndex=${selectIndex}`
-  );
-  if (!response.ok) {
-    return [];
-  }
-  return response.json();
-}
-
 export default function ExploreArtistParentSelect({
   defaultArtistSample = [],
   defaultDetails,
