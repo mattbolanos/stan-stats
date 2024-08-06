@@ -1,6 +1,7 @@
 import { createContext, useContext, useReducer, Dispatch } from "react";
 import { ContextAction, ExploreState, ProviderProps } from "./types";
 import { FAKE_ARTIST_ID, getFirstAvailableIndex } from "@/lib/utils";
+import { SelectedArtist } from "@/lib/types";
 
 // default values
 const defaultState: ExploreState = {
@@ -55,6 +56,29 @@ function playerReducer(
       if (!action.payload?.meta) {
         return state;
       }
+
+      // if meta is an array
+      if (Array.isArray(action.payload.meta)) {
+        const passedIndexes = action.payload.meta.map(
+          (meta: SelectedArtist) => meta.selectIndex
+        );
+
+        const idsToRemove = state.selectedArtists
+          .filter((artist) => passedIndexes.includes(artist.selectIndex))
+          .map((artist) => artist.id);
+
+        return {
+          ...state,
+          selectedArtists: state.selectedArtists
+            .filter((artist) => !passedIndexes.includes(artist.selectIndex))
+            .concat(action.payload.meta)
+            .sort((a, b) => a.selectIndex - b.selectIndex),
+          artistStreams: state.artistStreams
+            .filter((stream) => !idsToRemove.includes(stream.id))
+            .concat(action.payload.streams),
+        };
+      }
+
       const selectedArtistIdToRemove = state.selectedArtists.find(
         (artist) => artist.selectIndex === action.payload.meta.selectIndex
       )?.id;

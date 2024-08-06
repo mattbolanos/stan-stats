@@ -2,7 +2,7 @@ import ExploreArtistParentSelect from "@/components/explore-artist-parent-select
 import { ExploreChart } from "@/components/explore-chart";
 import { supabase } from "@/lib/supabase";
 import { ArtistDetailsResponse, ArtistSample } from "@/lib/types";
-import { DEFAULT_ARTIST_SAMPLE_SIZE, fallbackDefaultArtist } from "@/lib/utils";
+import { DEFAULT_ARTIST_SAMPLE_SIZE, defaultArtists } from "@/lib/utils";
 import { ClockIcon } from "@radix-ui/react-icons";
 
 async function getDefaultArtistSample(
@@ -44,7 +44,7 @@ async function getDateRange(): Promise<{
 }
 
 async function getDefaultDetails(
-  artistId: string = fallbackDefaultArtist
+  artistIds: string[] = defaultArtists
 ): Promise<ArtistDetailsResponse> {
   "use server";
 
@@ -52,12 +52,11 @@ async function getDefaultDetails(
     supabase
       .from("spotify_artists_streams")
       .select("id, monthly_listeners, updated_at")
-      .eq("id", artistId),
+      .in("id", artistIds),
     supabase
       .from("spotify_artists_meta")
       .select("id, name")
-      .eq("id", artistId)
-      .single(),
+      .in("id", artistIds),
   ]);
 
   if (streamsResult.error) {
@@ -70,11 +69,11 @@ async function getDefaultDetails(
 
   return {
     streams: streamsResult.data,
-    meta: {
-      id: metaResult.data.id,
-      name: metaResult.data.name,
-      selectIndex: 0,
-    },
+    meta: metaResult.data.map((artist) => ({
+      id: artist.id,
+      name: artist.name,
+      selectIndex: artistIds.indexOf(artist.id),
+    })),
   };
 }
 

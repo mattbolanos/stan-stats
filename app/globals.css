@@ -129,3 +129,29 @@
 .color-site-primary {
   color: hsl(var(--site-primary));
 }
+
+@keyframes ellipsis {
+  0% {
+    content: "";
+  }
+  25% {
+    content: ".";
+  }
+  50% {
+    content: "..";
+  }
+  75% {
+    content: "...";
+  }
+  100% {
+    content: "";
+  }
+}
+
+.loading-text::after {
+  content: "";
+  display: inline-block;
+  animation: ellipsis 1s steps(4, end) infinite;
+  width: 1.5em;
+  text-align: left;
+}

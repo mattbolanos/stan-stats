@@ -64,6 +64,9 @@ export function formatDateRange(startDate: string, endDate: string): string {
   return `${startFormatted} - ${formatDateToMonthYear(end)}`;
 }
 
-export const fallbackDefaultArtist = "1McMsnEElThX1knmY4oliG" as const;
+export const defaultArtists = [
+  "1McMsnEElThX1knmY4oliG", // olivia rodrigo
+  "12GqGscKJx3aE4t07u7eVZ", // peso pluma
+];
 
 export const FAKE_ARTIST_ID = "FAKE";
