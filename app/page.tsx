@@ -53,40 +53,9 @@ async function getDefaultDetails(
 ): Promise<ArtistDetailsResponse> {
   "use server";
 
-  const { streamsResult, metaResult, streamMax } = await queryArtistDetails(
-    supabase,
-    artistIds
-  );
+  const details = await queryArtistDetails(supabase, artistIds);
 
-  if (streamsResult.error) {
-    throw streamsResult.error;
-  }
-
-  if (metaResult.error) {
-    throw metaResult.error;
-  }
-
-  return {
-    streams: streamsResult.data,
-    meta: metaResult.data.map((artist) => ({
-      id: artist.id,
-      name: artist.name,
-      image: artist.image,
-      genres: artist.genres,
-      selectIndex: artistIds.indexOf(artist.id),
-      maxListens: streamMax.data.find((stream) => stream.id === artist.id)
-        ?.max_listens,
-      minListens: streamMax.data.find((stream) => stream.id === artist.id)
-        ?.min_listens,
-      currentListens: streamsResult.data.filter(
-        (stream) =>
-          stream.id === artist.id &&
-          stream.updated_at ===
-            streamMax.data.find((stream) => stream.id === artist.id)
-              ?.max_updated_at
-      )[0]?.monthly_listeners,
-    })),
-  };
+  return details;
 }
 
 export default async function Home() {

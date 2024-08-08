@@ -15,9 +15,8 @@ export interface SelectedArtist {
   selectIndex: number;
   image: string;
   genres: string;
-  maxListens: number;
-  minListens: number;
   currentListens: number;
+  prevListens: number;
 }
 
 export interface ArtistDetailsResponse {

@@ -89,13 +89,20 @@ export async function fetchArtistDetails(
   return response.json();
 }
 
+const getPreviousDay = (dateString: string) => {
+  const date = new Date(dateString);
+  date.setDate(date.getDate() - 1);
+  return date.toISOString().split("T")[0]; // Format as YYYY-MM-DD
+};
+
 export async function queryArtistDetails(
   supabase: SupabaseClient<any, "public", any>,
-  artistIds: string | string[]
+  artistIds: string | string[],
+  selectIndex?: number
 ) {
   const queryIds = Array.isArray(artistIds) ? artistIds : [artistIds];
 
-  const [streamsResult, metaResult, streamMax] = await Promise.all([
+  const [streamsResult, metaResult, maxResult] = await Promise.all([
     supabase
       .from("spotify_artists_streams")
       .select("id, monthly_listeners, updated_at")
@@ -107,12 +114,7 @@ export async function queryArtistDetails(
       .in("id", queryIds),
     supabase
       .from("spotify_artists_streams")
-      .select(
-        `id, 
-        max_listens:monthly_listeners.max(), 
-        min_listens:monthly_listeners.min(),
-        max_updated_at:updated_at.max()`
-      )
+      .select("id, max_update:updated_at.max()")
       .in("id", queryIds),
   ]);
 
@@ -124,11 +126,38 @@ export async function queryArtistDetails(
     throw metaResult.error;
   }
 
-  if (streamMax.error) {
-    throw streamMax.error;
+  if (maxResult.error) {
+    throw maxResult.error;
   }
 
-  return { streamsResult, metaResult, streamMax };
+  return {
+    streams: streamsResult.data,
+    meta: metaResult.data.map((artist) => ({
+      id: artist.id,
+      name: artist.name,
+      image: artist.image,
+      genres: artist.genres,
+      selectIndex: selectIndex ?? artistIds.indexOf(artist.id),
+      currentListens: streamsResult.data.find(
+        (stream) =>
+          stream.id === artist.id &&
+          stream.updated_at ===
+            maxResult.data.find((stream) => stream.id === artist.id)?.max_update
+      )?.monthly_listeners,
+      prevListens: streamsResult.data.find((stream) => {
+        const maxUpdateForArtist = maxResult.data.find(
+          (max) => max.id === artist.id
+        )?.max_update;
+        if (!maxUpdateForArtist) {
+          return false;
+        }
+
+        const previousDay = getPreviousDay(maxUpdateForArtist);
+
+        return stream.id === artist.id && stream.updated_at === previousDay;
+      })?.monthly_listeners,
+    })),
+  };
 }
 
 export function cleanGenres(genreString: string): string {

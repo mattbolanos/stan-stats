@@ -132,7 +132,20 @@ export function ExploreChart({
               tickMargin={5}
               ticks={yAxisTicks}
             />
-            <ChartTooltip content={<ChartTooltipContent indicator="dot" />} />
+            <ChartTooltip
+              content={
+                <ChartTooltipContent
+                  indicator="dot"
+                  labelFormatter={(value) =>
+                    new Date(value).toLocaleString("default", {
+                      month: "short",
+                      year: "numeric",
+                      day: "numeric",
+                    })
+                  }
+                />
+              }
+            />
             {uniqueIds.map((id) => (
               <Line
                 key={id}

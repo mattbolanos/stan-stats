@@ -9,7 +9,8 @@ import {
   CardTitle,
 } from "./ui/card";
 import { useExplore } from "@/contexts/ExploreContext";
-import { cleanGenres } from "@/lib/utils";
+import { cleanGenres, formatMonthlyListeners } from "@/lib/utils";
+import { TrendingDown, TrendingUp } from "lucide-react";
 
 export function ExploreCard() {
   const { selectedArtists } = useExplore();
@@ -37,19 +38,29 @@ export function ExploreCard() {
                 </div>
               </div>
             </CardHeader>
-            <CardContent className="px-5 pb-2">
+            <CardContent className="px-5 pb-2 space-y-0.5">
               <p className="text-sm text-gray-400">Current Monthly Listeners</p>
               <p className="text-lg font-bold">
-                {artist.currentListens.toLocaleString()}
+                {artist.currentListens?.toLocaleString()}
               </p>
-              <p className="text-xs text-green-500">
-                +
-                {(
-                  ((artist.currentListens - artist.minListens) /
-                    artist.minListens) *
-                  100
-                ).toFixed(2)}
-                % from lowest
+              <p className="flex items-center space-x-1.5 text-xs text-gray-400">
+                <p
+                  className={`text-xs  flex items-center gap-1 ${
+                    artist.currentListens - artist.prevListens >= 0
+                      ? "text-green-500"
+                      : "text-red-500"
+                  }`}
+                >
+                  {artist.currentListens - artist.prevListens >= 0 ? (
+                    <TrendingUp size={16} />
+                  ) : (
+                    <TrendingDown size={16} />
+                  )}
+                  {formatMonthlyListeners(
+                    Math.abs(artist.currentListens - artist.prevListens)
+                  )}
+                </p>
+                <p>Daily +/-</p>
               </p>
             </CardContent>
           </Card>
