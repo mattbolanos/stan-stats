@@ -18,7 +18,7 @@ async function getDefaultArtistSample(
   const { data, error } = await supabase
     .from("spotify_artists_meta")
     .select("id, name")
-    .order("popularity", { ascending: false })
+    .order("artist_rank", { ascending: true })
     .range(0, size);
 
   if (error) {
@@ -79,8 +79,15 @@ export default async function Home() {
           </p>
           <p className="text-md flex items-center md:justify-start justify-center">
             <ClockIcon className="w-5 h-5 mr-1.5 opacity-50 shrink-0" />
-            Data available since{" "}
+            Data available{" "}
             {new Date(dateRange.min).toLocaleString("default", {
+              month: "long",
+              year: "numeric",
+              day: "2-digit",
+              timeZone: "UTC",
+            })}{" "}
+            -{" "}
+            {new Date(dateRange.max).toLocaleString("default", {
               month: "long",
               year: "numeric",
               day: "2-digit",

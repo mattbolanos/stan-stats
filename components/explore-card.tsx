@@ -39,29 +39,40 @@ export function ExploreCard() {
               </div>
             </CardHeader>
             <CardContent className="px-5 pb-2 space-y-0.5">
-              <p className="text-sm text-gray-400">Current Monthly Listeners</p>
-              <p className="text-lg font-bold">
-                {artist.currentListens?.toLocaleString()}
-              </p>
-              <p className="flex items-center space-x-1.5 text-xs text-gray-400">
-                <p
-                  className={`text-xs  flex items-center gap-1 ${
-                    artist.currentListens - artist.prevListens >= 0
-                      ? "text-green-500"
-                      : "text-red-500"
-                  }`}
-                >
-                  {artist.currentListens - artist.prevListens >= 0 ? (
-                    <TrendingUp size={16} />
-                  ) : (
-                    <TrendingDown size={16} />
-                  )}
-                  {formatMonthlyListeners(
-                    Math.abs(artist.currentListens - artist.prevListens)
-                  )}
-                </p>
-                <p>Daily +/-</p>
-              </p>
+              <div className="flex justify-start items-start gap-10">
+                <div>
+                  <p className="text-sm text-gray-400">Artist Rank</p>
+                  <div>#{artist.rank}</div>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-400">
+                    Current Monthly Listeners
+                  </p>
+
+                  <div className="flex items-center space-x-1.5 text-xs">
+                    <p className="text-lg font-bold mr-1">
+                      {artist.currentListens?.toLocaleString()}
+                    </p>
+                    <p
+                      className={`text-xs  flex items-center gap-1 ${
+                        artist.currentListens - artist.prevListens >= 0
+                          ? "text-green-500"
+                          : "text-red-500"
+                      }`}
+                    >
+                      {artist.currentListens - artist.prevListens >= 0 ? (
+                        <TrendingUp size={16} />
+                      ) : (
+                        <TrendingDown size={16} />
+                      )}
+                      {formatMonthlyListeners(
+                        Math.abs(artist.currentListens - artist.prevListens)
+                      )}
+                    </p>
+                    <p className="text-gray-400">Daily +/-</p>
+                  </div>
+                </div>
+              </div>
             </CardContent>
           </Card>
         ))}

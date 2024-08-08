@@ -18,7 +18,11 @@ import {
   ChartLegendContent,
 } from "@/components/ui/chart";
 import { useExplore } from "@/contexts/ExploreContext";
-import { formatDateRange, formatMonthlyListeners } from "@/lib/utils";
+import {
+  formatChartDate,
+  formatDateRange,
+  formatMonthlyListeners,
+} from "@/lib/utils";
 import Image from "next/image";
 
 export function ExploreChart({
@@ -79,9 +83,14 @@ export function ExploreChart({
   );
 
   const xAxisTicks = Array.from(
-    { length: 8 },
-    (_, index) => chartData[xAxisStep * index]?.date
-  );
+    { length: 7 }, // Changed from 8 to 7
+    (_, index) => {
+      const reverseIndex = 6 - index; // 6, 5, 4, ..., 0
+      return chartData[
+        Math.max(chartData.length - 1 - xAxisStep * reverseIndex, 0)
+      ]?.date;
+    }
+  ).concat(chartData[chartData.length - 1]?.date);
 
   return (
     <Card className="w-11/12 sm:mt-5 mt-10 mb-10">
@@ -116,13 +125,7 @@ export function ExploreChart({
               padding={{ left: 10, right: 25 }}
               angle={-30}
               ticks={xAxisTicks}
-              tickFormatter={(value) =>
-                new Date(value).toLocaleString("default", {
-                  month: "short",
-                  year: "numeric",
-                  day: "numeric",
-                })
-              }
+              tickFormatter={formatChartDate}
             />
             <YAxis
               tickLine={false}
@@ -136,13 +139,7 @@ export function ExploreChart({
               content={
                 <ChartTooltipContent
                   indicator="dot"
-                  labelFormatter={(value) =>
-                    new Date(value).toLocaleString("default", {
-                      month: "short",
-                      year: "numeric",
-                      day: "numeric",
-                    })
-                  }
+                  labelFormatter={formatChartDate}
                 />
               }
             />

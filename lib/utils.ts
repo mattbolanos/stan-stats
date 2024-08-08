@@ -2,6 +2,7 @@ import { ExploreState } from "@/contexts/types";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { ArtistDetailsResponse } from "./types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -44,7 +45,10 @@ function formatDateToMonthYear(
   date: Date,
   includeYear: boolean = true
 ): string {
-  const options: Intl.DateTimeFormatOptions = { month: "long" };
+  const options: Intl.DateTimeFormatOptions = {
+    month: "long",
+    timeZone: "UTC",
+  };
 
   if (includeYear) {
     options.year = "numeric";
@@ -99,7 +103,7 @@ export async function queryArtistDetails(
   supabase: SupabaseClient<any, "public", any>,
   artistIds: string | string[],
   selectIndex?: number
-) {
+): Promise<ArtistDetailsResponse> {
   const queryIds = Array.isArray(artistIds) ? artistIds : [artistIds];
 
   const [streamsResult, metaResult, maxResult] = await Promise.all([
@@ -110,7 +114,7 @@ export async function queryArtistDetails(
       .order("updated_at", { ascending: true }),
     supabase
       .from("spotify_artists_meta")
-      .select("id, name, image, genres")
+      .select("id, name, image, genres, artist_rank")
       .in("id", queryIds),
     supabase
       .from("spotify_artists_streams")
@@ -156,6 +160,7 @@ export async function queryArtistDetails(
 
         return stream.id === artist.id && stream.updated_at === previousDay;
       })?.monthly_listeners,
+      rank: artist.artist_rank,
     })),
   };
 }
@@ -179,4 +184,13 @@ export function cleanGenres(genreString: string): string {
         .join(" ")
     )
     .join(", ");
+}
+
+export function formatChartDate(value: any) {
+  return new Date(value).toLocaleString("en-US", {
+    month: "short",
+    timeZone: "UTC",
+    year: "numeric",
+    day: "numeric",
+  });
 }

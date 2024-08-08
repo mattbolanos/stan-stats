@@ -17,6 +17,7 @@ export interface SelectedArtist {
   genres: string;
   currentListens: number;
   prevListens: number;
+  rank: number;
 }
 
 export interface ArtistDetailsResponse {

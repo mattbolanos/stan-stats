@@ -20,7 +20,7 @@ export async function GET(request: Request): Promise<Response> {
     const { data, error } = await supabase
       .from("spotify_artists_meta")
       .select("id, name")
-      .order("popularity", { ascending: false })
+      .order("artist_rank", { ascending: true })
       .range(0, size);
 
     if (error) {
@@ -34,7 +34,7 @@ export async function GET(request: Request): Promise<Response> {
     .from("spotify_artists_meta")
     .select("id, name")
     .ilike("slug", `%${cleanArtistName(query)}%`)
-    .order("popularity", { ascending: false })
+    .order("artist_rank", { ascending: true })
     .range(0, size);
 
   if (error) {
