@@ -1,4 +1,5 @@
 import { ExploreState } from "@/contexts/types";
+import { SupabaseClient } from "@supabase/supabase-js";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -86,4 +87,67 @@ export async function fetchArtistDetails(
     return [];
   }
   return response.json();
+}
+
+export async function queryArtistDetails(
+  supabase: SupabaseClient<any, "public", any>,
+  artistIds: string | string[]
+) {
+  const queryIds = Array.isArray(artistIds) ? artistIds : [artistIds];
+
+  const [streamsResult, metaResult, streamMax] = await Promise.all([
+    supabase
+      .from("spotify_artists_streams")
+      .select("id, monthly_listeners, updated_at")
+      .in("id", queryIds)
+      .order("updated_at", { ascending: true }),
+    supabase
+      .from("spotify_artists_meta")
+      .select("id, name, image, genres")
+      .in("id", queryIds),
+    supabase
+      .from("spotify_artists_streams")
+      .select(
+        `id, 
+        max_listens:monthly_listeners.max(), 
+        min_listens:monthly_listeners.min(),
+        max_updated_at:updated_at.max()`
+      )
+      .in("id", queryIds),
+  ]);
+
+  if (streamsResult.error) {
+    throw streamsResult.error;
+  }
+
+  if (metaResult.error) {
+    throw metaResult.error;
+  }
+
+  if (streamMax.error) {
+    throw streamMax.error;
+  }
+
+  return { streamsResult, metaResult, streamMax };
+}
+
+export function cleanGenres(genreString: string): string {
+  if (!genreString) {
+    return "";
+  }
+
+  // Split the string into an array and take the first 3 elements
+  const genres = genreString.split(",").slice(0, 3);
+
+  // Convert each genre to title case
+  return genres
+    .map((genre) =>
+      genre
+        .split(" ")
+        .map(
+          (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+        )
+        .join(" ")
+    )
+    .join(", ");
 }

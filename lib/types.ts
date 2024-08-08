@@ -13,6 +13,11 @@ export interface SelectedArtist {
   id: string;
   name: string;
   selectIndex: number;
+  image: string;
+  genres: string;
+  maxListens: number;
+  minListens: number;
+  currentListens: number;
 }
 
 export interface ArtistDetailsResponse {

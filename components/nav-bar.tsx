@@ -31,9 +31,9 @@ function infoPopoverContent(totalArtists: number) {
         Why Can&apos;t I Find my Favorite Artist?
       </h2>
       <p className="text-sm">
-        We use Spotify&apos;s API Search endpoint to find popular artists. For
-        each search, we include the top 1000 most popular artists that Spotify
-        suggests.
+        We use Spotify&apos;s API Search endpoint with a myriad of queries to
+        find a wide breadth of artists. An artist must have 5k+ followers to be
+        included in our database.
       </p>
       <span className="text-sm">
         Right now, our database includes{" "}
@@ -55,7 +55,7 @@ export default async function NavBar() {
           <Image src="/spotify-color.svg" alt="logo" width={24} height={24} />
           <span className="font-bold">Chart.ml</span>
         </div>
-        <nav className="flex items-center gap-4 text-sm lg:gap-6 md:flex hidden">
+        <nav className="items-center gap-4 text-sm lg:gap-6 md:flex hidden">
           <Link href="/" legacyBehavior passHref>
             Explore
           </Link>

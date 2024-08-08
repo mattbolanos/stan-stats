@@ -1,8 +1,13 @@
 import ExploreArtistParentSelect from "@/components/explore-artist-parent-select";
+import { ExploreCard } from "@/components/explore-card";
 import { ExploreChart } from "@/components/explore-chart";
 import { supabase } from "@/lib/supabase";
 import { ArtistDetailsResponse, ArtistSample } from "@/lib/types";
-import { DEFAULT_ARTIST_SAMPLE_SIZE, defaultArtists } from "@/lib/utils";
+import {
+  DEFAULT_ARTIST_SAMPLE_SIZE,
+  defaultArtists,
+  queryArtistDetails,
+} from "@/lib/utils";
 import { ClockIcon } from "@radix-ui/react-icons";
 
 async function getDefaultArtistSample(
@@ -48,16 +53,10 @@ async function getDefaultDetails(
 ): Promise<ArtistDetailsResponse> {
   "use server";
 
-  const [streamsResult, metaResult] = await Promise.all([
-    supabase
-      .from("spotify_artists_streams")
-      .select("id, monthly_listeners, updated_at")
-      .in("id", artistIds),
-    supabase
-      .from("spotify_artists_meta")
-      .select("id, name")
-      .in("id", artistIds),
-  ]);
+  const { streamsResult, metaResult, streamMax } = await queryArtistDetails(
+    supabase,
+    artistIds
+  );
 
   if (streamsResult.error) {
     throw streamsResult.error;
@@ -72,7 +71,20 @@ async function getDefaultDetails(
     meta: metaResult.data.map((artist) => ({
       id: artist.id,
       name: artist.name,
+      image: artist.image,
+      genres: artist.genres,
       selectIndex: artistIds.indexOf(artist.id),
+      maxListens: streamMax.data.find((stream) => stream.id === artist.id)
+        ?.max_listens,
+      minListens: streamMax.data.find((stream) => stream.id === artist.id)
+        ?.min_listens,
+      currentListens: streamsResult.data.filter(
+        (stream) =>
+          stream.id === artist.id &&
+          stream.updated_at ===
+            streamMax.data.find((stream) => stream.id === artist.id)
+              ?.max_updated_at
+      )[0]?.monthly_listeners,
     })),
   };
 }
@@ -107,12 +119,21 @@ export default async function Home() {
             })}
           </p>
         </div>
-        <ExploreArtistParentSelect
-          defaultArtistSample={defaultArtistSample}
-          defaultDetails={defaultDetails}
-        />
       </div>
-      <ExploreChart dateRange={dateRange} />
+      <div className="flex">
+        <div className="flex flex-col w-3/5">
+          <div className="max-w-2xl">
+            <ExploreArtistParentSelect
+              defaultArtistSample={defaultArtistSample}
+              defaultDetails={defaultDetails}
+            />
+          </div>
+          <ExploreChart dateRange={dateRange} />
+        </div>
+        <div className="w-fit">
+          <ExploreCard />
+        </div>
+      </div>
     </main>
   );
 }

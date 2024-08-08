@@ -84,7 +84,7 @@ export function ExploreChart({
   );
 
   return (
-    <Card className="min-w-80 max-w-3xl sm:mt-5 mt-10 mb-10">
+    <Card className="w-11/12 sm:mt-5 mt-10 mb-10">
       <CardHeader>
         <CardTitle className="flex items-center gap-1.5">
           <Image
