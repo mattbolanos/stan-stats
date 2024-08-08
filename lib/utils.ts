@@ -114,7 +114,7 @@ export async function queryArtistDetails(
       .order("updated_at", { ascending: true }),
     supabase
       .from("spotify_artists_meta")
-      .select("id, name, image, genres, artist_rank")
+      .select("id, name, image, genres, artist_rank, prev_artist_rank")
       .in("id", queryIds),
     supabase
       .from("spotify_artists_streams")
@@ -161,6 +161,7 @@ export async function queryArtistDetails(
         return stream.id === artist.id && stream.updated_at === previousDay;
       })?.monthly_listeners,
       rank: artist.artist_rank,
+      prevRank: artist.prev_artist_rank,
     })),
   };
 }

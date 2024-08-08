@@ -18,6 +18,7 @@ export interface SelectedArtist {
   currentListens: number;
   prevListens: number;
   rank: number;
+  prevRank: number;
 }
 
 export interface ArtistDetailsResponse {
