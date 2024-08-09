@@ -47,9 +47,15 @@ export function ExploreCard() {
       {selectedArtists
         .filter((artist) => artist.id)
         .map((artist) => (
-          <Card className="w-96" key={artist.selectIndex}>
+          <Card
+            className="w-96"
+            key={artist.selectIndex}
+            style={{
+              border: `2px solid hsl(var(--chart-${artist.selectIndex + 1}))`,
+            }}
+          >
             <CardHeader className="mb-3 px-5">
-              <div className="flex items-start space-x-3">
+              <div className="flex items-start space-x-1.5">
                 <Image
                   src={artist.image}
                   alt={artist.name}
@@ -66,10 +72,10 @@ export function ExploreCard() {
               </div>
             </CardHeader>
             <CardContent className="px-5 pb-2 space-y-0.5">
-              <div className="flex justify-start items-start gap-5">
+              <div className="flex justify-start items-start gap-7">
                 <div>
                   <p className="text-sm text-gray-400">Artist Rank</p>
-                  <div className="flex items-center space-x-3 text-xs">
+                  <div className="flex items-center space-x-2 text-xs">
                     <p className="text-lg font-bold">#{artist.rank}</p>
 
                     {artist.prevRank &&
@@ -78,7 +84,7 @@ export function ExploreCard() {
                 </div>
                 <div>
                   <p className="text-sm text-gray-400">Monthly Listeners</p>
-                  <div className="flex items-center space-x-3 text-xs">
+                  <div className="flex items-center space-x-2 text-xs">
                     <p className="text-lg font-bold">
                       {artist.currentListens?.toLocaleString()}
                     </p>
