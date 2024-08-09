@@ -22,12 +22,13 @@ export function formatTotalArtists(totalArtists: number) {
 export const DEFAULT_ARTIST_SAMPLE_SIZE = 100 as const;
 
 export function formatMonthlyListeners(value: number): string {
-  if (value >= 1_000_000) {
-    return `${(value / 1_000_000).toFixed(1)}M`;
-  } else if (value >= 1_000) {
-    return `${(value / 1_000).toFixed(1)}K`;
+  let formattedValue = Math.abs(value);
+  if (formattedValue >= 1_000_000) {
+    return `${(formattedValue / 1_000_000).toFixed(1)}M`;
+  } else if (formattedValue >= 1_000) {
+    return `${(formattedValue / 1_000).toFixed(1)}K`;
   }
-  return String(value);
+  return String(formattedValue);
 }
 
 export function getFirstAvailableIndex(

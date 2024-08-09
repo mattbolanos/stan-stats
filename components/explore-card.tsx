@@ -10,21 +10,30 @@ import {
 } from "./ui/card";
 import { useExplore } from "@/contexts/ExploreContext";
 import { cleanGenres, formatMonthlyListeners } from "@/lib/utils";
-import { TrendingDown, TrendingUp } from "lucide-react";
+import { MoveHorizontal, TrendingDown, TrendingUp } from "lucide-react";
 
-const changeText = (change: number) => {
+const changeText = (change: number, formatFn?: any) => {
+  let formattedValue = formatFn ? formatFn(change) : change;
+
   if (change > 0) {
     return (
       <p className="text-xs flex items-center gap-1 text-green-500">
         <TrendingUp size={16} />
-        {change}
+        {formattedValue}
+      </p>
+    );
+  } else if (change < 0) {
+    return (
+      <p className="text-xs flex items-center gap-1 text-red-500">
+        <TrendingDown size={16} />
+        {formattedValue}
       </p>
     );
   } else {
     return (
-      <p className="text-xs flex items-center gap-1 text-red-500">
-        <TrendingDown size={16} />
-        {change}
+      <p className="text-xs flex items-center gap-1">
+        <MoveHorizontal size={16} />
+        {formattedValue}
       </p>
     );
   }
@@ -60,62 +69,23 @@ export function ExploreCard() {
               <div className="flex justify-start items-start gap-5">
                 <div>
                   <p className="text-sm text-gray-400">Artist Rank</p>
-                  <div className="flex items-center space-x-1.5 text-xs">
-                    <p className="text-lg font-bold mr-1">#{artist.rank}</p>
+                  <div className="flex items-center space-x-3 text-xs">
+                    <p className="text-lg font-bold">#{artist.rank}</p>
 
-                    {!artist.prevRank &&
-                      (artist.prevRank - artist.rank >= 0 ? (
-                        <p className="text-xs flex items-center gap-1 text-green-500">
-                          <TrendingUp size={16} />
-                          {artist.prevRank - artist.rank}
-                        </p>
-                      ) : (
-                        <p className="text-xs  flex items-center gap-1 text-red-500">
-                          <TrendingDown size={16} />
-                          {artist.rank - artist.prevRank}
-                        </p>
-                      ))}
-                    <p
-                      className={`text-xs flex items-center gap-1 ${
-                        artist.currentListens - artist.prevListens >= 0
-                          ? "text-green-500"
-                          : "text-red-500"
-                      }`}
-                    >
-                      {artist.currentListens - artist.prevListens >= 0 ? (
-                        <TrendingUp size={16} />
-                      ) : (
-                        <TrendingDown size={16} />
-                      )}
-                      {formatMonthlyListeners(
-                        Math.abs(artist.currentListens - artist.prevListens)
-                      )}
-                    </p>
+                    {artist.prevRank &&
+                      changeText(artist.prevRank - artist.rank, Math.abs)}
                   </div>
                 </div>
                 <div>
                   <p className="text-sm text-gray-400">Monthly Listeners</p>
-                  <div className="flex items-center space-x-1.5 text-xs">
-                    <p className="text-lg font-bold mr-1">
+                  <div className="flex items-center space-x-3 text-xs">
+                    <p className="text-lg font-bold">
                       {artist.currentListens?.toLocaleString()}
                     </p>
-                    <p
-                      className={`text-xs flex items-center gap-1 ${
-                        artist.currentListens - artist.prevListens >= 0
-                          ? "text-green-500"
-                          : "text-red-500"
-                      }`}
-                    >
-                      {artist.currentListens - artist.prevListens >= 0 ? (
-                        <TrendingUp size={16} />
-                      ) : (
-                        <TrendingDown size={16} />
-                      )}
-                      {formatMonthlyListeners(
-                        Math.abs(artist.currentListens - artist.prevListens)
-                      )}
-                    </p>
-                    <p className="text-gray-400">Daily +/-</p>
+                    {changeText(
+                      artist.currentListens - artist.prevListens,
+                      formatMonthlyListeners
+                    )}
                   </div>
                 </div>
               </div>
