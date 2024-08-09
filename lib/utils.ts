@@ -3,6 +3,7 @@ import { SupabaseClient } from "@supabase/supabase-js";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { ArtistDetailsResponse } from "./types";
+import { titleCase } from "title-case";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -175,17 +176,8 @@ export function cleanGenres(genreString: string): string {
   // Split the string into an array and take the first 3 elements
   const genres = genreString.split(",").slice(0, 3);
 
-  // Convert each genre to title case
-  return genres
-    .map((genre) =>
-      genre
-        .split(" ")
-        .map(
-          (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-        )
-        .join(" ")
-    )
-    .join(", ");
+  // Use title-case library for each genre
+  return genres.map((genre) => titleCase(genre.trim())).join(", ");
 }
 
 export function formatChartDate(value: any) {
