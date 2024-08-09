@@ -197,3 +197,7 @@ export function formatChartDate(value: any) {
     day: "numeric",
   });
 }
+
+export function createSpotifyURL(artistId: string) {
+  return `https://open.spotify.com/artist/${artistId}`;
+}

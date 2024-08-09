@@ -105,7 +105,7 @@ export function ExploreChart({
           />
           Monthly Listeners
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="text-muted-foreground">
           {formatDateRange(dateRange.min, dateRange.max)}
         </CardDescription>
       </CardHeader>

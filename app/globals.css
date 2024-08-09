@@ -43,6 +43,8 @@
     --chart-5: 27 87% 67%;
 
     --site-primary: 141 73% 42%;
+    --twitter: 203 89% 53%;
+    --instagram: 340 75% 54%;
   }
 
   .dark {
@@ -154,12 +156,4 @@
   animation: ellipsis 1s steps(4, end) infinite;
   width: 1.5em;
   text-align: left;
-}
-
-.instagram-logo:hover {
-  color: #e4405f !important;
-}
-
-.twitter-logo:hover {
-  color: #1da1f2 !important;
 }
