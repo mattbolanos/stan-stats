@@ -19,6 +19,10 @@ export interface SelectedArtist {
   prevListens: number;
   rank: number;
   prevRank: number;
+  singlesCount: number;
+  albumsCount: number;
+  urlTwitter: string;
+  urlInstagram: string;
 }
 
 export interface ArtistDetailsResponse {

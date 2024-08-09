@@ -155,3 +155,11 @@
   width: 1.5em;
   text-align: left;
 }
+
+.instagram-logo:hover {
+  color: #e4405f !important;
+}
+
+.twitter-logo:hover {
+  color: #1da1f2 !important;
+}
