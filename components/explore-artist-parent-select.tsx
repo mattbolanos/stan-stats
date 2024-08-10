@@ -51,7 +51,7 @@ export default function ExploreArtistParentSelect({
               selectIndex={artist.selectIndex}
             />
           ))}
-          {selectedArtists.length < 5 && (
+          {selectedArtists.length < 3 && (
             <Button
               variant="secondary"
               className="w-[100px] justify-center"

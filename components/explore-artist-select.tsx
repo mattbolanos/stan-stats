@@ -1,7 +1,13 @@
 "use client";
 
 import { ArtistSample } from "@/lib/types";
-import { SetStateAction, useCallback, useRef, useState } from "react";
+import {
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -38,6 +44,7 @@ export default function ExploreArtistSelect({
   const [listSize, setListSize] = useState<number>(DEFAULT_ARTIST_SAMPLE_SIZE);
   const [hasMore, setHasMore] = useState(true);
   const listRef = useRef<HTMLDivElement | null>(null);
+  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const scrollToTop = () => {
     if (listRef.current) {
@@ -85,28 +92,53 @@ export default function ExploreArtistSelect({
     }
   }, [listSize, search, loading, hasMore, artists.length]);
 
-  const handleSearch = async (value: string) => {
-    if (!value) {
-      setArtists(defaultArtistSample);
-      return;
-    }
-    setLoading(true);
-    setListSize(DEFAULT_ARTIST_SAMPLE_SIZE);
-    setHasMore(true);
-    scrollToTop();
-    try {
-      const response = await fetch(`/api/artists/search?query=${value}`);
-      if (!response.ok) {
-        return [];
+  const handleSearch = useCallback(
+    async (value: string) => {
+      if (!value) {
+        setArtists(defaultArtistSample);
+        setLoading(false);
+        return;
       }
-      const data: SetStateAction<ArtistSample[]> = await response.json();
-      setArtists(data);
-    } catch (err) {
-      setArtists([]);
-    } finally {
-      setLoading(false);
+      try {
+        const response = await fetch(`/api/artists/search?query=${value}`);
+        if (!response.ok) {
+          return [];
+        }
+        const data: SetStateAction<ArtistSample[]> = await response.json();
+        setArtists(data);
+      } catch (err) {
+        setArtists([]);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [defaultArtistSample]
+  );
+
+  useEffect(() => {
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
     }
-  };
+
+    if (search) {
+      setLoading(true);
+      setListSize(DEFAULT_ARTIST_SAMPLE_SIZE);
+      setHasMore(true);
+      scrollToTop();
+      searchTimeoutRef.current = setTimeout(() => {
+        handleSearch(search);
+      }, 250);
+    } else {
+      setLoading(false);
+      setArtists(defaultArtistSample);
+    }
+
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+      }
+    };
+  }, [search, handleSearch, defaultArtistSample]);
 
   const handleSelect = (value: string) => {
     setValue(value);
@@ -204,7 +236,6 @@ export default function ExploreArtistSelect({
             value={search}
             onValueChange={(value) => {
               setSearch(value);
-              handleSearch(value);
             }}
             endContent={loading && <Spinner />}
           />

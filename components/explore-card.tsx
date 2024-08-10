@@ -19,30 +19,26 @@ import { InstagramLogoIcon, TwitterLogoIcon } from "@radix-ui/react-icons";
 import { Button } from "./ui/button";
 
 const changeText = (change: number, formatFn?: any) => {
-  let formattedValue = formatFn ? formatFn(change) : change;
+  const formattedValue = formatFn ? formatFn(change) : change.toString();
 
+  let Icon, color;
   if (change > 0) {
-    return (
-      <p className="text-xs flex items-center gap-1 text-green-500">
-        <TrendingUp size={16} />
-        {formattedValue}
-      </p>
-    );
+    Icon = TrendingUp;
+    color = "text-green-500";
   } else if (change < 0) {
-    return (
-      <p className="text-xs flex items-center gap-1 text-red-500">
-        <TrendingDown size={16} />
-        {formattedValue}
-      </p>
-    );
+    Icon = TrendingDown;
+    color = "text-red-500";
   } else {
-    return (
-      <p className="text-xs flex items-center gap-1">
-        <MoveHorizontal size={16} />
-        {formattedValue}
-      </p>
-    );
+    Icon = MoveHorizontal;
+    color = "";
   }
+
+  return (
+    <p className={`text-sm flex items-center gap-1 ${color}`}>
+      <Icon size={18} />
+      {formattedValue}
+    </p>
+  );
 };
 
 const socialButton = (url: string, Icon: React.ReactNode) => (
@@ -78,9 +74,9 @@ export function ExploreCard() {
                   className="min-w-24 min-h-24 max-w-24 max-h-24 rounded-md"
                 />
                 <div className="flex flex-col gap-1">
-                  <div className="flex items-center">
-                    <CardTitle>{artist.name}</CardTitle>
-                    <div className="flex items-center ml-1 gap-0.5">
+                  <div className="flex items-center flex-wrap justify-start">
+                    <CardTitle className="pr-1">{artist.name}</CardTitle>
+                    <div className="flex items-center gap-0.5">
                       {socialButton(
                         createSpotifyURL(artist.id),
                         <Image
@@ -144,6 +140,7 @@ export function ExploreCard() {
                     <p className="text-lg font-bold">#{artist.rank}</p>
 
                     {artist.prevRank &&
+                      artist.rank &&
                       changeText(artist.prevRank - artist.rank, Math.abs)}
                   </div>
                 </div>
@@ -151,12 +148,16 @@ export function ExploreCard() {
                   <p className="text-sm text-gray-400">Monthly Listeners</p>
                   <div className="flex items-center space-x-2 text-xs">
                     <p className="text-lg font-bold">
-                      {artist.currentListens?.toLocaleString()}
+                      {artist.currentListens
+                        ? artist.currentListens.toLocaleString()
+                        : "N/A"}
                     </p>
-                    {changeText(
-                      artist.currentListens - artist.prevListens,
-                      formatMonthlyListeners
-                    )}
+                    {artist.currentListens &&
+                      artist.prevListens &&
+                      changeText(
+                        artist.currentListens - artist.prevListens,
+                        formatMonthlyListeners
+                      )}
                   </div>
                 </div>
               </div>
