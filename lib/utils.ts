@@ -126,7 +126,8 @@ export async function queryArtistDetails(
     supabase
       .from("spotify_artists_streams")
       .select("id, max_update:updated_at.max()")
-      .in("id", queryIds),
+      .in("id", queryIds)
+      .not("monthly_listeners", "is", null)
   ]);
 
   if (streamsResult.error) {
