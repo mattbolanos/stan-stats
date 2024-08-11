@@ -26,6 +26,7 @@ import { CaretSortIcon, Cross2Icon } from "@radix-ui/react-icons";
 import { useExploreDispatch, useExplore } from "@/contexts/ExploreContext";
 import { Spinner } from "./ui/spinner";
 import { DEFAULT_ARTIST_SAMPLE_SIZE, fetchArtistDetails } from "@/lib/utils";
+import { useDebouncedCallback } from "use-debounce";
 
 export default function ExploreArtistSelect({
   defaultArtistSample = [],
@@ -44,7 +45,16 @@ export default function ExploreArtistSelect({
   const [listSize, setListSize] = useState<number>(DEFAULT_ARTIST_SAMPLE_SIZE);
   const [hasMore, setHasMore] = useState(true);
   const listRef = useRef<HTMLDivElement | null>(null);
-  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const debouncedSearch = useDebouncedCallback((value: string) => {
+    if (value) {
+      setListSize(DEFAULT_ARTIST_SAMPLE_SIZE);
+      setHasMore(true);
+      scrollToTop();
+      handleSearch(value);
+    } else {
+      setArtists(defaultArtistSample);
+    }
+  }, 200);
 
   const scrollToTop = () => {
     if (listRef.current) {
@@ -116,29 +126,11 @@ export default function ExploreArtistSelect({
   );
 
   useEffect(() => {
-    if (searchTimeoutRef.current) {
-      clearTimeout(searchTimeoutRef.current);
-    }
-
     if (search) {
       setLoading(true);
-      setListSize(DEFAULT_ARTIST_SAMPLE_SIZE);
-      setHasMore(true);
-      scrollToTop();
-      searchTimeoutRef.current = setTimeout(() => {
-        handleSearch(search);
-      }, 200);
-    } else {
-      setLoading(false);
-      setArtists(defaultArtistSample);
     }
-
-    return () => {
-      if (searchTimeoutRef.current) {
-        clearTimeout(searchTimeoutRef.current);
-      }
-    };
-  }, [search, handleSearch, defaultArtistSample]);
+    debouncedSearch(search);
+  }, [search, debouncedSearch]);
 
   const handleSelect = (value: string) => {
     setValue(value);
