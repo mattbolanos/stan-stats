@@ -127,7 +127,7 @@ export default function ExploreArtistSelect({
       scrollToTop();
       searchTimeoutRef.current = setTimeout(() => {
         handleSearch(search);
-      }, 250);
+      }, 200);
     } else {
       setLoading(false);
       setArtists(defaultArtistSample);
