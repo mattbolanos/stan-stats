@@ -11,15 +11,6 @@ export function cn(...inputs: ClassValue[]) {
 
 export const NAV_BTN_ICON_DIM = 20 as const;
 
-export function formatTotalArtists(totalArtists: number) {
-  if (totalArtists < 1000) {
-    return totalArtists.toString();
-  }
-
-  const roundedNumber = Math.floor(totalArtists / 1000) * 1000;
-  return new Intl.NumberFormat("en-US").format(roundedNumber) + "+";
-}
-
 export const DEFAULT_ARTIST_SAMPLE_SIZE = 100 as const;
 
 export function formatMonthlyListeners(value: number): string {
@@ -127,7 +118,7 @@ export async function queryArtistDetails(
       .from("spotify_artists_streams")
       .select("id, max_update:updated_at.max()")
       .in("id", queryIds)
-      .not("monthly_listeners", "is", null)
+      .not("monthly_listeners", "is", null),
   ]);
 
   if (streamsResult.error) {

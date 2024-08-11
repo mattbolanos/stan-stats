@@ -8,18 +8,9 @@ import {
 } from "@radix-ui/react-icons";
 import { ThemeToggle } from "./theme-provider";
 import { NavButton } from "@/components/ui/button";
-import { formatTotalArtists, NAV_BTN_ICON_DIM } from "@/lib/utils";
-import { supabase } from "@/lib/supabase";
-import { cache } from "react";
+import { NAV_BTN_ICON_DIM } from "@/lib/utils";
 
-const getTotalArtists = cache(async () => {
-  const { count } = await supabase
-    .from("spotify_artists_meta")
-    .select("id", { count: "exact", head: true });
-  return count;
-});
-
-function infoPopoverContent(totalArtists: number) {
+function infoPopoverContent() {
   return (
     <div className="flex flex-col gap-2.5 px-1">
       <h2 className="text-md font-bold">What is this site?</h2>
@@ -35,18 +26,11 @@ function infoPopoverContent(totalArtists: number) {
         find a wide breadth of artists. An artist must have 5k+ followers to be
         included in our database.
       </p>
-      <span className="text-sm">
-        Right now, our database includes{" "}
-        <span className="font-bold">{formatTotalArtists(totalArtists)}</span>{" "}
-        unique artists.
-      </span>
     </div>
   );
 }
 
-export default async function NavBar() {
-  const totalArtists = await getTotalArtists();
-
+export default function NavBar() {
   return (
     <nav className="flex items-center justify-between px-10 h-14 sticky top-0 z-40 backdrop-blur-sm">
       <div className="flex items-center max-w-screen-2xl">
@@ -72,7 +56,7 @@ export default async function NavBar() {
               width={NAV_BTN_ICON_DIM}
             />
           }
-          popoverContent={infoPopoverContent(totalArtists ?? 0)}
+          popoverContent={infoPopoverContent()}
         />
         <NavButton
           icon={

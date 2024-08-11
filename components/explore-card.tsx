@@ -49,19 +49,19 @@ const socialButton = (url: string, Icon: React.ReactNode) => (
   </Button>
 );
 
-export function ExploreCard() {
+export function ExploreCards() {
   const { selectedArtists } = useExplore();
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-5">
       {selectedArtists
         .filter((artist) => artist.id)
         .map((artist) => (
           <Card
-            className="w-96"
             key={artist.selectIndex}
+            className="w-96"
             style={{
-              border: `2px solid hsl(var(--chart-${artist.selectIndex + 1}))`,
+              border: `1.5px solid hsl(var(--chart-${artist.selectIndex + 1}))`,
             }}
           >
             <CardHeader className="mb-3 px-5">
@@ -75,7 +75,7 @@ export function ExploreCard() {
                 />
                 <div className="flex flex-col gap-1">
                   <div className="flex items-center flex-wrap justify-start">
-                    <CardTitle className="pr-1">{artist.name}</CardTitle>
+                    <CardTitle className="pr-1.5">{artist.name}</CardTitle>
                     <div className="flex items-center gap-0.5">
                       {socialButton(
                         createSpotifyURL(artist.id),
