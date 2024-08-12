@@ -73,7 +73,7 @@ export function ExploreChart({
     }, {} as ChartConfig);
   }, [uniqueIds]);
 
-  const yAxisStep = (yAxisMax - yAxisMin) / 4;
+  const yAxisStep = Math.round(((yAxisMax - yAxisMin) / 4) * 1000) / 1000;
   const xAxisStep = Math.ceil(chartData.length / 7);
 
   // Generate an array of 5 evenly spaced tick values
@@ -81,6 +81,9 @@ export function ExploreChart({
     { length: 5 },
     (_, index) => yAxisMin + yAxisStep * index
   );
+
+  const formattedTicks = yAxisTicks.map((tick) => formatMonthlyListeners(tick));
+  const areTicksUnique = new Set(formattedTicks).size === formattedTicks.length;
 
   const xAxisTicks = Array.from(
     { length: 7 }, // Changed from 8 to 7
@@ -131,7 +134,9 @@ export function ExploreChart({
               tickLine={false}
               axisLine={false}
               domain={[yAxisMin, yAxisMax]}
-              tickFormatter={(value) => formatMonthlyListeners(Number(value))}
+              tickFormatter={(value) =>
+                formatMonthlyListeners(Number(value), areTicksUnique ? 1 : 2)
+              }
               tickMargin={5}
               ticks={yAxisTicks}
             />

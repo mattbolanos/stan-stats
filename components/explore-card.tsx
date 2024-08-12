@@ -136,7 +136,7 @@ export function ExploreCards() {
               <div className="flex justify-start items-start gap-9">
                 <div>
                   <p className="text-sm text-gray-400">Artist Rank</p>
-                  <div className="flex items-center space-x-2 text-xs">
+                  <div className="flex items-center space-x-1.5 text-xs">
                     <p className="text-lg font-bold">#{artist.rank}</p>
 
                     {artist.prevRank &&
@@ -146,7 +146,7 @@ export function ExploreCards() {
                 </div>
                 <div>
                   <p className="text-sm text-gray-400">Monthly Listeners</p>
-                  <div className="flex items-center space-x-2 text-xs">
+                  <div className="flex items-center space-x-1.5 text-xs">
                     <p className="text-lg font-bold">
                       {artist.currentListens
                         ? artist.currentListens.toLocaleString()

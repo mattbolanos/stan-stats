@@ -13,12 +13,15 @@ export const NAV_BTN_ICON_DIM = 20 as const;
 
 export const DEFAULT_ARTIST_SAMPLE_SIZE = 100 as const;
 
-export function formatMonthlyListeners(value: number): string {
+export function formatMonthlyListeners(
+  value: number,
+  digits: number = 1
+): string {
   let formattedValue = Math.abs(value);
   if (formattedValue >= 1_000_000) {
-    return `${(formattedValue / 1_000_000).toFixed(1)}M`;
+    return `${(formattedValue / 1_000_000).toFixed(digits)}M`;
   } else if (formattedValue >= 1_000) {
-    return `${(formattedValue / 1_000).toFixed(1)}K`;
+    return `${(formattedValue / 1_000).toFixed(digits)}K`;
   }
   return String(formattedValue);
 }
@@ -62,10 +65,15 @@ export function formatDateRange(startDate: string, endDate: string): string {
   return `${startFormatted} - ${formatDateToMonthYear(end)}`;
 }
 
-export const defaultArtists = [
-  "1McMsnEElThX1knmY4oliG", // olivia rodrigo
-  "12GqGscKJx3aE4t07u7eVZ", // peso pluma
-];
+export function getRandomSequentialIntegers(
+  count: number,
+  max: number = 100
+): number[] {
+  const start = Math.floor(Math.random() * (max - count + 1)) + 1;
+  return Array.from({ length: count }, (_, i) => start + i);
+}
+
+export const defaultArtists = getRandomSequentialIntegers(2);
 
 export const FAKE_ARTIST_ID = "FAKE";
 

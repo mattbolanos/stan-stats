@@ -51,11 +51,23 @@ async function getDateRange(): Promise<{
 }
 
 async function getDefaultDetails(
-  artistIds: string[] = defaultArtists
+  artistRanks: number[] = defaultArtists
 ): Promise<ArtistDetailsResponse> {
   "use server";
 
-  const details = await queryArtistDetails(supabase, artistIds);
+  const { data, error } = await supabase
+    .from("spotify_artists_meta")
+    .select("id, name")
+    .in("artist_rank", artistRanks);
+
+  if (error) {
+    throw error;
+  }
+
+  const details = await queryArtistDetails(
+    supabase,
+    data.map((artist) => artist.id)
+  );
 
   return details;
 }
