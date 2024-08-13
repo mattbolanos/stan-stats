@@ -66,14 +66,13 @@ export function formatDateRange(startDate: string, endDate: string): string {
 }
 
 export function getRandomSequentialIntegers(
-  count: number,
   max: number = 100
-): number[] {
-  const start = Math.floor(Math.random() * (max - count + 1)) + 1;
-  return Array.from({ length: count }, (_, i) => start + i);
+): [number, number] {
+  const start = Math.floor(Math.random() * (max - 1)) + 1;
+  return [start, start + 1];
 }
 
-export const defaultArtists = getRandomSequentialIntegers(2);
+export const defaultArtists = getRandomSequentialIntegers();
 
 export const FAKE_ARTIST_ID = "FAKE";
 
