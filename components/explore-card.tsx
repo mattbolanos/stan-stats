@@ -73,10 +73,10 @@ export function ExploreCards() {
                   width={96}
                   className="min-w-24 min-h-24 max-w-24 max-h-24 rounded-md"
                 />
-                <div className="flex flex-col gap-1">
-                  <div className="flex items-center flex-wrap justify-start">
-                    <CardTitle className="pr-1.5">{artist.name}</CardTitle>
-                    <div className="flex items-center gap-0.5">
+                <div className="flex flex-col">
+                  <div className="flex items-center flex-wrap justify-start gap-0.5">
+                    <CardTitle className="pr-0.5">{artist.name}</CardTitle>
+                    <div className="flex items-center">
                       {socialButton(
                         createSpotifyURL(artist.id),
                         <Image
