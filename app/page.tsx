@@ -146,22 +146,12 @@ export default async function Home() {
           </p>
         </div>
       </div>
-      <div className="flex flex-col lg:flex-row gap-10 items-end">
-        <div className="flex flex-col w-8/12">
-          <div className="flex flex-col justify-between">
-            <div className="max-w-2xl">
-              <ExploreArtistParentSelect
-                defaultArtistSample={defaultArtistSample}
-                defaultDetails={defaultDetails}
-              />
-            </div>
-            <ExploreChart dateRange={dateRange} />
-          </div>
-        </div>
-        <div>
-          <ExploreCards />
-        </div>
-      </div>
+      <ExploreArtistParentSelect
+        defaultArtistSample={defaultArtistSample}
+        defaultDetails={defaultDetails}
+      />
+      <ExploreCards />
+      <ExploreChart dateRange={dateRange} />
     </main>
   );
 }

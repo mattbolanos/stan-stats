@@ -22,7 +22,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { CaretSortIcon, Cross2Icon } from "@radix-ui/react-icons";
+import {
+  CaretSortIcon,
+  Cross2Icon,
+  MagnifyingGlassIcon,
+} from "@radix-ui/react-icons";
 import { useExploreDispatch, useExplore } from "@/contexts/ExploreContext";
 import { Spinner } from "./ui/spinner";
 import { DEFAULT_ARTIST_SAMPLE_SIZE, fetchArtistDetails } from "@/lib/utils";
@@ -174,50 +178,13 @@ export default function ExploreArtistSelect({
     <Popover open={open} onOpenChange={handleOnOpenChange}>
       <PopoverTrigger asChild>
         <Button
-          variant="outline"
+          variant="ghost"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between px-2"
+          className="justify-between"
+          size="sm"
         >
-          <div
-            className="h-3 w-3 rounded-[2px] shrink-0"
-            style={{
-              backgroundColor: `hsl(var(--chart-${selectIndex + 1}))`,
-            }}
-          />
-          <div className="flex justify-between w-full ml-1.5">
-            <p
-              className={`w-[120px] truncate text-left ${
-                validArtistName ? "" : "text-muted-foreground"
-              }`}
-              style={{ placeSelf: "flex-start" }}
-            >
-              {validArtistName ? validArtistName : "Select artist..."}
-            </p>
-            <div className="flex items-center space-x-0.5 ml-1.5">
-              {value &&
-              !selectedArtists.find((artist) => artist.id === value) ? (
-                <Spinner />
-              ) : (
-                canDelete && (
-                  <Cross2Icon
-                    stroke="red"
-                    onClick={() => {
-                      exploreDispatch?.({
-                        type: "REMOVE_ARTIST",
-                        payload: selectIndex,
-                      });
-                      setValue("");
-                    }}
-                    height={16}
-                    width={16}
-                    className="cursor-pointer shrink-0 p-0.5"
-                  />
-                )
-              )}
-              <CaretSortIcon className="h-4 w-4 shrink-0 opacity-50" />
-            </div>
-          </div>
+          <MagnifyingGlassIcon className="w-6 h-6" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">

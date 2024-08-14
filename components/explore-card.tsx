@@ -15,7 +15,11 @@ import {
   formatMonthlyListeners,
 } from "@/lib/utils";
 import { MoveHorizontal, TrendingDown, TrendingUp } from "lucide-react";
-import { InstagramLogoIcon, TwitterLogoIcon } from "@radix-ui/react-icons";
+import {
+  InstagramLogoIcon,
+  MagnifyingGlassIcon,
+  TwitterLogoIcon,
+} from "@radix-ui/react-icons";
 import { Button } from "./ui/button";
 
 const changeText = (change: number, formatFn?: any) => {
@@ -53,18 +57,25 @@ export function ExploreCards() {
   const { selectedArtists } = useExplore();
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex gap-5">
       {selectedArtists
         .filter((artist) => artist.id)
         .map((artist) => (
           <Card
             key={artist.selectIndex}
-            className="w-96"
+            className="w-96 relative flex flex-col"
             style={{
               border: `1.5px solid hsl(var(--chart-${artist.selectIndex + 1}))`,
             }}
           >
-            <CardHeader className="mb-3 px-5">
+            <Button
+              size="icon"
+              variant="ghost"
+              className="absolute top-2 right-2 z-10"
+            >
+              <MagnifyingGlassIcon className="w-6 h-6 shrink-0" />
+            </Button>
+            <CardHeader className="mb-3 px-4 flex-grow">
               <div className="flex items-start space-x-3">
                 <Image
                   src={artist.image}
@@ -81,7 +92,7 @@ export function ExploreCards() {
                         createSpotifyURL(artist.id),
                         <Image
                           src="/spotify-color.svg"
-                          alt="logo"
+                          alt="Spotify"
                           height={18}
                           width={18}
                           className="min-w-4 min-h-4"
@@ -107,7 +118,7 @@ export function ExploreCards() {
                         )}
                     </div>
                   </div>
-                  <CardDescription className="text-xs mt-0.5">
+                  <CardDescription className="text-xs mt-1">
                     <div className="flex flex-col space-y-1">
                       {artist.genres && (
                         <p>
@@ -132,7 +143,7 @@ export function ExploreCards() {
                 </div>
               </div>
             </CardHeader>
-            <CardContent className="px-5 pb-2 space-y-0.5">
+            <CardContent className="px-5 pb-2 space-y-0.5 mt-auto">
               <div className="flex justify-start items-start gap-9">
                 <div>
                   <p className="text-sm text-gray-400">Artist Rank</p>
