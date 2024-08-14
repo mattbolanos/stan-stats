@@ -22,11 +22,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  CaretSortIcon,
-  Cross2Icon,
-  MagnifyingGlassIcon,
-} from "@radix-ui/react-icons";
+import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { useExploreDispatch, useExplore } from "@/contexts/ExploreContext";
 import { Spinner } from "./ui/spinner";
 import { DEFAULT_ARTIST_SAMPLE_SIZE, fetchArtistDetails } from "@/lib/utils";
@@ -40,8 +36,8 @@ export default function ExploreArtistSelect({
   selectIndex: number;
 }) {
   const { selectedArtists } = useExplore();
-  const [value, setValue] = useState("");
   const [open, setOpen] = useState(false);
+  const [value, setValue] = useState("");
   const [search, setSearch] = useState("");
   const exploreDispatch = useExploreDispatch();
   const [artists, setArtists] = useState(defaultArtistSample);
@@ -137,8 +133,8 @@ export default function ExploreArtistSelect({
   }, [search, debouncedSearch]);
 
   const handleSelect = (value: string) => {
-    setValue(value);
     setOpen(false);
+    setValue(value);
     fetchArtistDetails(value, selectIndex)
       .then((data) => {
         exploreDispatch?.({
@@ -161,67 +157,61 @@ export default function ExploreArtistSelect({
     }
   };
 
-  const validArtistName = selectedArtists.find(
+  const currentArtist = selectedArtists.find(
     (artist) => artist.selectIndex === selectIndex
-  )?.name;
-
-  const validArtists = selectedArtists.filter((artist) => artist.id);
-
-  const canDelete =
-    (validArtists.length === 1 &&
-      validArtists[0].selectIndex === selectIndex) ||
-    selectedArtists.length === 1
-      ? false
-      : true;
+  )?.id;
 
   return (
-    <Popover open={open} onOpenChange={handleOnOpenChange}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="ghost"
-          role="combobox"
-          aria-expanded={open}
-          className="justify-between"
-          size="sm"
-        >
-          <MagnifyingGlassIcon className="w-6 h-6" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
-        <Command shouldFilter={false}>
-          <CommandInput
-            placeholder="Search artist..."
-            className="h-9"
-            value={search}
-            onValueChange={(value) => {
-              setSearch(value);
-            }}
-            endContent={loading && <Spinner />}
-          />
-          <CommandList
-            className="max-h-[200px] overflow-y-auto"
-            ref={listRef}
-            onScroll={handleScroll}
+    <div className="absolute top-1 right-1 flex items-center gap-2.5 z-10">
+      {value && currentArtist !== value && <Spinner />}
+      <Popover open={open} onOpenChange={handleOnOpenChange}>
+        <PopoverTrigger asChild>
+          <Button
+            variant="ghost"
+            role="combobox"
+            color="primary"
+            aria-expanded={open}
+            size="sm"
           >
-            <CommandEmpty>No artists found.</CommandEmpty>
-            <CommandGroup>
-              {artists.map((artist) => (
-                <CommandItem
-                  key={artist.id}
-                  keywords={[artist.name]}
-                  onSelect={() => handleSelect(artist.id)}
-                  disabled={
-                    selectedArtists.find((a) => a.id === artist.id) !==
-                    undefined
-                  }
-                >
-                  {artist.name}
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
+            <MagnifyingGlassIcon className="w-6 h-6 shrink-0" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-[200px] p-0">
+          <Command shouldFilter={false}>
+            <CommandInput
+              placeholder="Search artist..."
+              className="h-9"
+              value={search}
+              onValueChange={(value) => {
+                setSearch(value);
+              }}
+              endContent={loading && <Spinner />}
+            />
+            <CommandList
+              className="max-h-[200px] overflow-y-auto"
+              ref={listRef}
+              onScroll={handleScroll}
+            >
+              <CommandEmpty>No artists found.</CommandEmpty>
+              <CommandGroup>
+                {artists.map((artist) => (
+                  <CommandItem
+                    key={artist.id}
+                    keywords={[artist.name]}
+                    onSelect={() => handleSelect(artist.id)}
+                    disabled={
+                      selectedArtists.find((a) => a.id === artist.id) !==
+                      undefined
+                    }
+                  >
+                    {artist.name}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
+    </div>
   );
 }

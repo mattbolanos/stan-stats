@@ -1,5 +1,4 @@
-import ExploreArtistParentSelect from "@/components/explore-artist-parent-select";
-import { ExploreCards } from "@/components/explore-card";
+import ExploreCardsParent from "@/components/explore-cards-parent";
 import { ExploreChart } from "@/components/explore-chart";
 import { supabase } from "@/lib/supabase";
 import { ArtistDetailsResponse, ArtistSample } from "@/lib/types";
@@ -146,11 +145,11 @@ export default async function Home() {
           </p>
         </div>
       </div>
-      <ExploreArtistParentSelect
+
+      <ExploreCardsParent
         defaultArtistSample={defaultArtistSample}
         defaultDetails={defaultDetails}
       />
-      <ExploreCards />
       <ExploreChart dateRange={dateRange} />
     </main>
   );

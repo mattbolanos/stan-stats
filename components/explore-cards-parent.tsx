@@ -2,13 +2,12 @@
 
 import { ArtistDetailsResponse, ArtistSample } from "@/lib/types";
 import { useExplore, useExploreDispatch } from "@/contexts/ExploreContext";
-import ExploreArtistSelect from "./explore-artist-select";
-import { Button } from "./ui/button";
 import { useEffect } from "react";
 import { FAKE_ARTIST_ID } from "@/lib/utils";
 import { Spinner } from "./ui/spinner";
+import { ExploreCard } from "./explore-card";
 
-export default function ExploreArtistParentSelect({
+export default function ExploreCardsParent({
   defaultArtistSample = [],
   defaultDetails,
 }: {
@@ -45,23 +44,12 @@ export default function ExploreArtistParentSelect({
       ) : (
         <>
           {selectedArtists.map((artist) => (
-            <ExploreArtistSelect
+            <ExploreCard
               key={artist.selectIndex}
+              artist={artist}
               defaultArtistSample={defaultArtistSample}
-              selectIndex={artist.selectIndex}
             />
           ))}
-          {selectedArtists.length < 3 && (
-            <Button
-              variant="secondary"
-              className="w-[100px] justify-center"
-              onClick={() => {
-                exploreDispatch?.({ type: "ADD_ARTIST" });
-              }}
-            >
-              Add Artist
-            </Button>
-          )}
         </>
       )}
     </div>
