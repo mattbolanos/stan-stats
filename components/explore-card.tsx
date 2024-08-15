@@ -96,16 +96,17 @@ export function ExploreCard({
         </Button>
       </div>
       <div className="absolute top-2 left-2 z-10 flex items-center">
-        {socialButton(
-          createSpotifyURL(artist.id),
-          <Image
-            src="/spotify-color.svg"
-            alt="Spotify"
-            height={18}
-            width={18}
-            className="min-w-4 min-h-4"
-          />
-        )}
+        {artist.id &&
+          socialButton(
+            createSpotifyURL(artist.id),
+            <Image
+              src="/spotify-color.svg"
+              alt="Spotify"
+              height={18}
+              width={18}
+              className="min-w-4 min-h-4"
+            />
+          )}
         {artist.urlInstagram &&
           socialButton(
             artist.urlInstagram,
@@ -125,17 +126,23 @@ export function ExploreCard({
             />
           )}
       </div>
-      <CardHeader className="mt-4 mb-3 px-4 flex-grow">
+      <CardHeader
+        className={`mt-4 mb-3 px-4 flex-grow ${artist.id ? "mt-4" : "mt-0"}`}
+      >
         <div className="flex items-start space-x-3">
-          <Image
-            src={artist.image}
-            alt={artist.name}
-            height={96}
-            width={96}
-            className="min-w-24 min-h-24 max-w-24 max-h-24 rounded-md border-gray-700 border-x border-y"
-          />
+          {artist.image && (
+            <Image
+              src={artist.image}
+              alt={artist.name}
+              height={96}
+              width={96}
+              className="min-w-24 min-h-24 max-w-24 max-h-24 rounded-md border-gray-700 border-x border-y"
+            />
+          )}
           <div className="flex flex-col">
-            <CardTitle className="pr-0.5">{artist.name}</CardTitle>
+            <CardTitle className="pr-0.5">
+              {artist.name ? artist.name : "Search for an artist..."}
+            </CardTitle>
             <CardDescription className="text-xs mt-1">
               <div className="flex flex-col space-y-1">
                 {artist.genres && (
@@ -144,13 +151,13 @@ export function ExploreCard({
                     <span>{cleanGenres(artist.genres)}</span>
                   </p>
                 )}
-                {artist.albumsCount && (
+                {artist.albumsCount > 0 && (
                   <p>
                     <span className="text-gray-400">Albums</span>{" "}
                     <span>{artist.albumsCount}</span>
                   </p>
                 )}
-                {artist.singlesCount && (
+                {artist.singlesCount > 0 && (
                   <p>
                     <span className="text-gray-400">Singles</span>{" "}
                     <span>{artist.singlesCount}</span>
@@ -163,32 +170,37 @@ export function ExploreCard({
       </CardHeader>
       <CardContent className="px-5 pb-2 space-y-0.5 mt-auto">
         <div className="flex justify-start items-start gap-6">
-          <div>
-            <p className="text-sm text-gray-400">Artist Rank</p>
-            <div className="flex items-center space-x-1.5 text-xs">
-              <p className="text-lg font-bold">#{artist.rank}</p>
+          {artist.rank > 0 && (
+            <div>
+              <p className="text-sm text-gray-400">Artist Rank</p>
+              <div className="flex items-center space-x-1.5 text-xs">
+                <p className="text-lg font-bold">#{artist.rank}</p>
 
-              {artist.prevRank &&
-                artist.rank &&
-                changeText(artist.prevRank - artist.rank, Math.abs)}
+                {artist.prevRank > 0 &&
+                  artist.rank > 0 &&
+                  changeText(artist.prevRank - artist.rank, Math.abs)}
+              </div>
             </div>
-          </div>
-          <div>
-            <p className="text-sm text-gray-400">Monthly Listeners</p>
-            <div className="flex items-center space-x-1.5 text-xs">
-              <p className="text-lg font-bold">
-                {artist.currentListens
-                  ? artist.currentListens.toLocaleString()
-                  : "N/A"}
-              </p>
-              {artist.currentListens &&
-                artist.prevListens &&
-                changeText(
-                  artist.currentListens - artist.prevListens,
-                  formatMonthlyListeners
-                )}
+          )}
+          {artist.currentListens > 0 && (
+            <div>
+              <p className="text-sm text-gray-400">Monthly Listeners</p>
+              <div className="flex items-center space-x-1.5 text-xs">
+                <p className="text-lg font-bold">
+                  {artist.id &&
+                    (artist.currentListens > 0
+                      ? artist.currentListens.toLocaleString()
+                      : "N/A")}
+                </p>
+                {artist.currentListens > 0 &&
+                  artist.prevListens > 0 &&
+                  changeText(
+                    artist.currentListens - artist.prevListens,
+                    formatMonthlyListeners
+                  )}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </CardContent>
     </Card>
