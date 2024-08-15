@@ -141,7 +141,7 @@ export function ExploreCard({
           )}
           <div className="flex flex-col">
             <CardTitle className="pr-0.5">
-              {artist.name ? artist.name : "Search for an artist..."}
+              {artist.name ? artist.name : "No Artist Selected"}
             </CardTitle>
             <CardDescription className="text-xs mt-1">
               <div className="flex flex-col space-y-1">
