@@ -162,14 +162,13 @@ export default function ExploreArtistSelect({
   )?.id;
 
   return (
-    <div className="absolute top-1 right-1 flex items-center gap-2.5 z-10">
+    <div className="flex items-center gap-2">
       {value && currentArtist !== value && <Spinner />}
       <Popover open={open} onOpenChange={handleOnOpenChange}>
         <PopoverTrigger asChild>
           <Button
             variant="ghost"
             role="combobox"
-            color="primary"
             aria-expanded={open}
             size="sm"
           >

@@ -14,10 +14,16 @@ import {
   formatMonthlyListeners,
 } from "@/lib/utils";
 import { MoveHorizontal, TrendingDown, TrendingUp } from "lucide-react";
-import { InstagramLogoIcon, TwitterLogoIcon } from "@radix-ui/react-icons";
+import {
+  Cross2Icon,
+  InstagramLogoIcon,
+  TwitterLogoIcon,
+} from "@radix-ui/react-icons";
 import { Button } from "./ui/button";
 import ExploreArtistSelect from "./explore-artist-select";
 import { ArtistSample, SelectedArtist } from "@/lib/types";
+import { Dispatch } from "react";
+import { ExploreAction } from "@/contexts/types";
 
 const changeText = (change: number, formatFn?: any) => {
   const formattedValue = formatFn ? formatFn(change) : change.toString();
@@ -53,9 +59,13 @@ const socialButton = (url: string, Icon: React.ReactNode) => (
 export function ExploreCard({
   artist,
   defaultArtistSample,
+  exploreDispatch,
+  selectedArtistsLength,
 }: {
   artist: SelectedArtist;
   defaultArtistSample: ArtistSample[];
+  exploreDispatch: Dispatch<ExploreAction> | undefined;
+  selectedArtistsLength: number;
 }) {
   return (
     <Card
@@ -65,11 +75,26 @@ export function ExploreCard({
         border: `1.5px solid hsl(var(--chart-${artist.selectIndex + 1}))`,
       }}
     >
-      <ExploreArtistSelect
-        key={artist.selectIndex}
-        defaultArtistSample={defaultArtistSample}
-        selectIndex={artist.selectIndex}
-      />
+      <div className="absolute top-1 right-1 z-10 flex items-center">
+        <ExploreArtistSelect
+          key={artist.selectIndex}
+          defaultArtistSample={defaultArtistSample}
+          selectIndex={artist.selectIndex}
+        />
+        <Button
+          size="sm"
+          variant="ghost"
+          disabled={selectedArtistsLength === 1}
+          onClick={() => {
+            exploreDispatch?.({
+              type: "REMOVE_ARTIST",
+              payload: artist.selectIndex,
+            });
+          }}
+        >
+          <Cross2Icon className="w-6 h-6 shrink-0 text-red-600" />
+        </Button>
+      </div>
       <div className="absolute top-2 left-2 z-10 flex items-center">
         {socialButton(
           createSpotifyURL(artist.id),
@@ -137,7 +162,7 @@ export function ExploreCard({
         </div>
       </CardHeader>
       <CardContent className="px-5 pb-2 space-y-0.5 mt-auto">
-        <div className="flex justify-start items-start gap-9">
+        <div className="flex justify-start items-start gap-6">
           <div>
             <p className="text-sm text-gray-400">Artist Rank</p>
             <div className="flex items-center space-x-1.5 text-xs">

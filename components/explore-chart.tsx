@@ -96,7 +96,7 @@ export function ExploreChart({
   ).concat(chartData[chartData.length - 1]?.date);
 
   return (
-    <Card className="w-full sm:mt-5 mt-10">
+    <Card className="w-full max-w-4xl">
       <CardHeader>
         <CardTitle className="flex items-center gap-1.5">
           <Image

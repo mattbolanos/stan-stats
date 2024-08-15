@@ -1,18 +1,34 @@
 import { createContext, useContext, useReducer, Dispatch } from "react";
-import { ContextAction, ExploreState, ProviderProps } from "./types";
+import { ExploreAction, ExploreState, ProviderProps } from "./types";
 import { FAKE_ARTIST_ID, getFirstAvailableIndex } from "@/lib/utils";
 import { SelectedArtist } from "@/lib/types";
 
 // default values
 const defaultState: ExploreState = {
   artistStreams: [],
-  selectedArtists: [{ selectIndex: 0, id: FAKE_ARTIST_ID, name: "" }],
+  selectedArtists: [
+    {
+      selectIndex: 0,
+      id: FAKE_ARTIST_ID,
+      name: "",
+      image: "",
+      genres: "",
+      currentListens: 0,
+      prevListens: 0,
+      urlInstagram: "",
+      urlTwitter: "",
+      rank: 0,
+      prevRank: 0,
+      singlesCount: 0,
+      albumsCount: 0,
+    },
+  ],
 };
 
 // create context
 const ExploreContext = createContext(defaultState);
 const ExploreDispatchContext = createContext<
-  Dispatch<ContextAction> | undefined
+  Dispatch<ExploreAction> | undefined
 >(undefined);
 
 export function ExploreProvider({ children }: ProviderProps) {
@@ -37,7 +53,7 @@ export function useExploreDispatch() {
 
 function playerReducer(
   state: ExploreState,
-  action: ContextAction
+  action: ExploreAction
 ): ExploreState {
   switch (action.type) {
     // add artist
@@ -47,6 +63,16 @@ function playerReducer(
         selectedArtists: state.selectedArtists.concat({
           id: "",
           name: "",
+          image: "",
+          genres: "",
+          currentListens: 0,
+          prevListens: 0,
+          urlInstagram: "",
+          urlTwitter: "",
+          rank: 0,
+          prevRank: 0,
+          singlesCount: 0,
+          albumsCount: 0,
           selectIndex: getFirstAvailableIndex(state.selectedArtists),
         }),
       };

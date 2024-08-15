@@ -145,12 +145,13 @@ export default async function Home() {
           </p>
         </div>
       </div>
-
-      <ExploreCardsParent
-        defaultArtistSample={defaultArtistSample}
-        defaultDetails={defaultDetails}
-      />
-      <ExploreChart dateRange={dateRange} />
+      <div className="flex justify-between">
+        <ExploreCardsParent
+          defaultArtistSample={defaultArtistSample}
+          defaultDetails={defaultDetails}
+        />
+        <ExploreChart dateRange={dateRange} />
+      </div>
     </main>
   );
 }
