@@ -172,9 +172,9 @@ export default function ExploreArtistSelect({
             variant="ghost"
             role="combobox"
             aria-expanded={open}
-            size="sm"
+            size="mini"
           >
-            <MagnifyingGlassIcon className="w-6 h-6 shrink-0" />
+            <MagnifyingGlassIcon className="w-5 h-5 shrink-0" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0">

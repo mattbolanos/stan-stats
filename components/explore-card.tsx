@@ -82,7 +82,7 @@ export function ExploreCard({
           selectIndex={artist.selectIndex}
         />
         <Button
-          size="sm"
+          size="mini"
           variant="ghost"
           disabled={selectedArtistsLength === 1}
           onClick={() => {
@@ -92,7 +92,7 @@ export function ExploreCard({
             });
           }}
         >
-          <Cross2Icon className="w-6 h-6 shrink-0 text-red-600" />
+          <Cross2Icon className="w-5 h-5 shrink-0 text-red-600" />
         </Button>
       </div>
       <div className="absolute top-2 left-2 z-10 flex items-center">

@@ -109,7 +109,7 @@ export default async function Home() {
   const { totalArtists, totalAlbums, totalSingles } = await getTotals();
 
   return (
-    <main className="flex-1 px-16 sm:mt-8 mt-2 mb-10">
+    <main className="flex-1 px-20 sm:mt-8 mt-2 mb-10">
       <div className="max-w-2xl flex flex-col">
         <div className="flex flex-col gap-3 mt-2 mb-5 text-center md:text-left min-h-fit">
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
@@ -117,10 +117,11 @@ export default async function Home() {
             <span className="color-site-primary">popularity</span> over time
           </h1>
           <p className="text-lg text-muted-foreground tracking-tight">
-            Dive into Spotify&apos;s monthly listener data. Compare artists,
-            amplify your favorites, and uncover trends. Whether you&apos;re
-            analyzing or stanning, our site gives you the insights you need. FIX
-            WORDING LATER
+            Dive into our extensive Spotify monthly listener database. Compare
+            artists, track your favorites, and uncover trends across genres and
+            time periods. Whether you&apos;re analyzing chart movements or
+            discovering rising stars, our site provides the insights you need to
+            stan on.
           </p>
           <p className="text-md flex items-center md:justify-start justify-center gap-1.5">
             <ClockIcon className="w-5 h-5 opacity-75 shrink-0" />
@@ -145,7 +146,7 @@ export default async function Home() {
           </p>
         </div>
       </div>
-      <div className="flex justify-between">
+      <div className="flex justify-start gap-10">
         <ExploreCardsParent
           defaultArtistSample={defaultArtistSample}
           defaultDetails={defaultDetails}
