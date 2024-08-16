@@ -200,3 +200,10 @@ export function formatChartDate(value: any) {
 export function createSpotifyURL(artistId: string) {
   return `https://open.spotify.com/artist/${artistId}`;
 }
+
+export const DISPLAY_ARTISTS = [
+  "74KM79TiuVKeVCqs8QtB0B",
+  "1McMsnEElThX1knmY4oliG",
+  "6vWDO969PvNqNYHIOW5v0m",
+  "4q3ewBCX7sLwd24euuV69X",
+];

@@ -8,6 +8,7 @@
     --background-end: 210 20% 92%;
     --radial-color: 210 30% 75%;
     --foreground: 20 14.3% 4.1%;
+    --scroll-shadow-size: 1rem;
 
     --card: 0 0% 100%;
     --card-foreground: 20 14.3% 4.1%;
@@ -156,4 +157,16 @@
   animation: ellipsis 1s steps(4, end) infinite;
   width: 1.5em;
   text-align: left;
+}
+
+.display-cards-container {
+  mask-image: linear-gradient(
+    to right,
+    #000,
+    #000,
+    transparent 0,
+    #000 var(--scroll-shadow-size),
+    #000 calc(100% - var(--scroll-shadow-size)),
+    transparent
+  );
 }

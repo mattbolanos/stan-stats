@@ -61,40 +61,44 @@ export function ExploreCard({
   defaultArtistSample,
   exploreDispatch,
   selectedArtistsLength,
+  displayArtist = false,
 }: {
   artist: SelectedArtist;
-  defaultArtistSample: ArtistSample[];
-  exploreDispatch: Dispatch<ExploreAction> | undefined;
-  selectedArtistsLength: number;
+  defaultArtistSample?: ArtistSample[];
+  exploreDispatch?: Dispatch<ExploreAction> | undefined;
+  selectedArtistsLength?: number;
+  displayArtist?: boolean;
 }) {
   return (
     <Card
       key={artist.selectIndex}
       className="w-96 relative flex flex-col"
       style={{
-        border: `1.5px solid hsl(var(--chart-${artist.selectIndex + 1}))`,
+        border: `2.5px solid hsl(var(--chart-${artist.selectIndex + 1}))`,
       }}
     >
-      <div className="absolute top-1 right-1 z-10 flex items-center">
-        <ExploreArtistSelect
-          key={artist.selectIndex}
-          defaultArtistSample={defaultArtistSample}
-          selectIndex={artist.selectIndex}
-        />
-        <Button
-          size="mini"
-          variant="ghost"
-          disabled={selectedArtistsLength === 1}
-          onClick={() => {
-            exploreDispatch?.({
-              type: "REMOVE_ARTIST",
-              payload: artist.selectIndex,
-            });
-          }}
-        >
-          <Cross2Icon className="w-5 h-5 shrink-0 text-red-600" />
-        </Button>
-      </div>
+      {!displayArtist && (
+        <div className="absolute top-1 right-1 z-10 flex items-center">
+          <ExploreArtistSelect
+            key={artist.selectIndex}
+            defaultArtistSample={defaultArtistSample || []}
+            selectIndex={artist.selectIndex}
+          />
+          <Button
+            size="mini"
+            variant="ghost"
+            disabled={selectedArtistsLength === 1}
+            onClick={() => {
+              exploreDispatch?.({
+                type: "REMOVE_ARTIST",
+                payload: artist.selectIndex,
+              });
+            }}
+          >
+            <Cross2Icon className="w-5 h-5 shrink-0 text-red-600" />
+          </Button>
+        </div>
+      )}
       <div className="absolute top-2 left-2 z-10 flex items-center">
         {artist.id &&
           socialButton(
@@ -127,7 +131,9 @@ export function ExploreCard({
           )}
       </div>
       <CardHeader
-        className={`mt-4 mb-3 px-4 flex-grow ${artist.id ? "mt-4" : "mt-0"}`}
+        className={`mt-4 mb-3 px-4 flex-grow ${
+          artist.id ? "mt-4" : "mt-0"
+        } max-w-96`}
       >
         <div className="flex items-start space-x-3">
           {artist.image && (
@@ -143,7 +149,7 @@ export function ExploreCard({
             <CardTitle className="pr-0.5">
               {artist.name ? artist.name : "No Artist Selected"}
             </CardTitle>
-            <CardDescription className="text-xs mt-1">
+            <CardDescription className="text-xs mt-1 pr-0.5 flex flex-wrap flex-col">
               <div className="flex flex-col space-y-1">
                 {artist.genres && (
                   <p>

@@ -1,10 +1,16 @@
+import { DisplayCards } from "@/components/display-cards";
 import ExploreCardsParent from "@/components/explore-cards-parent";
 import { ExploreChart } from "@/components/explore-chart";
 import { supabase } from "@/lib/supabase";
-import { ArtistDetailsResponse, ArtistSample } from "@/lib/types";
+import {
+  ArtistDetailsResponse,
+  ArtistSample,
+  SelectedArtist,
+} from "@/lib/types";
 import {
   DEFAULT_ARTIST_SAMPLE_SIZE,
   defaultArtists,
+  DISPLAY_ARTISTS,
   formatMonthlyListeners,
   queryArtistDetails,
 } from "@/lib/utils";
@@ -102,48 +108,61 @@ async function getTotals() {
   };
 }
 
+async function getDisplayArtists(): Promise<SelectedArtist[]> {
+  "use server";
+
+  const details = await queryArtistDetails(supabase, DISPLAY_ARTISTS);
+  return details.meta as SelectedArtist[];
+}
+
 export default async function Home() {
   const defaultArtistSample = await getDefaultArtistSample();
   const dateRange = await getDateRange();
   const defaultDetails = await getDefaultDetails();
   const { totalArtists, totalAlbums, totalSingles } = await getTotals();
+  const displayArtist = await getDisplayArtists();
 
   return (
     <main className="flex-1 px-20 sm:mt-8 mt-2 mb-10">
-      <div className="max-w-2xl flex flex-col">
-        <div className="flex flex-col gap-3 mt-2 mb-5 text-center md:text-left min-h-fit">
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
-            Explore artist{" "}
-            <span className="color-site-primary">popularity</span> over time
-          </h1>
-          <p className="text-lg text-muted-foreground tracking-tight">
-            Dive into our extensive Spotify monthly listener database. Compare
-            artists, track your favorites, and uncover trends across genres and
-            time periods. Whether you&apos;re analyzing chart movements or
-            discovering rising stars, our site provides the insights you need to
-            stan on.
-          </p>
-          <p className="text-md flex items-center md:justify-start justify-center gap-1.5">
-            <ClockIcon className="w-5 h-5 opacity-75 shrink-0" />
-            Since{" "}
-            {new Date(dateRange.min).toLocaleString("default", {
-              month: "long",
-              year: "numeric",
-              timeZone: "UTC",
-            })}
-          </p>
-          <p className="text-md flex items-center md:justify-start justify-center gap-1.5">
-            <Mic2Icon className="w-5 h-5 opacity-75 shrink-0" />
-            {formatMonthlyListeners(totalArtists ?? 0)} artists
-          </p>
-          <p className="text-md flex items-center md:justify-start justify-center gap-1.5">
-            <Disc3 className="w-5 h-5 opacity-75 shrink-0" />
-            {formatMonthlyListeners(totalAlbums ?? 0)} albums
-          </p>
-          <p className="text-md flex items-center md:justify-start justify-center gap-1.5">
-            <Music2Icon className="w-5 h-5 opacity-75 shrink-0" />
-            {formatMonthlyListeners(totalSingles ?? 0)} singles
-          </p>
+      <div className="flex justify-between">
+        <div className="max-w-xl flex flex-col">
+          <div className="flex flex-col gap-3 mt-2 mb-5 text-center md:text-left min-h-fit">
+            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
+              Explore artist{" "}
+              <span className="color-site-primary">popularity</span> over time
+            </h1>
+            <p className="text-lg text-muted-foreground tracking-tight">
+              Dive into our extensive Spotify monthly listener database. Compare
+              artists, track your favorites, and uncover trends across genres
+              and time periods. Whether you&apos;re analyzing chart movements or
+              discovering rising stars, our site provides the insights you need
+              to stan on.
+            </p>
+            <p className="text-md flex items-center md:justify-start justify-center gap-1.5">
+              <ClockIcon className="w-5 h-5 opacity-75 shrink-0" />
+              Since{" "}
+              {new Date(dateRange.min).toLocaleString("default", {
+                month: "long",
+                year: "numeric",
+                timeZone: "UTC",
+              })}
+            </p>
+            <p className="text-md flex items-center md:justify-start justify-center gap-1.5">
+              <Mic2Icon className="w-5 h-5 opacity-75 shrink-0" />
+              {formatMonthlyListeners(totalArtists ?? 0)} artists
+            </p>
+            <p className="text-md flex items-center md:justify-start justify-center gap-1.5">
+              <Disc3 className="w-5 h-5 opacity-75 shrink-0" />
+              {formatMonthlyListeners(totalAlbums ?? 0)} albums
+            </p>
+            <p className="text-md flex items-center md:justify-start justify-center gap-1.5">
+              <Music2Icon className="w-5 h-5 opacity-75 shrink-0" />
+              {formatMonthlyListeners(totalSingles ?? 0)} singles
+            </p>
+          </div>
+        </div>
+        <div>
+          <DisplayCards artists={displayArtist} />
         </div>
       </div>
       <div className="flex justify-start gap-10">
