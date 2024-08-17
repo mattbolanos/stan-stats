@@ -149,18 +149,17 @@ export function ExploreCard({
               className="min-w-24 min-h-24 max-w-24 max-h-24 rounded-md border-gray-700 border-x border-y"
             />
           )}
-          <div className="flex flex-col">
+          <div className="flex flex-col w-full">
             <CardTitle className="pr-0.5">
               {artist.name ? artist.name : "No Artist Selected"}
             </CardTitle>
-            <CardDescription className="text-xs mt-1 pr-0.5 flex flex-wrap flex-col">
+            <CardDescription className="text-xs mt-2 flex justify-between">
               <div className="flex flex-col space-y-1">
-                {artist.genres && (
-                  <p>
-                    <span className="text-gray-400">Genre</span>{" "}
-                    <span>{cleanGenres(artist.genres)}</span>
-                  </p>
-                )}
+                <p>
+                  <span className="text-gray-400">Genre</span>{" "}
+                  <span>{cleanGenres(artist.genres)}</span>
+                </p>
+
                 {artist.albumsCount > 0 && (
                   <p>
                     <span className="text-gray-400">Albums</span>{" "}
@@ -174,6 +173,13 @@ export function ExploreCard({
                   </p>
                 )}
               </div>
+              {artist.latestReleaseName && (
+                <div className="flex flex-col space-y-1">
+                  <span className="text-gray-400">Latest</span>{" "}
+                  <span>{artist.latestReleaseName}</span>
+                  <span>{artist.latestReleaseDate}</span>
+                </div>
+              )}
             </CardDescription>
           </div>
         </div>

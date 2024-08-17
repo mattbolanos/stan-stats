@@ -118,7 +118,9 @@ export async function queryArtistDetails(
         `
         id, name, image, genres, singles_count, albums_count,
         url_twitter, url_instagram, 
-        artist_rank, prev_artist_rank`
+        artist_rank, prev_artist_rank,
+        latest_release_date, latest_release_type, latest_release_name, latest_release_share_url
+        `
       )
       .in("id", queryIds),
     supabase
@@ -172,13 +174,17 @@ export async function queryArtistDetails(
       albumsCount: artist.albums_count,
       urlTwitter: artist.url_twitter,
       urlInstagram: artist.url_instagram,
+      latestReleaseDate: artist.latest_release_date,
+      latestReleaseType: artist.latest_release_type,
+      latestReleaseName: artist.latest_release_name,
+      latestReleaseShareUrl: artist.latest_release_share_url,
     })),
   };
 }
 
 export function cleanGenres(genreString: string): string {
   if (!genreString) {
-    return "";
+    return "N/A";
   }
 
   const genre = genreString.split(",")[0];

@@ -23,6 +23,10 @@ export interface SelectedArtist {
   albumsCount: number;
   urlTwitter: string;
   urlInstagram: string;
+  latestReleaseDate: string;
+  latestReleaseType: string;
+  latestReleaseName: string;
+  latestReleaseShareUrl: string;
 }
 
 export interface ArtistDetailsResponse {
