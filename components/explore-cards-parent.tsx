@@ -36,7 +36,7 @@ export default function ExploreCardsParent({
   ]);
 
   return (
-    <div className="flex flex-col items-center gap-2.5 justify-start">
+    <div className="flex flex-col items-center gap-3.5 justify-start">
       {intialLoad ? (
         <div className="flex items-center gap-2.5 justify-start">
           <Spinner size={5} />

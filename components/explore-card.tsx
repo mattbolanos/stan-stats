@@ -82,7 +82,7 @@ export function ExploreCard({
       }}
     >
       {!displayArtist && (
-        <div className="absolute top-1 right-1 z-10 flex items-center">
+        <div className="absolute top-1.5 right-1 z-10 flex items-center">
           <ExploreArtistSelect
             key={artist.selectIndex}
             defaultArtistSample={defaultArtistSample || []}
@@ -157,7 +157,7 @@ export function ExploreCard({
               <div className="flex flex-col space-y-1">
                 {artist.genres && (
                   <p>
-                    <span className="text-gray-400">Genre(s)</span>{" "}
+                    <span className="text-gray-400">Genre</span>{" "}
                     <span>{cleanGenres(artist.genres)}</span>
                   </p>
                 )}

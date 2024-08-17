@@ -181,11 +181,8 @@ export function cleanGenres(genreString: string): string {
     return "";
   }
 
-  // Split the string into an array and take the first 3 elements
-  const genres = genreString.split(",").slice(0, 3);
-
-  // Use title-case library for each genre
-  return genres.map((genre) => titleCase(genre.trim())).join(", ");
+  const genre = genreString.split(",")[0];
+  return titleCase(genre.trim());
 }
 
 export function formatChartDate(value: any) {
