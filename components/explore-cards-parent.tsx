@@ -11,8 +11,8 @@ import { Skeleton } from "./ui/skeleton";
 const SkeletonCard = () => {
   return (
     <Skeleton className="w-[var(--display-card-width)] h-[195px] px-4 flex">
-      <Skeleton className="mt-4 max-w-[90px] max-h-[90px] min-w-[90px] min-h-[90px] rounded-md" />
-      <Skeleton className="mt-4 w-3/5 h-[20px] ml-2" />
+      <Skeleton className="mt-3 max-w-[90px] max-h-[90px] min-w-[90px] min-h-[90px] rounded-md" />
+      <Skeleton className="mt-3 w-3/5 h-[20px] ml-2" />
     </Skeleton>
   );
 };

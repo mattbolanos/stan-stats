@@ -150,7 +150,7 @@ export function ExploreCard({
       </>
 
       <CardHeader
-        className={`mt-4 mb-3 px-4 flex-grow ${artist.id ? "mt-4" : "mt-0"}`}
+        className={`mb-3 px-4 flex-grow ${artist.id ? "mt-3" : "mt-0"}`}
       >
         <div className="flex items-start space-x-3">
           {artist.image && (

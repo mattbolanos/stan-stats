@@ -123,9 +123,9 @@ export default async function Home() {
   const displayArtist = await getDisplayArtists();
 
   return (
-    <main className="flex-1 px-20 sm:mt-8 mt-2 mb-10">
-      <div className="flex justify-between">
-        <div className="max-w-xl flex flex-col">
+    <main className="flex-1 px-16 sm:mt-8 mt-2 mb-10">
+      <div className="flex justify-between lg:flex-row flex-col">
+        <div className="flex flex-col pr-5">
           <div className="flex flex-col gap-3 mt-2 mb-5 text-center md:text-left min-h-fit">
             <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
               Explore artist{" "}
@@ -165,13 +165,13 @@ export default async function Home() {
           <DisplayCards artists={displayArtist} />
         </div>
       </div>
-      <div className="flex justify-start gap-10">
+      {/* <div className="flex justify-start gap-10">
         <ExploreCardsParent
           defaultArtistSample={defaultArtistSample}
           defaultDetails={defaultDetails}
         />
         <ExploreChart dateRange={dateRange} />
-      </div>
+      </div> */}
     </main>
   );
 }
