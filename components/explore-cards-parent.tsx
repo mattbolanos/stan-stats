@@ -4,9 +4,18 @@ import { ArtistDetailsResponse, ArtistSample } from "@/lib/types";
 import { useExplore, useExploreDispatch } from "@/contexts/ExploreContext";
 import { useEffect } from "react";
 import { FAKE_ARTIST_ID } from "@/lib/utils";
-import { Spinner } from "./ui/spinner";
 import { ExploreCard } from "./explore-card";
 import { Button } from "./ui/button";
+import { Skeleton } from "./ui/skeleton";
+
+const SkeletonCard = () => {
+  return (
+    <Skeleton className="w-[var(--display-card-width)] h-[195px] px-4 flex">
+      <Skeleton className="mt-4 max-w-[90px] max-h-[90px] min-w-[90px] min-h-[90px] rounded-md" />
+      <Skeleton className="mt-4 w-3/5 h-[20px] ml-2" />
+    </Skeleton>
+  );
+};
 
 export default function ExploreCardsParent({
   defaultArtistSample = [],
@@ -38,10 +47,10 @@ export default function ExploreCardsParent({
   return (
     <div className="flex flex-col items-center gap-3.5 justify-start">
       {intialLoad ? (
-        <div className="flex items-center gap-2.5 justify-start">
-          <Spinner size={5} />
-          <span className="loading-text">Loading</span>
-        </div>
+        <>
+          <SkeletonCard />
+          <SkeletonCard />
+        </>
       ) : (
         <>
           {selectedArtists.map((artist) => (

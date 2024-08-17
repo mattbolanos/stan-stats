@@ -80,7 +80,7 @@ export function ExploreCard({
   return (
     <Card
       key={artist.selectIndex}
-      className="w-96 relative flex flex-col"
+      className="w-[var(--display-card-width)] relative flex flex-col"
       style={{
         border: `2.5px solid ${
           displayArtist
@@ -89,46 +89,48 @@ export function ExploreCard({
         }`,
       }}
     >
-      {!displayArtist && (
-        <>
-          <div className="absolute top-1 mt-0.5 flex items-center justify-between w-full pl-4 pr-2">
-            <div className="flex items-center">
-              {artist.id &&
-                socialButton(
-                  createSpotifyURL(artist.id),
-                  <Image
-                    src="/spotify-color.svg"
-                    alt="Spotify"
-                    height={18}
-                    width={18}
-                    className="min-w-4 min-h-4"
-                  />
-                )}
-              {artist.urlInstagram &&
-                socialButton(
-                  artist.urlInstagram,
-                  <InstagramLogoIcon
-                    height={18}
-                    width={18}
-                    color="hsl(var(--instagram))"
-                  />
-                )}
-              {artist.urlTwitter &&
-                socialButton(
-                  artist.urlTwitter,
-                  <TwitterLogoIcon
-                    height={18}
-                    width={18}
-                    color="hsl(var(--twitter))"
-                  />
-                )}
-            </div>
+      <>
+        <div className="absolute top-1 mt-0.5 flex items-center justify-between w-full pl-4 pr-2">
+          <div className="flex items-center">
+            {artist.id &&
+              socialButton(
+                createSpotifyURL(artist.id),
+                <Image
+                  src="/spotify-color.svg"
+                  alt="Spotify"
+                  height={18}
+                  width={18}
+                  className="min-w-4 min-h-4"
+                />
+              )}
+            {artist.urlInstagram &&
+              socialButton(
+                artist.urlInstagram,
+                <InstagramLogoIcon
+                  height={18}
+                  width={18}
+                  color="hsl(var(--instagram))"
+                />
+              )}
+            {artist.urlTwitter &&
+              socialButton(
+                artist.urlTwitter,
+                <TwitterLogoIcon
+                  height={18}
+                  width={18}
+                  color="hsl(var(--twitter))"
+                />
+              )}
+          </div>
+          {!displayArtist && (
             <ExploreArtistSelect
               key={artist.selectIndex}
               defaultArtistSample={defaultArtistSample || []}
               selectIndex={artist.selectIndex}
             />
-          </div>
+          )}
+        </div>
+        {!displayArtist && (
           <div className="absolute bottom-2 z-10 flex items-center w-full pr-2 justify-end">
             <Button
               size="mini"
@@ -144,8 +146,9 @@ export function ExploreCard({
               <Cross2Icon className="w-6 h-6 shrink-0 text-red-600" />
             </Button>
           </div>
-        </>
-      )}
+        )}
+      </>
+
       <CardHeader
         className={`mt-4 mb-3 px-4 flex-grow ${artist.id ? "mt-4" : "mt-0"}`}
       >
@@ -160,11 +163,11 @@ export function ExploreCard({
             />
           )}
           <div className="flex flex-col w-full">
-            <CardTitle className="pr-0.5">
+            <CardTitle>
               {artist.name ? artist.name : "No Artist Selected"}
             </CardTitle>
             <CardDescription className="text-xs mt-3 flex justify-between">
-              <div className="flex flex-col space-y-1.5 max-w-[100px] w-[100px]">
+              <div className="flex flex-col space-y-1.5 max-w-[110px] w-[110px]">
                 {artist.id && (
                   <TooltipProvider>
                     <Tooltip delayDuration={150}>
@@ -195,7 +198,7 @@ export function ExploreCard({
                 )}
               </div>
               {artist.latestReleaseName && (
-                <div className="flex flex-col space-y-1.5 max-w-[130px] w-[130px]">
+                <div className="flex flex-col space-y-1.5 max-w-[125px] w-[125px]">
                   <span className="text-muted-foreground flex items-center">
                     {artist.latestReleaseShareUrl ? (
                       <a
