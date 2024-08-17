@@ -16,6 +16,7 @@ import {
 import { MoveHorizontal, TrendingDown, TrendingUp } from "lucide-react";
 import {
   Cross2Icon,
+  ExternalLinkIcon,
   InstagramLogoIcon,
   TwitterLogoIcon,
 } from "@radix-ui/react-icons";
@@ -72,7 +73,7 @@ export function ExploreCard({
   return (
     <Card
       key={artist.selectIndex}
-      className="min-w-96 max-w-96 relative flex flex-col"
+      className="w-96 relative flex flex-col"
       style={{
         border: `2.5px solid ${
           displayArtist
@@ -135,9 +136,7 @@ export function ExploreCard({
           )}
       </div>
       <CardHeader
-        className={`mt-4 mb-3 px-4 flex-grow ${
-          artist.id ? "mt-4" : "mt-0"
-        } max-w-96`}
+        className={`mt-4 mb-3 px-4 flex-grow ${artist.id ? "mt-4" : "mt-0"}`}
       >
         <div className="flex items-start space-x-3">
           {artist.image && (
@@ -154,8 +153,8 @@ export function ExploreCard({
               {artist.name ? artist.name : "No Artist Selected"}
             </CardTitle>
             <CardDescription className="text-xs mt-2 flex justify-between">
-              <div className="flex flex-col space-y-1">
-                <p>
+              <div className="flex flex-col space-y-1 max-w-[100px] w-[100px]">
+                <p className="truncate">
                   <span className="text-gray-400">Genre</span>{" "}
                   <span>{cleanGenres(artist.genres)}</span>
                 </p>
@@ -174,10 +173,29 @@ export function ExploreCard({
                 )}
               </div>
               {artist.latestReleaseName && (
-                <div className="flex flex-col space-y-1">
-                  <span className="text-gray-400">Latest</span>{" "}
-                  <span>{artist.latestReleaseName}</span>
-                  <span>{artist.latestReleaseDate}</span>
+                <div className="flex flex-col space-y-1 max-w-[130px] w-[130px]">
+                  <span className="text-gray-400 flex items-center gap-1">
+                    Latest Release
+                    {artist.latestReleaseShareUrl && (
+                      <a
+                        target="_blank"
+                        href={artist.latestReleaseShareUrl}
+                        rel="noopener noreferrer"
+                        className="hover:bg-accent rounded-md"
+                      >
+                        <ExternalLinkIcon
+                          className="w-3 h-3 color-site-primary"
+                          strokeWidth={3}
+                        />
+                      </a>
+                    )}
+                  </span>
+                  <span className="truncate" title={artist.latestReleaseName}>
+                    {artist.latestReleaseName}
+                  </span>
+                  <span className="text-gray-400">
+                    {artist.latestReleaseDate}
+                  </span>
                 </div>
               )}
             </CardDescription>
