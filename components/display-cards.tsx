@@ -28,16 +28,14 @@ export const DisplayCards = ({ artists }: { artists: SelectedArtist[] }) => {
   return (
     <div
       ref={bannerRef}
-      className="overflow-x-hidden whitespace-nowrap w-full max-w-2xl
-      display-cards-container opacity-75"
+      className="overflow-x-hidden w-full max-w-2xl
+      display-cards-container opacity-75 flex gap-5"
     >
-      <div className="inline-block">
-        {artists.map((artist, index) => (
-          <div key={index} className="inline-block mx-3">
-            <ExploreCard artist={artist} displayArtist={false} />
-          </div>
-        ))}
-      </div>
+      {artists.map((artist, index) => (
+        <div key={index} className="inline-block">
+          <ExploreCard artist={artist} displayArtist={true} />
+        </div>
+      ))}
     </div>
   );
 };
