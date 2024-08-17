@@ -57,7 +57,7 @@ export function ExploreChart({
 
     return {
       chartData,
-      uniqueIds: uniqueIds,
+      uniqueIds,
       yAxisMin: Math.floor(min),
       yAxisMax: Math.ceil(max),
     };

@@ -72,9 +72,13 @@ export function ExploreCard({
   return (
     <Card
       key={artist.selectIndex}
-      className="w-96 relative flex flex-col"
+      className="min-w-96 max-w-96 relative flex flex-col"
       style={{
-        border: `2.5px solid hsl(var(--chart-${artist.selectIndex + 1}))`,
+        border: `2.5px solid ${
+          displayArtist
+            ? "currentColor"
+            : `hsl(var(--chart-${artist.selectIndex + 1}))`
+        }`,
       }}
     >
       {!displayArtist && (
@@ -99,7 +103,7 @@ export function ExploreCard({
           </Button>
         </div>
       )}
-      <div className="absolute top-2 left-2 z-10 flex items-center">
+      <div className="absolute top-2 left-4 z-10 flex items-center">
         {artist.id &&
           socialButton(
             createSpotifyURL(artist.id),

@@ -8,7 +8,7 @@
     --background-end: 210 20% 92%;
     --radial-color: 210 30% 75%;
     --foreground: 20 14.3% 4.1%;
-    --scroll-shadow-size: 1rem;
+    --display-card-gap: 20px;
 
     --card: 0 0% 100%;
     --card-foreground: 20 14.3% 4.1%;
@@ -159,14 +159,36 @@
   text-align: left;
 }
 
-.display-cards-container {
+.animate-scroll {
+  display: inline-flex;
+  animation: scroll 50s linear infinite;
+}
+
+.display-cards {
   mask-image: linear-gradient(
     to right,
     #000,
     #000,
     transparent 0,
-    #000 var(--scroll-shadow-size),
-    #000 calc(100% - var(--scroll-shadow-size)),
+    #000 100px,
+    #000 calc(100% - 100px),
     transparent
   );
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-50% - var(--display-card-gap) / 2));
+  }
+}
+
+.animate-scroll > div {
+  flex: 0 0 auto;
+}
+
+.animate-scroll:hover {
+  animation-play-state: paused;
 }

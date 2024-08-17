@@ -206,4 +206,5 @@ export const DISPLAY_ARTISTS = [
   "1McMsnEElThX1knmY4oliG",
   "6vWDO969PvNqNYHIOW5v0m",
   "4q3ewBCX7sLwd24euuV69X",
+  "0L8ExT028jH3ddEcZwqJJ5",
 ];
