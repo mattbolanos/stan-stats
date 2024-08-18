@@ -34,12 +34,14 @@ import {
 export function ExploreChart({
   dateRange,
   displayDetails,
+  className,
 }: {
   dateRange: {
     min: string;
     max: string;
   };
   displayDetails?: ArtistDetailsResponse;
+  className?: string;
 }) {
   const { artistStreams, selectedArtists } = useExplore();
   let streams: ArtistStream[];
@@ -117,7 +119,7 @@ export function ExploreChart({
   ).concat(chartData[chartData.length - 1]?.date);
 
   return (
-    <Card className="max-w-3xl h-fit w-full">
+    <Card className={`max-w-3xl h-fit w-full ${className}`}>
       <CardHeader>
         <CardTitle className="flex items-center gap-1.5">
           <Image

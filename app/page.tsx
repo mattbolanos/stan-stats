@@ -161,7 +161,11 @@ export default async function Home() {
         </div>
         <div className="flex flex-col gap-5 opacity-85 items-end">
           <DisplayCards artists={displayDetails.meta} />
-          <ExploreChart dateRange={dateRange} displayDetails={displayDetails} />
+          <ExploreChart
+            dateRange={dateRange}
+            displayDetails={displayDetails}
+            className="w-11/12"
+          />
         </div>
       </div>
       <div className="flex justify-start gap-10">

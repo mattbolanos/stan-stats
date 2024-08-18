@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import {
   Card,
@@ -18,6 +16,8 @@ import { MoveHorizontal, TrendingDown, TrendingUp } from "lucide-react";
 import {
   Cross2Icon,
   ExternalLinkIcon,
+  EyeClosedIcon,
+  EyeOpenIcon,
   InstagramLogoIcon,
   TwitterLogoIcon,
 } from "@radix-ui/react-icons";
@@ -132,7 +132,10 @@ export function ExploreCard({
           )}
         </div>
         {!displayArtist && (
-          <div className="absolute bottom-2 z-10 flex items-center w-full pr-2 justify-end">
+          <div className="absolute bottom-2 z-10 flex items-center w-full pr-2 justify-end gap-2">
+            <Button size="mini" variant="ghost">
+              <EyeOpenIcon className="w-6 h-6 shrink-0" />
+            </Button>
             <Button
               size="mini"
               variant="ghost"

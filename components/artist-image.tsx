@@ -23,6 +23,7 @@ export const ArtistImage = ({ artist }: { artist: SelectedArtist }) => {
       width={90}
       height={90}
       placeholder="blur"
+      loading="eager"
       blurDataURL={rgbDataURL(23, 23, 23)}
       className="max-w-[90px] max-h-[90px] min-w-[90px] min-h-[90px] rounded-md border-gray-700 border-x border-y"
     />
