@@ -165,13 +165,13 @@ export default async function Home() {
           <DisplayCards artists={displayArtist} />
         </div>
       </div>
-      {/* <div className="flex justify-start gap-10">
+      <div className="flex justify-start gap-10">
         <ExploreCardsParent
           defaultArtistSample={defaultArtistSample}
           defaultDetails={defaultDetails}
         />
         <ExploreChart dateRange={dateRange} />
-      </div> */}
+      </div>
     </main>
   );
 }

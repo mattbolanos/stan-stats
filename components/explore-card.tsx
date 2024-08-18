@@ -84,7 +84,7 @@ export function ExploreCard({
       style={{
         border: `2.5px solid ${
           displayArtist
-            ? "currentColor"
+            ? "text-muted-foreground"
             : `hsl(var(--chart-${artist.selectIndex + 1}))`
         }`,
       }}
@@ -150,7 +150,7 @@ export function ExploreCard({
       </>
 
       <CardHeader
-        className={`mb-3 px-4 flex-grow ${artist.id ? "mt-3" : "mt-0"}`}
+        className={`mb-3 px-4 flex-grow ${artist.id ? "mt-4" : "mt-0"}`}
       >
         <div className="flex items-start space-x-3">
           {artist.image && (
@@ -162,11 +162,15 @@ export function ExploreCard({
               className="max-w-[90px] max-h-[90px] min-w-[90px] min-h-[90px] rounded-md border-gray-700 border-x border-y"
             />
           )}
-          <div className="flex flex-col w-full">
-            <CardTitle>
+          <div className="flex flex-col w-full justify-between h-full">
+            <CardTitle
+              className={`${
+                artist.name.length > 25 ? "text-md" : "text-xl"
+              } leading-5`}
+            >
               {artist.name ? artist.name : "No Artist Selected"}
             </CardTitle>
-            <CardDescription className="text-xs mt-3 flex justify-between">
+            <CardDescription className="text-xs flex justify-between">
               <div className="flex flex-col space-y-1.5 max-w-[110px] w-[110px]">
                 {artist.id && (
                   <TooltipProvider>

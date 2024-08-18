@@ -22,11 +22,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { useExploreDispatch, useExplore } from "@/contexts/ExploreContext";
 import { Spinner } from "./ui/spinner";
 import { DEFAULT_ARTIST_SAMPLE_SIZE, fetchArtistDetails } from "@/lib/utils";
 import { useDebouncedCallback } from "use-debounce";
+import { Pencil2Icon } from "@radix-ui/react-icons";
 
 export default function ExploreArtistSelect({
   defaultArtistSample = [],
@@ -174,7 +174,7 @@ export default function ExploreArtistSelect({
             aria-expanded={open}
             size="mini"
           >
-            <MagnifyingGlassIcon className="w-6 h-6 shrink-0" />
+            <Pencil2Icon className="w-5 h-5 shrink-0" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0">
