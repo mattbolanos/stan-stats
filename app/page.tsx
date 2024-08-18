@@ -119,7 +119,7 @@ export default async function Home() {
   const displayDetails = await getDisplayDetails();
 
   return (
-    <main className="flex-1 px-16 sm:mt-8 mt-2 mb-10">
+    <main className="px-16 sm:mt-8 mt-2 mb-10 flex flex-col gap-10">
       <div className="flex justify-between lg:flex-row flex-col items-start">
         <div className="pr-10 flex flex-col gap-4">
           <div className="flex flex-col gap-3 mt-2 mb-5 text-center md:text-left min-h-fit">
