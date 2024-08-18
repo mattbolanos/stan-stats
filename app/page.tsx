@@ -2,11 +2,7 @@ import { DisplayCards } from "@/components/display-cards";
 import ExploreCardsParent from "@/components/explore-cards-parent";
 import { ExploreChart } from "@/components/explore-chart";
 import { supabase } from "@/lib/supabase";
-import {
-  ArtistDetailsResponse,
-  ArtistSample,
-  SelectedArtist,
-} from "@/lib/types";
+import { ArtistDetailsResponse, ArtistSample } from "@/lib/types";
 import {
   DEFAULT_ARTIST_SAMPLE_SIZE,
   defaultArtists,
@@ -108,11 +104,11 @@ async function getTotals() {
   };
 }
 
-async function getDisplayArtists(): Promise<SelectedArtist[]> {
+async function getDisplayDetails(): Promise<ArtistDetailsResponse> {
   "use server";
 
   const details = await queryArtistDetails(supabase, DISPLAY_ARTISTS);
-  return details.meta as SelectedArtist[];
+  return details;
 }
 
 export default async function Home() {
@@ -120,24 +116,26 @@ export default async function Home() {
   const dateRange = await getDateRange();
   const defaultDetails = await getDefaultDetails();
   const { totalArtists, totalAlbums, totalSingles } = await getTotals();
-  const displayArtist = await getDisplayArtists();
+  const displayDetails = await getDisplayDetails();
 
   return (
     <main className="flex-1 px-16 sm:mt-8 mt-2 mb-10">
-      <div className="flex justify-between lg:flex-row flex-col">
-        <div className="pr-5">
+      <div className="flex justify-between lg:flex-row flex-col items-start">
+        <div className="pr-10 flex flex-col gap-4">
           <div className="flex flex-col gap-3 mt-2 mb-5 text-center md:text-left min-h-fit">
             <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
               Explore artist{" "}
-              <span className="color-site-primary">popularity</span> over time
+              <span className="color-site-primary">popularity</span>
             </h1>
-            <p className="text-lg text-muted-foreground tracking-tight">
+            <p className="text-lg text-muted-foreground">
               Dive into our extensive Spotify monthly listener database. Compare
               artists, track your favorites, and uncover trends across genres
               and time periods. Whether you&apos;re analyzing chart movements or
               discovering rising stars, our site provides the insights you need
               to stan on.
             </p>
+          </div>
+          <div className="flex flex-col gap-3">
             <p className="text-md flex items-center md:justify-start justify-center gap-1.5">
               <ClockIcon className="w-5 h-5 opacity-75 shrink-0" />
               Since{" "}
@@ -161,18 +159,18 @@ export default async function Home() {
             </p>
           </div>
         </div>
-        <div>
-          <DisplayCards artists={displayArtist} />
-          <div>hi there</div>
+        <div className="flex flex-col gap-5 opacity-85 items-end">
+          <DisplayCards artists={displayDetails.meta} />
+          <ExploreChart dateRange={dateRange} displayDetails={displayDetails} />
         </div>
       </div>
-      {/* <div className="flex justify-start gap-10">
+      <div className="flex justify-start gap-10">
         <ExploreCardsParent
           defaultArtistSample={defaultArtistSample}
           defaultDetails={defaultDetails}
         />
         <ExploreChart dateRange={dateRange} />
-      </div> */}
+      </div>
     </main>
   );
 }

@@ -31,5 +31,5 @@ export interface SelectedArtist {
 
 export interface ArtistDetailsResponse {
   streams: ArtistStream[];
-  meta: SelectedArtist | SelectedArtist[];
+  meta: SelectedArtist[];
 }

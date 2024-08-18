@@ -32,6 +32,7 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "./ui/tooltip";
+import { ArtistImage } from "./artist-image";
 
 const changeText = (change: number, formatFn?: any) => {
   const formattedValue = formatFn ? formatFn(change) : change.toString();
@@ -153,16 +154,8 @@ export function ExploreCard({
         className={`mb-3 px-4 flex-grow ${artist.id ? "mt-4" : "mt-0"}`}
       >
         <div className="flex items-start space-x-3">
-          {artist.image && (
-            <Image
-              src={artist.image}
-              alt={artist.name}
-              height={90}
-              width={90}
-              className="max-w-[90px] max-h-[90px] min-w-[90px] min-h-[90px] rounded-md border-gray-700 border-x border-y"
-            />
-          )}
-          <div className="flex flex-col w-full justify-between h-full">
+          {artist.image && <ArtistImage artist={artist} />}
+          <div className="flex flex-col w-full justify-between h-[90px]">
             <CardTitle
               className={`${
                 artist.name.length > 25 ? "text-md" : "text-xl"

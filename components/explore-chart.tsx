@@ -19,29 +19,50 @@ import {
 } from "@/components/ui/chart";
 import { useExplore } from "@/contexts/ExploreContext";
 import {
+  DISPLAY_CHART_ARTISTS,
   formatChartDate,
   formatDateRange,
   formatMonthlyListeners,
 } from "@/lib/utils";
 import Image from "next/image";
+import {
+  ArtistDetailsResponse,
+  ArtistStream,
+  SelectedArtist,
+} from "@/lib/types";
 
 export function ExploreChart({
   dateRange,
+  displayDetails,
 }: {
   dateRange: {
     min: string;
     max: string;
   };
+  displayDetails?: ArtistDetailsResponse;
 }) {
   const { artistStreams, selectedArtists } = useExplore();
+  let streams: ArtistStream[];
+  let artists: SelectedArtist[];
+  if (displayDetails) {
+    streams = displayDetails.streams.filter((stream) =>
+      DISPLAY_CHART_ARTISTS.includes(stream.id)
+    );
+    artists = displayDetails.meta.filter((artist) =>
+      DISPLAY_CHART_ARTISTS.includes(artist.id)
+    );
+  } else {
+    streams = artistStreams;
+    artists = selectedArtists;
+  }
 
   const { chartData, uniqueIds, yAxisMin, yAxisMax } = useMemo(() => {
     const dataMap = new Map();
-    const uniqueIds = Array.from(new Set(artistStreams.map((item) => item.id)));
+    const uniqueIds = Array.from(new Set(streams.map((item) => item.id)));
     let min = Infinity;
     let max = -Infinity;
 
-    artistStreams.forEach((stream) => {
+    streams.forEach((stream) => {
       if (!dataMap.has(stream.updated_at)) {
         dataMap.set(stream.updated_at, {});
       }
@@ -61,7 +82,7 @@ export function ExploreChart({
       yAxisMin: Math.floor(min),
       yAxisMax: Math.ceil(max),
     };
-  }, [artistStreams]);
+  }, [streams]);
 
   const chartConfig = useMemo(() => {
     return uniqueIds.reduce((config, id, index) => {
@@ -96,7 +117,7 @@ export function ExploreChart({
   ).concat(chartData[chartData.length - 1]?.date);
 
   return (
-    <Card className="max-w-3xl h-fit">
+    <Card className="max-w-3xl h-fit w-full">
       <CardHeader>
         <CardTitle className="flex items-center gap-1.5">
           <Image
@@ -154,15 +175,13 @@ export function ExploreChart({
                 type="linear"
                 dataKey={id}
                 stroke={`hsl(var(--chart-${
-                  (selectedArtists.find((artist) => artist.id === id)
-                    ?.selectIndex || 0) + 1
+                  (artists.find((artist) => artist.id === id)?.selectIndex ||
+                    0) + 1
                 }))`}
                 strokeWidth={2}
                 dot={false}
                 animationDuration={800}
-                name={`${
-                  selectedArtists.find((artist) => artist.id === id)?.name
-                }`}
+                name={`${artists.find((artist) => artist.id === id)?.name}`}
               />
             ))}
             <ChartLegend content={<ChartLegendContent nameKey="name" />} />

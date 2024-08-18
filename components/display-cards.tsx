@@ -3,7 +3,7 @@ import { SelectedArtist } from "@/lib/types";
 
 export const DisplayCards = ({ artists }: { artists: SelectedArtist[] }) => {
   return (
-    <div className="overflow-hidden w-full max-w-[675px] opacity-65 display-cards">
+    <div className="overflow-hidden max-w-3xl display-cards">
       <div className="animate-scroll flex gap-[--display-card-gap] items-stretch">
         {artists.map((artist, index) => (
           <div

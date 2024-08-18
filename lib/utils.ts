@@ -205,10 +205,15 @@ export function createSpotifyURL(artistId: string) {
 }
 
 export const DISPLAY_ARTISTS = [
+  "06HL4z0CvFAxyc27GXpf02",
+  "6qqNVTkY8uBg9cP3Jd7DAH",
   "74KM79TiuVKeVCqs8QtB0B",
   "1McMsnEElThX1knmY4oliG",
   "6vWDO969PvNqNYHIOW5v0m",
   "0L8ExT028jH3ddEcZwqJJ5",
-  "25uiPmTg16RbhZWAqwLBy5",
-  "7MoIc5s9KXolCBH1fy9kkw",
+];
+
+export const DISPLAY_CHART_ARTISTS = [
+  "06HL4z0CvFAxyc27GXpf02",
+  "6qqNVTkY8uBg9cP3Jd7DAH",
 ];

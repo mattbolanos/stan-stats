@@ -21,6 +21,10 @@ const defaultState: ExploreState = {
       prevRank: 0,
       singlesCount: 0,
       albumsCount: 0,
+      latestReleaseDate: "",
+      latestReleaseType: "",
+      latestReleaseName: "",
+      latestReleaseShareUrl: "",
     },
   ],
 };
@@ -61,18 +65,7 @@ function playerReducer(
       return {
         ...state,
         selectedArtists: state.selectedArtists.concat({
-          id: "",
-          name: "",
-          image: "",
-          genres: "",
-          currentListens: 0,
-          prevListens: 0,
-          urlInstagram: "",
-          urlTwitter: "",
-          rank: 0,
-          prevRank: 0,
-          singlesCount: 0,
-          albumsCount: 0,
+          ...defaultState.selectedArtists[0],
           selectIndex: getFirstAvailableIndex(state.selectedArtists),
         }),
       };
@@ -84,52 +77,23 @@ function playerReducer(
       }
 
       // if meta is an array
-      if (Array.isArray(action.payload.meta)) {
-        const passedIndexes = action.payload.meta.map(
-          (meta: SelectedArtist) => meta.selectIndex
-        );
+      const passedIndexes = action.payload.meta.map(
+        (meta: SelectedArtist) => meta.selectIndex
+      );
 
-        const idsToRemove = state.selectedArtists
-          .filter((artist) => passedIndexes.includes(artist.selectIndex))
-          .map((artist) => artist.id);
-
-        return {
-          ...state,
-          selectedArtists: state.selectedArtists
-            .filter((artist) => !passedIndexes.includes(artist.selectIndex))
-            .concat(action.payload.meta)
-            .sort((a, b) => a.selectIndex - b.selectIndex),
-          artistStreams: state.artistStreams
-            .filter((stream) => !idsToRemove.includes(stream.id))
-            .concat(action.payload.streams),
-        };
-      }
-
-      const selectedArtistIdToRemove = state.selectedArtists.find(
-        (artist) => artist.selectIndex === action.payload.meta.selectIndex
-      )?.id;
+      const idsToRemove = state.selectedArtists
+        .filter((artist) => passedIndexes.includes(artist.selectIndex))
+        .map((artist) => artist.id);
 
       return {
         ...state,
-        artistStreams: state.artistStreams
-          .filter((stream) => stream.id !== selectedArtistIdToRemove)
-          .concat(action.payload.streams),
         selectedArtists: state.selectedArtists
-          .filter(
-            (artist) => artist.selectIndex !== action.payload.meta.selectIndex
-          )
+          .filter((artist) => !passedIndexes.includes(artist.selectIndex))
           .concat(action.payload.meta)
-          // sort by if id is not null
-          // then by selectIndex
-          .sort((a, b) => {
-            if (a.id && !b.id) {
-              return -1;
-            }
-            if (!a.id && b.id) {
-              return 1;
-            }
-            return a.selectIndex - b.selectIndex;
-          }),
+          .sort((a, b) => a.selectIndex - b.selectIndex),
+        artistStreams: state.artistStreams
+          .filter((stream) => !idsToRemove.includes(stream.id))
+          .concat(action.payload.streams),
       };
 
     // remove artist`
