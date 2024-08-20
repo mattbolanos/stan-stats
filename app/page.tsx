@@ -130,7 +130,7 @@ const HeroCard = ({
   description: string;
 }) => {
   return (
-    <Card className="w-full sm:w-[calc(50%-0.5rem)] p-2 min-h-[190px] bg-primary-foreground">
+    <Card className="w-full md:w-[calc(50%-0.5rem)] p-2 min-h-[190px] bg-primary-foreground">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <div className="p-2 rounded-md bg-secondary">
