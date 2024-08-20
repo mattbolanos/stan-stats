@@ -24,7 +24,11 @@ import {
 } from "@/components/ui/popover";
 import { useExploreDispatch, useExplore } from "@/contexts/ExploreContext";
 import { Spinner } from "./ui/spinner";
-import { DEFAULT_ARTIST_SAMPLE_SIZE, fetchArtistDetails } from "@/lib/utils";
+import {
+  DEFAULT_ARTIST_SAMPLE_SIZE,
+  FAKE_ARTIST_ID,
+  fetchArtistDetails,
+} from "@/lib/utils";
 import { useDebouncedCallback } from "use-debounce";
 import { Pencil2Icon } from "@radix-ui/react-icons";
 
@@ -37,7 +41,8 @@ export default function ExploreArtistSelect({
 }) {
   const { selectedArtists } = useExplore();
   const [open, setOpen] = useState(
-    !selectedArtists.find((a) => a.selectIndex === selectIndex)?.id
+    selectedArtists.find((a) => a.selectIndex === selectIndex)?.id ===
+      FAKE_ARTIST_ID
   );
   const [value, setValue] = useState("");
   const [search, setSearch] = useState("");

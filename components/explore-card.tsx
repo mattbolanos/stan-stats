@@ -9,6 +9,7 @@ import {
 import {
   cleanGenres,
   createSpotifyURL,
+  FAKE_ARTIST_ID,
   formatChartDate,
   formatMonthlyListeners,
 } from "@/lib/utils";
@@ -133,7 +134,11 @@ export function ExploreCard({
         </div>
         {!displayArtist && (
           <div className="absolute bottom-2 z-10 flex items-center w-full pr-2 justify-end gap-2">
-            <Button size="mini" variant="ghost">
+            <Button
+              size="mini"
+              variant="ghost"
+              disabled={artist.id === FAKE_ARTIST_ID}
+            >
               <EyeOpenIcon className="w-6 h-6 shrink-0" />
             </Button>
             <Button
@@ -168,7 +173,7 @@ export function ExploreCard({
             </CardTitle>
             <CardDescription className="text-xs flex justify-between">
               <div className="flex flex-col space-y-1.5 max-w-[110px] w-[110px]">
-                {artist.id && (
+                {artist.genres.length > 0 && (
                   <TooltipProvider>
                     <Tooltip delayDuration={150}>
                       <TooltipTrigger asChild className="cursor-pointer">

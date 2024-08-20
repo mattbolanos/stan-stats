@@ -120,55 +120,49 @@ export default async function Home() {
 
   return (
     <main className="px-16 sm:mt-8 mt-2 mb-10 flex flex-col gap-10">
-      <div className="flex justify-between lg:flex-row flex-col items-start">
-        <div className="pr-10 flex flex-col gap-4">
-          <div className="flex flex-col gap-3 mt-2 mb-5 text-center md:text-left min-h-fit">
-            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
-              Explore artist{" "}
-              <span className="color-site-primary">popularity</span>
-            </h1>
-            <p className="text-lg text-muted-foreground">
-              Dive into our extensive Spotify monthly listener database. Compare
-              artists, track your favorites, and uncover trends across genres
-              and time periods. Whether you&apos;re analyzing chart movements or
-              discovering rising stars, our site provides the insights you need
-              to stan on.
-            </p>
-          </div>
-          <div className="flex flex-col gap-3">
-            <p className="text-md flex items-center md:justify-start justify-center gap-1.5">
-              <ClockIcon className="w-5 h-5 opacity-75 shrink-0" />
-              Since{" "}
-              {new Date(dateRange.min).toLocaleString("default", {
-                month: "long",
-                year: "numeric",
-                timeZone: "UTC",
-              })}
-            </p>
-            <p className="text-md flex items-center md:justify-start justify-center gap-1.5">
-              <Mic2Icon className="w-5 h-5 opacity-75 shrink-0" />
-              {formatMonthlyListeners(totalArtists ?? 0)} artists
-            </p>
-            <p className="text-md flex items-center md:justify-start justify-center gap-1.5">
-              <Disc3 className="w-5 h-5 opacity-75 shrink-0" />
-              {formatMonthlyListeners(totalAlbums ?? 0)} albums
-            </p>
-            <p className="text-md flex items-center md:justify-start justify-center gap-1.5">
-              <Music2Icon className="w-5 h-5 opacity-75 shrink-0" />
-              {formatMonthlyListeners(totalSingles ?? 0)} singles
-            </p>
-          </div>
+      <div className="flex justify-center flex-col items-center">
+        <div className="flex flex-col mt-2 mb-5 justify-center items-center text-center md:text-left min-h-fit">
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">
+            Spotify Artist{" "}
+            <span className="color-site-primary">Popularity</span> by the
+            Numbers
+          </h1>
+          <p
+            className="text-xl text-muted-foreground max-w-xl mt-5 text-center"
+            style={{ textWrap: "balance" }}
+          >
+            Stan like a pro. Compare your faves. See who&apos;s hot and
+            who&apos;s not.
+          </p>
         </div>
-        <div className="flex flex-col gap-5 opacity-85 items-end">
-          <DisplayCards artists={displayDetails.meta} />
-          <ExploreChart
-            dateRange={dateRange}
-            displayDetails={displayDetails}
-            className="w-11/12"
-          />
+        <div className="flex flex-col gap-3 items-center w-full">
+          <p className="text-md flex items-center gap-1.5">
+            <ClockIcon className="w-5 h-5 opacity-75 shrink-0" />
+            Since{" "}
+            {new Date(dateRange.min).toLocaleString("default", {
+              month: "long",
+              year: "numeric",
+              timeZone: "UTC",
+            })}
+          </p>
+          <p className="text-md flex items-center gap-1.5">
+            <Mic2Icon className="w-5 h-5 opacity-75 shrink-0" />
+            {formatMonthlyListeners(totalArtists ?? 0)} artists
+          </p>
+          <p className="text-md flex items-center gap-1.5">
+            <Disc3 className="w-5 h-5 opacity-75 shrink-0" />
+            {formatMonthlyListeners(totalAlbums ?? 0)} albums
+          </p>
+          <p className="text-md flex items-center gap-1.5">
+            <Music2Icon className="w-5 h-5 opacity-75 shrink-0" />
+            {formatMonthlyListeners(totalSingles ?? 0)} singles
+          </p>
         </div>
       </div>
-      <div className="flex justify-start gap-10">
+      <div className="flex flex-col gap-5 opacity-85 items-center">
+        <DisplayCards artists={displayDetails.meta} />
+      </div>
+      <div className="flex justify-start gap-10 mt-32">
         <ExploreCardsParent
           defaultArtistSample={defaultArtistSample}
           defaultDetails={defaultDetails}
