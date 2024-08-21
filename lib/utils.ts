@@ -205,15 +205,13 @@ export function createSpotifyURL(artistId: string) {
 }
 
 export const DISPLAY_ARTISTS = [
-  "06HL4z0CvFAxyc27GXpf02",
-  "6qqNVTkY8uBg9cP3Jd7DAH",
-  "74KM79TiuVKeVCqs8QtB0B",
   "1McMsnEElThX1knmY4oliG",
-  "6vWDO969PvNqNYHIOW5v0m",
-  "0L8ExT028jH3ddEcZwqJJ5",
-];
-
-export const DISPLAY_CHART_ARTISTS = [
-  "06HL4z0CvFAxyc27GXpf02",
-  "6qqNVTkY8uBg9cP3Jd7DAH",
+  "0EmeFodog0BfCgMzAIvKQp",
+  "74KM79TiuVKeVCqs8QtB0B",
+  "6zFYqv1mOsgBRQbae3JJ9e",
+  "3l0CmX0FuQjFxr8SK7Vqag",
+  "40ZNYROS4zLfyyBSs2PGe2",
+  "3lWVgSwutPsiJ8Awm7OTKU",
+  "1w5Kfo2jwwIPruYS2UWh56",
+  "1WaFQSHVGZQJTbf0BdxdNo",
 ];

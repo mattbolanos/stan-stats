@@ -162,7 +162,7 @@
   display: flex;
   gap: var(--display-card-gap);
   width: fit-content;
-  animation: scroll 20s linear infinite;
+  animation: scroll 50s linear infinite;
 }
 
 @keyframes scroll {

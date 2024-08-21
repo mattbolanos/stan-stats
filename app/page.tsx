@@ -123,7 +123,7 @@ export default async function Home() {
   const displayDetails = await getDisplayDetails();
 
   return (
-    <main className="px-16 sm:mt-28 mt-2 mb-10 flex flex-col gap-12">
+    <main className="px-16 sm:mt-28 mt-2 mb-10 flex flex-col gap-6">
       <div className="flex flex-col justify-center items-center text-center gap-10">
         <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">
           Spotify Artist <span className="color-site-primary">Popularity</span>{" "}
@@ -143,8 +143,7 @@ export default async function Home() {
           className="mt-3 flex justify-center"
         />
       </div>
-
-      <div className="flex justify-center items-center w-full mt-5">
+      <div className="flex justify-center items-center w-full mt-6">
         <div className="w-fit flex items-center gap-2 border-2 px-4 py-3 rounded-lg bg-primary-foreground">
           <DatabaseIcon className="w-5 h-5 text-green-500" />
           <p className="text-md font-bold">About the Database</p>
