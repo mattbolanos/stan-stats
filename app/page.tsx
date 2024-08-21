@@ -17,7 +17,13 @@ import {
   queryArtistDetails,
 } from "@/lib/utils";
 import { ClockIcon } from "@radix-ui/react-icons";
-import { DatabaseIcon, Disc3Icon, Mic2Icon, Music2Icon } from "lucide-react";
+import {
+  DatabaseIcon,
+  Disc3Icon,
+  HashIcon,
+  Mic2Icon,
+  Music2Icon,
+} from "lucide-react";
 
 async function getDefaultArtistSample(
   size: number = DEFAULT_ARTIST_SAMPLE_SIZE
@@ -113,10 +119,12 @@ async function getTotals(): Promise<{
   };
 }
 
-async function getDisplayDetails(): Promise<ArtistDetailsResponse> {
+async function getDisplayDetails(
+  artistIds: string[] = DISPLAY_ARTISTS
+): Promise<ArtistDetailsResponse> {
   "use server";
 
-  const details = await queryArtistDetails(supabase, DISPLAY_ARTISTS);
+  const details = await queryArtistDetails(supabase, artistIds);
   return details;
 }
 
@@ -127,19 +135,19 @@ const HeroCard = ({
 }: {
   icon: React.ElementType;
   title: string;
-  description: string;
+  description: string | JSX.Element;
 }) => {
   return (
-    <Card className="w-full md:w-[calc(50%-0.5rem)] p-2 min-h-[190px] bg-primary-foreground">
+    <Card className="w-full lg:w-[calc(33%-0.5rem)] p-0.5 min-h-[145px] bg-primary-foreground">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <CardTitle className="flex items-center gap-2.5">
           <div className="p-2 rounded-md bg-secondary">
             <Icon className="w-6 h-6 shrink-0 opacity-75 text-green-500" />
           </div>
           <p className="text-base font-bold">{title}</p>
         </CardTitle>
       </CardHeader>
-      <CardDescription className="px-5 py-3 pb-1 text-muted-foreground">
+      <CardDescription className="p-5 text-muted-foreground">
         {description}
       </CardDescription>
     </Card>
@@ -162,35 +170,41 @@ const HeroCards = ({
 }) => {
   const cardData = [
     {
+      icon: Mic2Icon,
+      title: `${totalArtists.toLocaleString()} Artists`,
+      description: (
+        <>
+          {`We attempt to track every artist with at least 5000 followers on Spotify. They combine for `}
+          <Disc3Icon className="h-5 w-5 shrink-0 inline-block mr-1" />
+          {formatMonthlyListeners(totalAlbums)} total albums and
+          <Music2Icon className="h-5 w-5 shrink-0 inline-block mr-1" />
+          {`${formatMonthlyListeners(totalSingles)} total singles.`}
+        </>
+      ),
+    },
+    {
+      icon: HashIcon,
+      title: "Full Artist Ranks",
+      description:
+        "A rank based on total monthly listeners is assigned to every single artist on our site. Spotify only provides ranks for top artists.",
+    },
+    {
       icon: ClockIcon,
       title: `Since ${new Date(dateRange.min).toLocaleString("default", {
         month: "long",
         year: "numeric",
         timeZone: "UTC",
       })}`,
-      description:
-        "Spotify updates monthly listener data daily. This figure represents the average number of unique listeners over the past 28 days who have played an artist's music at least once.",
-    },
-    {
-      icon: Mic2Icon,
-      title: `${formatMonthlyListeners(totalArtists ?? 0)} Artists`,
-      description:
-        "We use Spotify's API Search endpoint with a myriad of queries to find a wide breadth of artists. An artist must have 5k+ followers to be included in our database.",
-    },
-    {
-      icon: Disc3Icon,
-      title: `${formatMonthlyListeners(totalAlbums ?? 0)} Abums`,
-      description: "The total number of albums in the dataset.",
-    },
-    {
-      icon: Music2Icon,
-      title: `${formatMonthlyListeners(totalSingles ?? 0)} singles`,
-      description: "The total number of singles in the dataset.",
+      description: `Spotify updates their monthly listener figures daily. These numbers have been collected by Chart.ml daily since ${new Date(
+        dateRange.min
+      ).toLocaleString("default", {
+        dateStyle: "long",
+      })}.`,
     },
   ];
 
   return (
-    <div className="flex flex-wrap gap-4 max-w-4xl mx-auto">
+    <div className="flex flex-wrap gap-4 max-w-6xl mx-auto">
       {cardData.map((card, index) => (
         <HeroCard
           key={index}
@@ -222,7 +236,7 @@ export default async function Home() {
             className="text-xl text-muted-foreground max-w-3xl mt-5 text-center"
             style={{ textWrap: "balance" }}
           >
-            Stan like a pro. Compare your faves. See who&apos;s hot and
+            Stan like a pro. Compare your faves daily. See who&apos;s hot and
             who&apos;s not. Free and open source.
           </p>
         </div>
