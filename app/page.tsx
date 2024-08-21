@@ -1,29 +1,16 @@
 import { DisplayCards } from "@/components/display-cards";
 import ExploreCardsParent from "@/components/explore-cards-parent";
 import { ExploreChart } from "@/components/explore-chart";
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { HeroCards } from "@/components/hero-cards";
 import { supabase } from "@/lib/supabase";
 import { ArtistDetailsResponse, ArtistSample } from "@/lib/types";
 import {
   DEFAULT_ARTIST_SAMPLE_SIZE,
   defaultArtists,
   DISPLAY_ARTISTS,
-  formatMonthlyListeners,
   queryArtistDetails,
 } from "@/lib/utils";
-import { ClockIcon } from "@radix-ui/react-icons";
-import {
-  DatabaseIcon,
-  Disc3Icon,
-  HashIcon,
-  Mic2Icon,
-  Music2Icon,
-} from "lucide-react";
+import { DatabaseIcon } from "lucide-react";
 
 async function getDefaultArtistSample(
   size: number = DEFAULT_ARTIST_SAMPLE_SIZE
@@ -128,94 +115,6 @@ async function getDisplayDetails(
   return details;
 }
 
-const HeroCard = ({
-  icon: Icon,
-  title,
-  description,
-}: {
-  icon: React.ElementType;
-  title: string;
-  description: string | JSX.Element;
-}) => {
-  return (
-    <Card className="w-full lg:w-[calc(33%-0.5rem)] p-0.5 min-h-[145px] bg-primary-foreground">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2.5">
-          <div className="p-2 rounded-md bg-secondary">
-            <Icon className="w-6 h-6 shrink-0 opacity-75 text-green-500" />
-          </div>
-          <p className="text-base font-bold">{title}</p>
-        </CardTitle>
-      </CardHeader>
-      <CardDescription className="p-5 text-muted-foreground">
-        {description}
-      </CardDescription>
-    </Card>
-  );
-};
-
-const HeroCards = ({
-  dateRange,
-  totalArtists,
-  totalAlbums,
-  totalSingles,
-}: {
-  dateRange: {
-    min: string;
-    max: string;
-  };
-  totalArtists: number;
-  totalAlbums: number;
-  totalSingles: number;
-}) => {
-  const cardData = [
-    {
-      icon: Mic2Icon,
-      title: `${totalArtists.toLocaleString()} Artists`,
-      description: (
-        <>
-          {`We attempt to track every artist with at least 5000 followers on Spotify. They combine for `}
-          <Disc3Icon className="h-5 w-5 shrink-0 inline-block mr-1" />
-          {formatMonthlyListeners(totalAlbums)} total albums and
-          <Music2Icon className="h-5 w-5 shrink-0 inline-block mr-1" />
-          {`${formatMonthlyListeners(totalSingles)} total singles.`}
-        </>
-      ),
-    },
-    {
-      icon: HashIcon,
-      title: "Full Artist Ranks",
-      description:
-        "A rank based on total monthly listeners is assigned to every single artist on our site. Spotify only provides ranks for top artists.",
-    },
-    {
-      icon: ClockIcon,
-      title: `Since ${new Date(dateRange.min).toLocaleString("default", {
-        month: "long",
-        year: "numeric",
-        timeZone: "UTC",
-      })}`,
-      description: `Spotify updates their monthly listener figures daily. These numbers have been collected by Chart.ml daily since ${new Date(
-        dateRange.min
-      ).toLocaleString("default", {
-        dateStyle: "long",
-      })}.`,
-    },
-  ];
-
-  return (
-    <div className="flex flex-wrap gap-4 max-w-6xl mx-auto">
-      {cardData.map((card, index) => (
-        <HeroCard
-          key={index}
-          icon={card.icon}
-          title={card.title}
-          description={card.description}
-        />
-      ))}
-    </div>
-  );
-};
 export default async function Home() {
   const defaultArtistSample = await getDefaultArtistSample();
   const dateRange = await getDateRange();
@@ -224,26 +123,30 @@ export default async function Home() {
   const displayDetails = await getDisplayDetails();
 
   return (
-    <main className="px-16 sm:mt-8 mt-2 mb-10 flex flex-col gap-10">
-      <div className="flex justify-center flex-col items-center">
-        <div className="flex flex-col mt-2 mb-5 justify-center items-center text-center md:text-left min-h-fit">
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">
-            Spotify Artist{" "}
-            <span className="color-site-primary">Popularity</span> by the
-            Numbers
-          </h1>
-          <p
-            className="text-xl text-muted-foreground max-w-3xl mt-5 text-center"
-            style={{ textWrap: "balance" }}
-          >
-            Stan like a pro. Compare your faves daily. See who&apos;s hot and
-            who&apos;s not. Free and open source.
-          </p>
-        </div>
+    <main className="px-16 sm:mt-28 mt-2 mb-10 flex flex-col gap-12">
+      <div className="flex flex-col justify-center items-center text-center gap-10">
+        <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">
+          Spotify Artist <span className="color-site-primary">Popularity</span>{" "}
+          by the Numbers
+        </h1>
+        <p
+          className="text-xl text-muted-foreground max-w-3xl text-center"
+          style={{ textWrap: "balance" }}
+        >
+          Stan like a pro. Compare your faves daily. See who&apos;s hot and
+          who&apos;s not. Free and open source.
+        </p>
       </div>
-      <div className="flex justify-center items-center w-full">
-        <div className="w-fit flex items-center gap-2 border px-4 py-3 rounded-lg border-yellow-500 bg-primary-foreground">
-          <DatabaseIcon className="w-5 h-5" />
+      <div className="max-w-6xl mx-auto">
+        <DisplayCards
+          artists={displayDetails.meta}
+          className="mt-3 flex justify-center"
+        />
+      </div>
+
+      <div className="flex justify-center items-center w-full mt-5">
+        <div className="w-fit flex items-center gap-2 border-2 px-4 py-3 rounded-lg bg-primary-foreground">
+          <DatabaseIcon className="w-5 h-5 text-green-500" />
           <p className="text-md font-bold">About the Database</p>
         </div>
       </div>
@@ -253,9 +156,7 @@ export default async function Home() {
         totalAlbums={totalAlbums}
         totalSingles={totalSingles}
       />
-      <div className="flex flex-col gap-5 opacity-85 items-center">
-        <DisplayCards artists={displayDetails.meta} />
-      </div>
+
       <div className="flex justify-start gap-10 mt-32">
         <ExploreCardsParent
           defaultArtistSample={defaultArtistSample}

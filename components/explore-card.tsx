@@ -82,11 +82,11 @@ export function ExploreCard({
   return (
     <Card
       key={artist.selectIndex}
-      className="w-[var(--display-card-width)] relative flex flex-col"
+      className="w-[var(--display-card-width)] relative flex flex-col border"
       style={{
         border: `2.5px solid ${
           displayArtist
-            ? "text-muted-foreground"
+            ? "hsl(var(--border))"
             : `hsl(var(--chart-${artist.selectIndex + 1}))`
         }`,
       }}

@@ -114,22 +114,6 @@
   }
 }
 
-.font-bold {
-  font-weight: 700;
-}
-
-.font-medium {
-  font-weight: 300;
-}
-
-.nav-logo {
-  margin-right: 2.5rem;
-}
-
-.sm\:flex-row {
-  flex-direction: column;
-}
-
 .color-site-primary {
   color: hsl(var(--site-primary));
 }
