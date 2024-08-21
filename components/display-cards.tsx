@@ -10,19 +10,12 @@ export const DisplayCards = ({
 }) => {
   return (
     <div className={`overflow-hidden w-full display-cards ${className}`}>
-      <div className="animate-scroll flex gap-[--display-card-gap] items-stretch">
-        {artists.map((artist, index) => (
+      <div className="animate-scroll flex items-stretch">
+        {[...artists, ...artists, ...artists].map((artist, index) => (
           <div
             key={index}
-            className="flex items-center justify-center text-foreground"
-          >
-            <ExploreCard artist={artist} displayArtist={true} />
-          </div>
-        ))}
-        {artists.map((artist, index) => (
-          <div
-            key={index}
-            className="flex items-center justify-center text-foreground"
+            className="flex-shrink-0 flex items-center justify-center text-foreground"
+            style={{ width: "var(--display-card-width)" }}
           >
             <ExploreCard artist={artist} displayArtist={true} />
           </div>
