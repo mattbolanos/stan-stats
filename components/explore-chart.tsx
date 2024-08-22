@@ -39,17 +39,21 @@ export function ExploreChart({
 
   const { chartData, uniqueIds, yAxisMin, yAxisMax } = useMemo(() => {
     const dataMap = new Map();
-    const uniqueIds = Array.from(new Set(artistStreams.map((item) => item.id)));
+    const visibleArtists = selectedArtists
+      .filter((artist) => artist.show)
+      .map((artist) => artist.id);
     let min = Infinity;
     let max = -Infinity;
 
     artistStreams.forEach((stream) => {
-      if (!dataMap.has(stream.updated_at)) {
-        dataMap.set(stream.updated_at, {});
+      if (visibleArtists.includes(stream.id)) {
+        if (!dataMap.has(stream.updated_at)) {
+          dataMap.set(stream.updated_at, {});
+        }
+        dataMap.get(stream.updated_at)[stream.id] = stream.monthly_listeners;
+        min = Math.min(min, stream.monthly_listeners);
+        max = Math.max(max, stream.monthly_listeners);
       }
-      dataMap.get(stream.updated_at)[stream.id] = stream.monthly_listeners;
-      min = Math.min(min, stream.monthly_listeners);
-      max = Math.max(max, stream.monthly_listeners);
     });
 
     const chartData = Array.from(dataMap.entries()).map(([date, values]) => ({
@@ -59,11 +63,11 @@ export function ExploreChart({
 
     return {
       chartData,
-      uniqueIds,
+      uniqueIds: visibleArtists,
       yAxisMin: Math.floor(min),
       yAxisMax: Math.ceil(max),
     };
-  }, [artistStreams]);
+  }, [artistStreams, selectedArtists]);
 
   const chartConfig = useMemo(() => {
     return uniqueIds.reduce((config, id, index) => {
@@ -165,6 +169,7 @@ export function ExploreChart({
                 name={`${
                   selectedArtists.find((artist) => artist.id === id)?.name
                 }`}
+                animateNewValues={false}
               />
             ))}
             <ChartLegend content={<ChartLegendContent nameKey="name" />} />

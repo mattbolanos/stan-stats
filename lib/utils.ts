@@ -145,6 +145,7 @@ export async function queryArtistDetails(
   return {
     streams: streamsResult.data,
     meta: metaResult.data.map((artist) => ({
+      show: true,
       id: artist.id,
       name: artist.name,
       image: artist.image,

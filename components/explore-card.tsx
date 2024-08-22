@@ -70,13 +70,13 @@ export function ExploreCard({
   artist,
   defaultArtistSample,
   exploreDispatch,
-  selectedArtistsLength,
+  validArtistsLength,
   displayArtist = false,
 }: {
   artist: SelectedArtist;
   defaultArtistSample?: ArtistSample[];
   exploreDispatch?: Dispatch<ExploreAction> | undefined;
-  selectedArtistsLength?: number;
+  validArtistsLength?: number;
   displayArtist?: boolean;
 }) {
   return (
@@ -135,16 +135,31 @@ export function ExploreCard({
         {!displayArtist && (
           <div className="absolute bottom-2 z-10 flex items-center w-full pr-2 justify-end gap-2">
             <Button
-              size="mini"
+              size="sm"
               variant="ghost"
-              disabled={artist.id === FAKE_ARTIST_ID}
+              disabled={
+                artist.id === FAKE_ARTIST_ID ||
+                (validArtistsLength === 1 && artist.show)
+              }
+              onClick={() => {
+                exploreDispatch?.({
+                  type: "TOGGLE_SHOW",
+                  payload: artist.selectIndex,
+                });
+              }}
             >
-              <EyeOpenIcon className="w-6 h-6 shrink-0" />
+              {artist.show ? (
+                <EyeOpenIcon className="w-6 h-6 shrink-0" />
+              ) : (
+                <EyeClosedIcon className="w-6 h-6 shrink-0" />
+              )}
             </Button>
             <Button
               size="mini"
               variant="ghost"
-              disabled={selectedArtistsLength === 1}
+              disabled={
+                validArtistsLength === 1 && artist.id !== FAKE_ARTIST_ID
+              }
               onClick={() => {
                 exploreDispatch?.({
                   type: "REMOVE_ARTIST",

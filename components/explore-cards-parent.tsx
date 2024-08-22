@@ -59,7 +59,11 @@ export default function ExploreCardsParent({
               artist={artist}
               defaultArtistSample={defaultArtistSample}
               exploreDispatch={exploreDispatch}
-              selectedArtistsLength={selectedArtists.length}
+              validArtistsLength={
+                selectedArtists.filter(
+                  (artist) => artist.show && artist.id !== FAKE_ARTIST_ID
+                ).length
+              }
             />
           ))}
           {selectedArtists.length < 3 && (

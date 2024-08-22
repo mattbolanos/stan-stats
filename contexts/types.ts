@@ -14,4 +14,5 @@ export type ExploreAction =
   | { type: "ADD_ARTIST" }
   | { type: "REMOVE_ARTIST"; payload: number }
   | { type: "ADD_ARTIST_DETAILS"; payload: any }
-  | { type: "UPDATE_ARTIST_STREAMS"; payload: ArtistStream[] };
+  | { type: "UPDATE_ARTIST_STREAMS"; payload: ArtistStream[] }
+  | { type: "TOGGLE_SHOW"; payload: number };

@@ -8,6 +8,7 @@ const defaultState: ExploreState = {
   artistStreams: [],
   selectedArtists: [
     {
+      show: true,
       selectIndex: 0,
       id: FAKE_ARTIST_ID,
       name: "",
@@ -109,6 +110,17 @@ function playerReducer(
         ),
         selectedArtists: state.selectedArtists.filter(
           (artist) => artist.selectIndex !== action.payload
+        ),
+      };
+
+    // toggle show
+    case "TOGGLE_SHOW":
+      return {
+        ...state,
+        selectedArtists: state.selectedArtists.map((artist) =>
+          artist.selectIndex === action.payload
+            ? { ...artist, show: !artist.show }
+            : artist
         ),
       };
 

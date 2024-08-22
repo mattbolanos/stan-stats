@@ -10,6 +10,7 @@ export interface ArtistStream {
 }
 
 export interface SelectedArtist {
+  show: boolean;
   id: string;
   name: string;
   selectIndex: number;
