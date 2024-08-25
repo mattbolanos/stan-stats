@@ -170,7 +170,7 @@ export default function ExploreArtistSelect({
 
   return (
     <div className="flex items-center gap-2">
-      {value && currentArtist !== value && <Spinner />}
+      {value && currentArtist !== value && <Spinner size={5} />}
       <Popover open={open} onOpenChange={handleOnOpenChange}>
         <PopoverTrigger asChild>
           <Button

@@ -125,14 +125,14 @@ export default async function Home() {
 
   return (
     <main className="px-16 sm:mt-28 mt-2 mb-10 flex flex-col gap-10">
-      <div className="flex flex-col justify-center items-center text-center space-y-6">
+      <div className="flex flex-col justify-center items-center text-center space-y-10">
         <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">
           Spotify Artist <span className="color-site-primary">Popularity</span>{" "}
           by the Numbers
         </h1>
 
         <p
-          className="text-xl text-muted-foreground max-w-3xl text-center"
+          className="text-xl text-muted-foreground max-w-3xl text-center leading-relaxed"
           style={{ textWrap: "balance" }}
         >
           Stan like a pro. Compare your faves daily. See who&apos;s hot and
@@ -140,7 +140,7 @@ export default async function Home() {
         </p>
         <WelcomeButton />
       </div>
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-6xl mx-auto w-full">
         <WelcomeCards
           artists={displayDetails.meta}
           className="mt-3 flex justify-center"
@@ -159,7 +159,7 @@ export default async function Home() {
         totalSingles={totalSingles}
       />
 
-      <section className="flex justify-start gap-10 mt-32" id="explore">
+      <section className="flex justify-center gap-6 mt-20" id="explore">
         <ExploreCardsParent
           defaultArtistSample={defaultArtistSample}
           defaultDetails={defaultDetails}

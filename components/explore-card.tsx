@@ -93,7 +93,7 @@ export function ExploreCard({
     >
       <>
         <div className="absolute top-1 mt-0.5 flex items-center justify-between w-full pl-4 pr-2">
-          <div className="flex items-center">
+          <div className="flex items-center gap-0.5">
             {artist.id &&
               socialButton(
                 createSpotifyURL(artist.id),
@@ -102,7 +102,7 @@ export function ExploreCard({
                   alt="Spotify"
                   height={18}
                   width={18}
-                  className="min-w-4 min-h-4"
+                  className="min-w-4 min-h-4 shrink-0"
                 />
               )}
             {artist.urlInstagram &&
@@ -112,6 +112,7 @@ export function ExploreCard({
                   height={18}
                   width={18}
                   color="hsl(var(--instagram))"
+                  className="shrink-0"
                 />
               )}
             {artist.urlTwitter &&
@@ -121,6 +122,7 @@ export function ExploreCard({
                   height={18}
                   width={18}
                   color="hsl(var(--twitter))"
+                  className="shrink-0"
                 />
               )}
           </div>
@@ -174,7 +176,7 @@ export function ExploreCard({
       </>
 
       <CardHeader
-        className={`mb-3 px-4 flex-grow ${artist.id ? "mt-4" : "mt-0"}`}
+        className={`mb-3 px-4 flex-grow ${artist.id ? "mt-3.5" : "mt-0"}`}
       >
         <div className="flex items-start space-x-3">
           {artist.image && <ArtistImage artist={artist} />}
