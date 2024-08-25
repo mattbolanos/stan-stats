@@ -1,7 +1,8 @@
-import { DisplayCards } from "@/components/display-cards";
+import { WelcomeCards } from "@/components/welcome-cards";
 import ExploreCardsParent from "@/components/explore-cards-parent";
 import { ExploreChart } from "@/components/explore-chart";
 import { HeroCards } from "@/components/hero-cards";
+import { WelcomeButton } from "@/components/welcome-button";
 import { supabase } from "@/lib/supabase";
 import { ArtistDetailsResponse, ArtistSample } from "@/lib/types";
 import {
@@ -123,12 +124,13 @@ export default async function Home() {
   const displayDetails = await getDisplayDetails();
 
   return (
-    <main className="px-16 sm:mt-28 mt-2 mb-10 flex flex-col gap-6">
-      <div className="flex flex-col justify-center items-center text-center gap-10">
+    <main className="px-16 sm:mt-28 mt-2 mb-10 flex flex-col gap-10">
+      <div className="flex flex-col justify-center items-center text-center space-y-6">
         <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">
           Spotify Artist <span className="color-site-primary">Popularity</span>{" "}
           by the Numbers
         </h1>
+
         <p
           className="text-xl text-muted-foreground max-w-3xl text-center"
           style={{ textWrap: "balance" }}
@@ -136,9 +138,10 @@ export default async function Home() {
           Stan like a pro. Compare your faves daily. See who&apos;s hot and
           who&apos;s not. Free and open source.
         </p>
+        <WelcomeButton />
       </div>
       <div className="max-w-6xl mx-auto">
-        <DisplayCards
+        <WelcomeCards
           artists={displayDetails.meta}
           className="mt-3 flex justify-center"
         />
@@ -156,13 +159,13 @@ export default async function Home() {
         totalSingles={totalSingles}
       />
 
-      <div className="flex justify-start gap-10 mt-32">
+      <section className="flex justify-start gap-10 mt-32" id="explore">
         <ExploreCardsParent
           defaultArtistSample={defaultArtistSample}
           defaultDetails={defaultDetails}
         />
         <ExploreChart dateRange={dateRange} />
-      </div>
+      </section>
     </main>
   );
 }

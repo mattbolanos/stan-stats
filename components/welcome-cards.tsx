@@ -1,7 +1,7 @@
 import { ExploreCard } from "./explore-card";
 import { SelectedArtist } from "@/lib/types";
 
-export const DisplayCards = ({
+export const WelcomeCards = ({
   artists,
   className,
 }: {
