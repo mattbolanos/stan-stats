@@ -104,13 +104,13 @@ export function ExploreChart({
   return (
     <Card className={`max-w-3xl h-fit w-full ${className}`}>
       <CardHeader>
-        <CardTitle className="flex items-center gap-1.5">
+        <CardTitle className="flex items-center gap-2">
           <Image
             src="/spotify-color.svg"
             alt="logo"
-            className="w-5 h-5"
-            width={10}
-            height={10}
+            className="shrink-0"
+            width={24}
+            height={24}
           />
           Monthly Listeners
         </CardTitle>

@@ -11,7 +11,8 @@ import {
   DISPLAY_ARTISTS,
   queryArtistDetails,
 } from "@/lib/utils";
-import { DatabaseIcon } from "lucide-react";
+import { DatabaseIcon, TrendingUpIcon } from "lucide-react";
+import { SectionTitle } from "@/components/section-title";
 
 async function getDefaultArtistSample(
   size: number = DEFAULT_ARTIST_SAMPLE_SIZE
@@ -136,7 +137,7 @@ export default async function Home() {
           style={{ textWrap: "balance" }}
         >
           Stan like a pro. Compare your faves daily. See who&apos;s hot and
-          who&apos;s not. Free and open source.
+          who&apos;s not. Free to use, always.
         </p>
         <WelcomeButton />
       </div>
@@ -146,12 +147,11 @@ export default async function Home() {
           className="mt-3 flex justify-center"
         />
       </div>
-      <div className="flex justify-center items-center w-full mt-6">
-        <div className="w-fit flex items-center gap-2 border-2 px-4 py-3 rounded-lg bg-primary-foreground">
-          <DatabaseIcon className="w-5 h-5 text-green-500" />
-          <p className="text-md font-bold">About the Database</p>
-        </div>
-      </div>
+      <SectionTitle
+        text="About the Database"
+        icon={DatabaseIcon}
+        className="mt-6 mx-auto"
+      />
       <HeroCards
         dateRange={dateRange}
         totalArtists={totalArtists}
@@ -159,12 +159,15 @@ export default async function Home() {
         totalSingles={totalSingles}
       />
 
-      <section className="flex justify-center gap-6 mt-20" id="explore">
-        <ExploreCardsParent
-          defaultArtistSample={defaultArtistSample}
-          defaultDetails={defaultDetails}
-        />
-        <ExploreChart dateRange={dateRange} />
+      <section className="flex flex-col items-center mt-20 gap-10" id="explore">
+        <SectionTitle text="Artist Trends" icon={TrendingUpIcon} />
+        <div className="flex justify-center gap-6 w-full">
+          <ExploreCardsParent
+            defaultArtistSample={defaultArtistSample}
+            defaultDetails={defaultDetails}
+          />
+          <ExploreChart dateRange={dateRange} />
+        </div>
       </section>
     </main>
   );
