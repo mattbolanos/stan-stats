@@ -1,5 +1,5 @@
+import { getArtistDetails } from "@/app/actions";
 import { supabase } from "@/lib/supabase";
-import { queryArtistDetails } from "@/lib/utils";
 
 export async function GET(request: Request): Promise<Response> {
   const { searchParams } = new URL(request.url);
@@ -10,7 +10,7 @@ export async function GET(request: Request): Promise<Response> {
     return Response.json([]);
   }
 
-  const details = await queryArtistDetails(supabase, artistId, selectIndex);
+  const details = await getArtistDetails(supabase, artistId, selectIndex);
 
   return Response.json(details);
 }
