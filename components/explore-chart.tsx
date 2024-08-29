@@ -1,7 +1,14 @@
 "use client";
 
 import { useMemo } from "react";
-import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
+import {
+  CartesianGrid,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+} from "recharts";
 import {
   Card,
   CardContent,
@@ -120,60 +127,62 @@ export function ExploreChart({
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
-          <LineChart
-            accessibilityLayer
-            data={chartData}
-            margin={{ left: 0, right: 12, top: 20, bottom: 20 }}
-          >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="date"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={25}
-              padding={{ left: 10, right: 25 }}
-              angle={-30}
-              ticks={xAxisTicks}
-              tickFormatter={formatChartDate}
-            />
-            <YAxis
-              tickLine={false}
-              axisLine={false}
-              domain={[yAxisMin, yAxisMax]}
-              tickFormatter={(value) =>
-                formatMonthlyListeners(Number(value), areTicksUnique ? 1 : 2)
-              }
-              tickMargin={5}
-              ticks={yAxisTicks}
-            />
-            <ChartTooltip
-              content={
-                <ChartTooltipContent
-                  indicator="dot"
-                  labelFormatter={formatChartDate}
-                />
-              }
-            />
-            {uniqueIds.map((id) => (
-              <Line
-                key={id}
-                type="linear"
-                dataKey={id}
-                stroke={`hsl(var(--chart-${
-                  (selectedArtists.find((artist) => artist.id === id)
-                    ?.selectIndex || 0) + 1
-                }))`}
-                strokeWidth={2}
-                dot={false}
-                animationDuration={800}
-                name={`${
-                  selectedArtists.find((artist) => artist.id === id)?.name
-                }`}
-                animateNewValues={false}
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart
+              accessibilityLayer
+              data={chartData}
+              margin={{ left: 0, right: 12, top: 20, bottom: 20 }}
+            >
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="date"
+                tickLine={false}
+                axisLine={false}
+                tickMargin={25}
+                padding={{ left: 10, right: 25 }}
+                angle={-30}
+                ticks={xAxisTicks}
+                tickFormatter={formatChartDate}
               />
-            ))}
-            <ChartLegend content={<ChartLegendContent nameKey="name" />} />
-          </LineChart>
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                domain={[yAxisMin, yAxisMax]}
+                tickFormatter={(value) =>
+                  formatMonthlyListeners(Number(value), areTicksUnique ? 1 : 2)
+                }
+                tickMargin={5}
+                ticks={yAxisTicks}
+              />
+              <ChartTooltip
+                content={
+                  <ChartTooltipContent
+                    indicator="dot"
+                    labelFormatter={formatChartDate}
+                  />
+                }
+              />
+              {uniqueIds.map((id) => (
+                <Line
+                  key={id}
+                  type="linear"
+                  dataKey={id}
+                  stroke={`hsl(var(--chart-${
+                    (selectedArtists.find((artist) => artist.id === id)
+                      ?.selectIndex || 0) + 1
+                  }))`}
+                  strokeWidth={2}
+                  dot={false}
+                  animationDuration={800}
+                  name={`${
+                    selectedArtists.find((artist) => artist.id === id)?.name
+                  }`}
+                  animateNewValues={false}
+                />
+              ))}
+              <ChartLegend content={<ChartLegendContent nameKey="name" />} />
+            </LineChart>
+          </ResponsiveContainer>
         </ChartContainer>
       </CardContent>
     </Card>
