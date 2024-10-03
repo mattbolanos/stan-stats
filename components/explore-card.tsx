@@ -263,7 +263,7 @@ export function ExploreCard({
         </div>
       </CardHeader>
       <CardContent className="px-5 pb-1 space-y-0.5 mt-auto sm:ml-1.5">
-        <div className="flex justify-start items-center gap-8">
+        <div className="flex justify-start items-center gap-4 sm:gap-8">
           {artist.rank > 0 && (
             <div>
               <p className="text-xs sm:text-sm text-muted-foreground">
