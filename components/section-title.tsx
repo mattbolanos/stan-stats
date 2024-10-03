@@ -15,7 +15,7 @@ export function SectionTitle({
         className || ""
       }`}
     >
-      <Icon className="w-5 h-5 text-green-500" />
+      <Icon className="w-5 h-5 text-site" />
       <p className="text-md font-bold">{text}</p>
     </div>
   );

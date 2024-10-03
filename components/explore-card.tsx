@@ -41,7 +41,7 @@ const changeText = (change: number, formatFn?: any) => {
   let Icon, color;
   if (change > 0) {
     Icon = TrendingUp;
-    color = "text-green-500";
+    color = "text-site";
   } else if (change < 0) {
     Icon = TrendingDown;
     color = "text-red-500";

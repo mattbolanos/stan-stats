@@ -22,7 +22,7 @@ export default async function Home() {
 
   return (
     <main className="px-8 sm:px-16 sm:mt-28 mt-8 mb-10 flex flex-col gap-10">
-      <div className="flex flex-col justify-center items-center text-center sm:space-y-10 space-y-4">
+      <div className="flex flex-col justify-center items-center text-center sm:space-y-8 space-y-4">
         <h1 className="text-xl sm:text-5xl font-bold tracking-tight">
           Spotify Artist <span className="color-site-primary">Popularity</span>{" "}
           by the Numbers
@@ -43,7 +43,7 @@ export default async function Home() {
       <SectionTitle
         text="About the Database"
         icon={DatabaseIcon}
-        className="sm:mt-6 mt-2 mx-auto"
+        className="sm:mt-2 mt-2 mx-auto"
       />
       <HeroCards
         dateRange={dateRange}
@@ -52,7 +52,7 @@ export default async function Home() {
         totalSingles={totalSingles}
       />
       <section
-        className="flex flex-col items-center sm:mt-6 mt-2 gap-10 scroll-mt-20"
+        className="flex flex-col items-center sm:mt-3 mt-2 gap-10 scroll-mt-20"
         id="explore"
       >
         <SectionTitle text="Artist Trends" icon={TrendingUpIcon} />

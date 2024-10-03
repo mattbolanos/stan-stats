@@ -22,7 +22,7 @@ const HeroCard = ({
       <CardHeader>
         <CardTitle className="flex items-center gap-2.5">
           <div className="p-2 rounded-md bg-secondary">
-            <Icon className="w-6 h-6 shrink-0 opacity-75 text-green-500" />
+            <Icon className="w-6 h-6 shrink-0 opacity-75 text-site" />
           </div>
           <p className="text-base font-bold">{title}</p>
         </CardTitle>

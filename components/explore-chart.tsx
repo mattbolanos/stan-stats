@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/chart";
 import { useExplore } from "@/contexts/ExploreContext";
 import {
+  FAKE_ARTIST_ID,
   formatChartDate,
   formatDateRange,
   formatMonthlyListeners,
@@ -50,7 +51,7 @@ export function ExploreChart({
   const { chartData, uniqueIds, yAxisMin, yAxisMax } = useMemo(() => {
     const dataMap = new Map();
     const visibleArtists = selectedArtists
-      .filter((artist) => artist.show)
+      .filter((artist) => artist.show && artist.id !== FAKE_ARTIST_ID)
       .map((artist) => artist.id);
     let min = Infinity;
     let max = -Infinity;

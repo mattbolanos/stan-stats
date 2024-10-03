@@ -62,6 +62,21 @@ export default function ExploreCardsParent({
 
   return (
     <div className="flex flex-col items-center gap-3.5">
+      {selectedArtists.length < 3 && (
+        <Button
+          className="bg-site max-w-52 w-full"
+          variant="outline"
+          onClick={() =>
+            exploreDispatch?.({
+              type: "ADD_ARTIST",
+            })
+          }
+          size="lg"
+        >
+          <PlusIcon className="w-5 h-5 mr-0.5" />
+          Add Artist
+        </Button>
+      )}
       <div className="flex flex-row items-center gap-3.5 justify-center flex-wrap">
         {intialLoad ? (
           <>
@@ -89,20 +104,6 @@ export default function ExploreCardsParent({
           </>
         )}
       </div>
-      {selectedArtists.length < 3 && (
-        <Button
-          className="w-full bg-green-600 font-bold max-w-[300px]"
-          variant="outline"
-          onClick={() =>
-            exploreDispatch?.({
-              type: "ADD_ARTIST",
-            })
-          }
-        >
-          <PlusIcon className="w-5 h-5 mr-1.5" />
-          Add Artist
-        </Button>
-      )}
     </div>
   );
 }
