@@ -91,12 +91,6 @@ export async function fetchArtistDetails(
   return response.json();
 }
 
-export const getPreviousDay = (dateString: string) => {
-  const date = new Date(dateString);
-  date.setDate(date.getDate() - 1);
-  return date.toISOString().split("T")[0]; // Format as YYYY-MM-DD
-};
-
 export function cleanGenres(genreString: string): string {
   if (!genreString) {
     return "N/A";

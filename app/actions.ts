@@ -5,7 +5,6 @@ import {
   DISPLAY_ARTISTS,
   defaultArtists,
   DEFAULT_ARTIST_SAMPLE_SIZE,
-  getPreviousDay,
 } from "@/lib/utils";
 import { ArtistDetailsResponse, ArtistSample } from "@/lib/types";
 import { SupabaseClient } from "@supabase/supabase-js";
@@ -184,18 +183,14 @@ export const getArtistDetails = unstable_cache(
               maxResult.data.find((stream) => stream.id === artist.id)
                 ?.max_update
         )?.monthly_listeners,
-        prevListens: streamsResult.data.find((stream) => {
-          const maxUpdateForArtist = maxResult.data.find(
-            (max) => max.id === artist.id
-          )?.max_update;
-          if (!maxUpdateForArtist) {
-            return false;
-          }
-
-          const previousDay = getPreviousDay(maxUpdateForArtist);
-
-          return stream.id === artist.id && stream.updated_at === previousDay;
-        })?.monthly_listeners,
+        prevListens: streamsResult.data
+          .filter((stream) => stream.id === artist.id)
+          .sort(
+            (a, b) =>
+              new Date(b.updated_at).getTime() -
+              new Date(a.updated_at).getTime()
+          )
+          .slice(1, 2)[0]?.monthly_listeners,
         rank: artist.artist_rank,
         prevRank: artist.prev_artist_rank,
         singlesCount: artist.singles_count,
