@@ -25,7 +25,7 @@ import {
 import { Button } from "./ui/button";
 import ExploreArtistSelect from "./explore-artist-select";
 import { ArtistSample, SelectedArtist } from "@/lib/types";
-import { Dispatch } from "react";
+import React, { Dispatch } from "react";
 import { ExploreAction } from "@/contexts/types";
 import {
   Tooltip,
@@ -72,17 +72,19 @@ export function ExploreCard({
   exploreDispatch,
   validArtistsLength,
   displayArtist = false,
+  shownArtists = 0,
 }: {
   artist: SelectedArtist;
   defaultArtistSample?: ArtistSample[];
   exploreDispatch?: Dispatch<ExploreAction> | undefined;
   validArtistsLength?: number;
+  shownArtists?: number;
   displayArtist?: boolean;
 }) {
   return (
     <Card
       key={artist.selectIndex}
-      className="w-[var(--display-card-width)] relative flex flex-col border"
+      className="w-full sm:w-[var(--display-card-width)] relative flex flex-col border min-h-[193px]"
       style={{
         border: `2.5px solid ${
           displayArtist
@@ -139,10 +141,7 @@ export function ExploreCard({
             <Button
               size="sm"
               variant="ghost"
-              disabled={
-                artist.id === FAKE_ARTIST_ID ||
-                (validArtistsLength === 1 && artist.show)
-              }
+              disabled={shownArtists < 2 && artist.show}
               onClick={() => {
                 exploreDispatch?.({
                   type: "TOGGLE_SHOW",

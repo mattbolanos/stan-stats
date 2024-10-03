@@ -54,7 +54,7 @@ export default async function Home() {
 
       <section className="flex flex-col items-center mt-20 gap-10" id="explore">
         <SectionTitle text="Artist Trends" icon={TrendingUpIcon} />
-        <div className="flex justify-center gap-2 w-full flex-col lg:flex-row">
+        <div className="flex justify-center gap-3.5 w-full flex-col items-center">
           <ExploreCardsParent
             defaultArtistSample={defaultArtistSample}
             defaultDetails={defaultDetails}
