@@ -17,7 +17,7 @@ export const fetchHeroArtists = unstable_cache(
     const details = await getArtistDetails(supabase, artistIds);
     return details.meta;
   },
-  ["hero-artists"],
+  ["fetchHeroArtists"],
   { revalidate: 43200, tags: ["hero-artists"] }
 );
 
@@ -41,8 +41,8 @@ export const fetchDefaultArtistDetails = unstable_cache(
 
     return details;
   },
-  ["defaultArtistDetails"],
-  { revalidate: 43200, tags: ["default-artist-details"] }
+  ["fetchDefaultArtistDetails"],
+  { revalidate: 21600, tags: ["default-artist-details"] }
 );
 
 export const fetchDateRange = unstable_cache(
@@ -64,7 +64,7 @@ export const fetchDateRange = unstable_cache(
     };
   },
   ["dateRange"],
-  { revalidate: 43200, tags: ["date-range"] }
+  { revalidate: 21600, tags: ["date-range"] }
 );
 
 export const fetchDefaultArtistSample = unstable_cache(
@@ -83,8 +83,8 @@ export const fetchDefaultArtistSample = unstable_cache(
 
     return data as ArtistSample[];
   },
-  ["defaultArtistSample"],
-  { revalidate: 43200, tags: ["artist-sample"] }
+  ["fetchDefaultArtistSample"],
+  { revalidate: 21600, tags: ["artist-sample"] }
 );
 
 export const fetchTotals = unstable_cache(
@@ -119,8 +119,8 @@ export const fetchTotals = unstable_cache(
       totalSingles: singleTotal ?? 0,
     };
   },
-  ["totals"],
-  { revalidate: 43200, tags: ["totals"] }
+  ["fetchTotals"],
+  { revalidate: 21600, tags: ["totals"] }
 );
 
 export const getArtistDetails = unstable_cache(
@@ -204,6 +204,6 @@ export const getArtistDetails = unstable_cache(
       })),
     };
   },
-  ["artistDetails"],
-  { revalidate: 43200, tags: ["artist-details"] }
+  ["fetchArtistDetails"],
+  { revalidate: 21600, tags: ["artist-details"] }
 );
