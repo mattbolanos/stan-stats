@@ -7,8 +7,12 @@ import { Providers } from "./providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Chart.ml | Explore Spotify monthly listener trends",
-  description: "Explore Spotify monthly listener trends",
+  title: "StanStats | Artist popularity by the numbers",
+  description:
+    "Compare your favorite artists daily. See who's hot and who's not.",
+  icons: {
+    icon: [{ url: "/favicon.png", type: "image/png" }],
+  },
 };
 
 export default function RootLayout({

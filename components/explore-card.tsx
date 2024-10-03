@@ -262,7 +262,7 @@ export function ExploreCard({
           </div>
         </div>
       </CardHeader>
-      <CardContent className="px-5 pb-1 space-y-0.5 mt-auto">
+      <CardContent className="px-5 pb-1 space-y-0.5 mt-auto sm:ml-1.5">
         <div className="flex justify-start items-center gap-6">
           {artist.rank > 0 && (
             <div>

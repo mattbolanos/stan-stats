@@ -21,15 +21,15 @@ export default async function Home() {
   const { totalArtists, totalAlbums, totalSingles } = await fetchTotals();
 
   return (
-    <main className="px-8 sm:px-16 sm:mt-28 mt-2 mb-10 flex flex-col gap-10">
-      <div className="flex flex-col justify-center items-center text-center space-y-10">
-        <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">
+    <main className="px-8 sm:px-16 sm:mt-28 mt-8 mb-10 flex flex-col gap-10">
+      <div className="flex flex-col justify-center items-center text-center sm:space-y-10 space-y-4">
+        <h1 className="text-xl sm:text-5xl font-bold tracking-tight">
           Spotify Artist <span className="color-site-primary">Popularity</span>{" "}
           by the Numbers
         </h1>
 
         <p
-          className="text-xl text-muted-foreground max-w-3xl text-center leading-relaxed"
+          className="text-md sm:text-xl text-muted-foreground max-w-3xl text-center leading-relaxed"
           style={{ textWrap: "balance" }}
         >
           Stan like a pro. Compare your faves daily. See who&apos;s hot and

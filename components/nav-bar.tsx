@@ -13,8 +13,8 @@ function infoPopoverContent() {
     <div className="flex flex-col gap-2.5 px-1">
       <h2 className="text-md font-bold">What is this site?</h2>
       <p className="text-sm">
-        Chart.ml is a web app that visualizes the monthly listener counts for
-        artists on Spotify. The data is updated daily.
+        StanStats is a web app that collects and visualizes the monthly listener
+        counts for artists on Spotify. The data is updated daily.
       </p>
       <h2 className="text-md font-bold">
         Why Can&apos;t I Find my Favorite Artist?
@@ -22,7 +22,7 @@ function infoPopoverContent() {
       <p className="text-sm">
         We use Spotify&apos;s API Search endpoint with a myriad of queries to
         find a wide breadth of artists. An artist must have 5k+ followers to be
-        included in our database.
+        included in our database. Artist missing? Open an issue on GitHub.
       </p>
     </div>
   );
@@ -30,11 +30,24 @@ function infoPopoverContent() {
 
 export default function NavBar() {
   return (
-    <nav className="flex items-center justify-between px-10 h-14 sticky top-0 z-40 backdrop-blur-sm">
+    <nav className="flex items-center justify-between px-10 sm:px-24 h-14 sticky top-0 z-40 backdrop-blur-sm border-b border-slate-200 dark:border-slate-800">
       <div className="flex items-center max-w-screen-2xl">
-        <div className="flex items-center space-x-2 nav-logo mr-5">
-          <Image src="/spotify-color.svg" alt="logo" width={24} height={24} />
-          <span className="font-bold">Chart.ml</span>
+        <div className="flex items-center gap-1 nav-logo">
+          <Image
+            src="/logo.svg"
+            alt="logo"
+            width={50}
+            height={50}
+            className="dark:hidden"
+          />
+          <Image
+            src="/logo-dark.svg"
+            alt="logo"
+            width={50}
+            height={50}
+            className="hidden dark:block"
+          />
+          <span className="font-bold">StanStats</span>
         </div>
       </div>
       <div className="flex justify-end gap-1.5 items-center">

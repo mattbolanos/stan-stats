@@ -4,10 +4,10 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --background-end: 210 20% 92%;
-    --radial-color: 210 30% 75%;
-    --foreground: 20 14.3% 4.1%;
+    --background: 141 10% 99%;
+    --background-end: 141 15% 95%;
+    --radial-color: 141 20% 85%;
+    --foreground: 141 73% 15%;
     --display-card-gap: 16px;
     --display-card-width: 400px;
 
