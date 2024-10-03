@@ -38,12 +38,12 @@ export default async function Home() {
         <WelcomeButton />
       </div>
       <div className="max-w-6xl mx-auto w-full">
-        <ArtistBanner className="mt-3 flex justify-center" />
+        <ArtistBanner className="mt-2 flex justify-center" />
       </div>
       <SectionTitle
         text="About the Database"
         icon={DatabaseIcon}
-        className="sm:mt-6 mt-3 mx-auto"
+        className="sm:mt-6 mt-2 mx-auto"
       />
       <HeroCards
         dateRange={dateRange}
@@ -52,11 +52,11 @@ export default async function Home() {
         totalSingles={totalSingles}
       />
       <section
-        className="flex flex-col items-center sm:mt-6 mt-3 gap-10"
+        className="flex flex-col items-center sm:mt-6 mt-2 gap-10 scroll-mt-20"
         id="explore"
       >
         <SectionTitle text="Artist Trends" icon={TrendingUpIcon} />
-        <div className="flex justify-center gap-3.5 w-full flex-col items-center">
+        <div className="flex justify-center sm:gap-3.5 gap-2.5 w-full flex-col items-center">
           <ExploreCardsParent
             defaultArtistSample={defaultArtistSample}
             defaultDetails={defaultDetails}

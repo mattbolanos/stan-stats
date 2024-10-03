@@ -109,7 +109,7 @@ export function ExploreChart({
   }).concat(chartData[chartData.length - 1]?.date);
 
   return (
-    <Card className={`max-w-4xl w-full border border-muted ${className}`}>
+    <Card className={`mt-1 max-w-4xl w-full border border-muted ${className}`}>
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-xs sm:text-base">
           <Image
