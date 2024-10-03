@@ -21,7 +21,7 @@ export default async function Home() {
   const { totalArtists, totalAlbums, totalSingles } = await fetchTotals();
 
   return (
-    <main className="px-16 sm:mt-28 mt-2 mb-10 flex flex-col gap-10">
+    <main className="px-8 sm:px-16 sm:mt-28 mt-2 mb-10 flex flex-col gap-10">
       <div className="flex flex-col justify-center items-center text-center space-y-10">
         <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">
           Spotify Artist <span className="color-site-primary">Popularity</span>{" "}
@@ -43,7 +43,7 @@ export default async function Home() {
       <SectionTitle
         text="About the Database"
         icon={DatabaseIcon}
-        className="mt-6 mx-auto"
+        className="sm:mt-6 mt-3 mx-auto"
       />
       <HeroCards
         dateRange={dateRange}
@@ -51,8 +51,10 @@ export default async function Home() {
         totalAlbums={totalAlbums}
         totalSingles={totalSingles}
       />
-
-      <section className="flex flex-col items-center mt-20 gap-10" id="explore">
+      <section
+        className="flex flex-col items-center sm:mt-6 mt-3 gap-10"
+        id="explore"
+      >
         <SectionTitle text="Artist Trends" icon={TrendingUpIcon} />
         <div className="flex justify-center gap-3.5 w-full flex-col items-center">
           <ExploreCardsParent

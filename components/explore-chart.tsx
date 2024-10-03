@@ -43,7 +43,7 @@ export function ExploreChart({
   };
   className?: string;
 }) {
-  const isDesktop = useMediaQuery("(min-width: 768px)");
+  const isDesktop = useMediaQuery("(min-width: 640px)");
 
   const { artistStreams, selectedArtists } = useExplore();
 
@@ -90,7 +90,7 @@ export function ExploreChart({
   }, [uniqueIds]);
 
   const yAxisStep = Math.round(((yAxisMax - yAxisMin) / 4) * 1000) / 1000;
-  const xAxisStep = Math.ceil(chartData.length / 7);
+  const xAxisStep = Math.ceil(chartData.length / (isDesktop ? 7 : 5));
 
   // Generate an array of 5 evenly spaced tick values
   const yAxisTicks = Array.from(
@@ -101,18 +101,15 @@ export function ExploreChart({
   const formattedTicks = yAxisTicks.map((tick) => formatMonthlyListeners(tick));
   const areTicksUnique = new Set(formattedTicks).size === formattedTicks.length;
 
-  const xAxisTicks = Array.from(
-    { length: 7 }, // Changed from 8 to 7
-    (_, index) => {
-      const reverseIndex = 6 - index; // 6, 5, 4, ..., 0
-      return chartData[
-        Math.max(chartData.length - 1 - xAxisStep * reverseIndex, 0)
-      ]?.date;
-    }
-  ).concat(chartData[chartData.length - 1]?.date);
+  const xAxisTicks = Array.from({ length: isDesktop ? 7 : 5 }, (_, index) => {
+    const reverseIndex = isDesktop ? 6 - index : 4 - index;
+    return chartData[
+      Math.max(chartData.length - 1 - xAxisStep * reverseIndex, 0)
+    ]?.date;
+  }).concat(chartData[chartData.length - 1]?.date);
 
   return (
-    <Card className={`max-w-5xl h-fit w-full ${className}`}>
+    <Card className={`max-w-4xl w-full border border-muted ${className}`}>
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-xs sm:text-base">
           <Image
@@ -120,7 +117,7 @@ export function ExploreChart({
             alt="logo"
             width={24}
             height={24}
-            className="shrink-0 w-6 h-6"
+            className="shrink-0 sm:w-6 sm:h-6 w-4 h-4"
           />
           Monthly Listeners
         </CardTitle>
@@ -134,18 +131,27 @@ export function ExploreChart({
             <LineChart
               accessibilityLayer
               data={chartData}
-              margin={{ left: 0, right: 12, top: 20, bottom: 20 }}
+              margin={{
+                left: isDesktop ? 0 : -10,
+                right: isDesktop ? 12 : 12,
+                top: isDesktop ? 20 : 12,
+                bottom: isDesktop ? 20 : 10,
+              }}
             >
               <CartesianGrid vertical={false} />
               <XAxis
                 dataKey="date"
                 tickLine={false}
                 axisLine={false}
-                tickMargin={25}
-                padding={{ left: 10, right: 25 }}
+                tickMargin={isDesktop ? 25 : 15}
+                padding={{
+                  left: isDesktop ? 10 : 0,
+                  right: isDesktop ? 25 : 10,
+                }}
                 angle={-30}
                 ticks={xAxisTicks}
                 tickFormatter={formatChartDate}
+                tick={{ fontSize: isDesktop ? "11px" : "8px" }}
               />
               <YAxis
                 tickLine={false}
@@ -154,8 +160,9 @@ export function ExploreChart({
                 tickFormatter={(value) =>
                   formatMonthlyListeners(Number(value), areTicksUnique ? 1 : 2)
                 }
-                tickMargin={5}
+                tickMargin={isDesktop ? 5 : 0}
                 ticks={yAxisTicks}
+                tick={{ fontSize: isDesktop ? "11px" : "8px" }}
               />
               <ChartTooltip
                 content={
@@ -183,7 +190,10 @@ export function ExploreChart({
                   animateNewValues={false}
                 />
               ))}
-              <ChartLegend content={<ChartLegendContent nameKey="name" />} />
+              <ChartLegend
+                content={<ChartLegendContent nameKey="name" />}
+                className="text-[11px] sm:text-base mt-1 sm:mt-8"
+              />
             </LineChart>
           </ResponsiveContainer>
         </ChartContainer>

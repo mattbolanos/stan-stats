@@ -182,7 +182,7 @@ export default function ExploreArtistSelect({
             <Pencil2Icon className="w-5 h-5 shrink-0" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[200px] p-0">
+        <PopoverContent className="sm:w-[200px] w-full p-0">
           <Command shouldFilter={false}>
             <CommandInput
               placeholder="Search artist..."

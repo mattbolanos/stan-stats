@@ -84,7 +84,7 @@ export function ExploreCard({
   return (
     <Card
       key={artist.selectIndex}
-      className="w-full sm:w-[var(--display-card-width)] relative flex flex-col border min-h-[193px]"
+      className="w-full sm:w-[var(--display-card-width)] relative flex flex-col border sm:min-h-[193px] min-h-[160px]"
       style={{
         border: `2.5px solid ${
           displayArtist
@@ -137,7 +137,7 @@ export function ExploreCard({
           )}
         </div>
         {!displayArtist && (
-          <div className="absolute bottom-2 z-10 flex items-center w-full pr-2 justify-end gap-2">
+          <div className="absolute bottom-2 z-10 flex items-center w-full pr-2 justify-end sm:gap-2">
             <Button
               size="sm"
               variant="ghost"
@@ -150,9 +150,9 @@ export function ExploreCard({
               }}
             >
               {artist.show ? (
-                <EyeOpenIcon className="w-6 h-6 shrink-0" />
+                <EyeOpenIcon className="sm:w-6 sm:h-6 w-5 h-5 shrink-0" />
               ) : (
-                <EyeClosedIcon className="w-6 h-6 shrink-0" />
+                <EyeClosedIcon className="sm:w-6 sm:h-6 w-5 h-5 shrink-0" />
               )}
             </Button>
             <Button
@@ -168,7 +168,7 @@ export function ExploreCard({
                 });
               }}
             >
-              <Cross2Icon className="w-6 h-6 shrink-0 text-red-600" />
+              <Cross2Icon className="sm:w-6 sm:h-6 w-5 h-5 shrink-0 text-red-600" />
             </Button>
           </div>
         )}
@@ -187,8 +187,8 @@ export function ExploreCard({
             >
               {artist.name ? artist.name : "No Artist Selected"}
             </CardTitle>
-            <CardDescription className="text-xs flex justify-between">
-              <div className="flex flex-col space-y-1.5 max-w-[110px] w-[110px]">
+            <CardDescription className="text-[10px] sm:text-xs flex justify-between">
+              <div className="flex flex-col space-y-1.5 sm:max-w-[110px] sm:w-[110px] w-[80px]">
                 {artist.genres.length > 0 && (
                   <TooltipProvider>
                     <Tooltip delayDuration={150}>
@@ -219,7 +219,7 @@ export function ExploreCard({
                 )}
               </div>
               {artist.latestReleaseName && (
-                <div className="flex flex-col space-y-1.5 max-w-[125px] w-[125px]">
+                <div className="flex flex-col space-y-1.5 sm:max-w-[125px] sm:w-[125px] w-[95px]">
                   <span className="text-muted-foreground flex items-center">
                     {artist.latestReleaseShareUrl ? (
                       <a
@@ -266,9 +266,11 @@ export function ExploreCard({
         <div className="flex justify-start items-center gap-6">
           {artist.rank > 0 && (
             <div>
-              <p className="text-sm text-muted-foreground">Artist Rank</p>
+              <p className="text-xs sm:text-sm text-muted-foreground">
+                Artist Rank
+              </p>
               <div className="flex items-center space-x-1.5 text-xs">
-                <p className="text-lg font-bold">#{artist.rank}</p>
+                <p className="text-base sm:text-lg font-bold">#{artist.rank}</p>
 
                 {artist.prevRank > 0 &&
                   artist.rank > 0 &&
@@ -278,9 +280,11 @@ export function ExploreCard({
           )}
           {artist.currentListens > 0 && (
             <div>
-              <p className="text-sm text-muted-foreground">Monthly Listeners</p>
+              <p className="text-xs sm:text-sm text-muted-foreground">
+                Monthly Listeners
+              </p>
               <div className="flex items-center space-x-1.5 text-xs">
-                <p className="text-lg font-bold">
+                <p className="text-base sm:text-lg font-bold">
                   {artist.id &&
                     (artist.currentListens > 0
                       ? artist.currentListens.toLocaleString()
