@@ -2,7 +2,7 @@
 
 import { ArtistDetailsResponse, ArtistSample } from "@/lib/types";
 import { useExplore, useExploreDispatch } from "@/contexts/ExploreContext";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { FAKE_ARTIST_ID } from "@/lib/utils";
 import { ExploreCard } from "./explore-card";
 import { Button } from "./ui/button";
@@ -45,7 +45,7 @@ export default function ExploreCardsParent({
   ]);
 
   return (
-    <div className="flex flex-col items-center gap-3.5 justify-start">
+    <div className="flex lg:flex-col flex-row items-center gap-3.5 justify-center flex-wrap">
       {intialLoad ? (
         <>
           <SkeletonCard />
@@ -68,7 +68,7 @@ export default function ExploreCardsParent({
           ))}
           {selectedArtists.length < 3 && (
             <Button
-              className="w-full bg-green-600 font-bold"
+              className="w-full bg-green-600 font-bold max-w-[300px]"
               variant="outline"
               onClick={() =>
                 exploreDispatch?.({

@@ -1,8 +1,6 @@
 import Image from "next/image";
-import Link from "next/link";
 import {
   GitHubLogoIcon,
-  HamburgerMenuIcon,
   HeartFilledIcon,
   InfoCircledIcon,
 } from "@radix-ui/react-icons";
@@ -35,18 +33,9 @@ export default function NavBar() {
     <nav className="flex items-center justify-between px-10 h-14 sticky top-0 z-40 backdrop-blur-sm">
       <div className="flex items-center max-w-screen-2xl">
         <div className="flex items-center space-x-2 nav-logo mr-5">
-          <HamburgerMenuIcon height={24} width={24} className="md:hidden" />
           <Image src="/spotify-color.svg" alt="logo" width={24} height={24} />
           <span className="font-bold">Chart.ml</span>
         </div>
-        {/* <nav className="items-center gap-4 text-sm lg:gap-6 md:flex hidden">
-          <Link href="/" legacyBehavior passHref>
-            Explore
-          </Link>
-          <Link href="/charts" legacyBehavior passHref>
-            Charts
-          </Link>
-        </nav> */}
       </div>
       <div className="flex justify-end gap-1.5 items-center">
         <NavButton

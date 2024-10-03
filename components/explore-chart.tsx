@@ -31,6 +31,7 @@ import {
   formatMonthlyListeners,
 } from "@/lib/utils";
 import Image from "next/image";
+import { useMediaQuery } from "@/hooks/use-media-query";
 
 export function ExploreChart({
   dateRange,
@@ -42,6 +43,8 @@ export function ExploreChart({
   };
   className?: string;
 }) {
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+
   const { artistStreams, selectedArtists } = useExplore();
 
   const { chartData, uniqueIds, yAxisMin, yAxisMax } = useMemo(() => {
@@ -109,19 +112,19 @@ export function ExploreChart({
   ).concat(chartData[chartData.length - 1]?.date);
 
   return (
-    <Card className={`max-w-3xl h-fit w-full ${className}`}>
+    <Card className={`max-w-5xl lg:max-w-3xl h-fit w-full ${className}`}>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <CardTitle className="flex items-center gap-2 text-xs sm:text-base">
           <Image
             src="/spotify-color.svg"
             alt="logo"
-            className="shrink-0"
             width={24}
             height={24}
+            className="shrink-0 w-6 h-6"
           />
           Monthly Listeners
         </CardTitle>
-        <CardDescription className="text-muted-foreground">
+        <CardDescription className="text-muted-foreground text-xs sm:text-base">
           {formatDateRange(dateRange.min, dateRange.max)}
         </CardDescription>
       </CardHeader>
