@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Card,
   CardDescription,
@@ -73,7 +74,7 @@ export const HeroCards = ({
         year: "numeric",
         timeZone: "UTC",
       })}`,
-      description: `Spotify updates their monthly listener figures daily. These numbers have been collected by Chart.ml daily since ${new Date(
+      description: `Spotify updates their monthly listener figures daily. These numbers have been collected daily since ${new Date(
         dateRange.min
       ).toLocaleString("default", {
         dateStyle: "long",
