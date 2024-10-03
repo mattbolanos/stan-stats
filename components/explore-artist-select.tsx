@@ -31,6 +31,8 @@ import {
 } from "@/lib/utils";
 import { useDebouncedCallback } from "use-debounce";
 import { Pencil2Icon } from "@radix-ui/react-icons";
+import { useMediaQuery } from "@/hooks/use-media-query";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 export default function ExploreArtistSelect({
   defaultArtistSample = [],
@@ -39,6 +41,8 @@ export default function ExploreArtistSelect({
   defaultArtistSample: ArtistSample[];
   selectIndex: number;
 }) {
+  const isMobile = useMediaQuery("(max-width: 640px)");
+
   const { selectedArtists } = useExplore();
   const [open, setOpen] = useState(
     selectedArtists.find((a) => a.selectIndex === selectIndex)?.id ===
@@ -168,6 +172,57 @@ export default function ExploreArtistSelect({
     (artist) => artist.selectIndex === selectIndex
   )?.id;
 
+  if (isMobile) {
+    return (
+      <Dialog open={open} onOpenChange={handleOnOpenChange}>
+        <DialogTrigger asChild>
+          <Button
+            variant="ghost"
+            role="combobox"
+            aria-expanded={open}
+            size="mini"
+          >
+            <Pencil2Icon className="w-5 h-5 shrink-0" />
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="w-5/6 rounded-lg">
+          <Command shouldFilter={false}>
+            <CommandInput
+              placeholder="Search artist..."
+              className="h-9"
+              value={search}
+              onValueChange={(value) => {
+                setSearch(value);
+              }}
+              endContent={loading && <Spinner />}
+            />
+            <CommandList
+              className="max-h-[200px] overflow-y-auto"
+              ref={listRef}
+              onScroll={handleScroll}
+            >
+              <CommandEmpty>No artists found.</CommandEmpty>
+              <CommandGroup>
+                {artists.map((artist) => (
+                  <CommandItem
+                    key={artist.id}
+                    keywords={[artist.name]}
+                    onSelect={() => handleSelect(artist.id)}
+                    disabled={
+                      selectedArtists.find((a) => a.id === artist.id) !==
+                      undefined
+                    }
+                  >
+                    {artist.name}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </DialogContent>
+      </Dialog>
+    );
+  }
   return (
     <div className="flex items-center gap-2">
       {value && currentArtist !== value && <Spinner size={5} />}

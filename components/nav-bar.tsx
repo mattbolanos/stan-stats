@@ -30,22 +30,22 @@ function infoPopoverContent() {
 
 export default function NavBar() {
   return (
-    <nav className="flex items-center justify-between px-10 sm:px-24 h-14 sticky top-0 z-40 backdrop-blur-sm border-b border-slate-200 dark:border-slate-800">
+    <nav className="flex items-center justify-between px-6 md:px-24 h-14 sticky top-0 z-40 backdrop-blur-sm border-b border-slate-200 dark:border-slate-800">
       <div className="flex items-center max-w-screen-2xl">
         <div className="flex items-center gap-1 nav-logo">
           <Image
             src="/logo.svg"
             alt="logo"
-            width={50}
-            height={50}
-            className="dark:hidden"
+            width={36}
+            height={36}
+            className="dark:hidden md:w-12 md:h-12 h-9 w-9"
           />
           <Image
             src="/logo-dark.svg"
             alt="logo"
-            width={50}
-            height={50}
-            className="hidden dark:block"
+            width={36}
+            height={36}
+            className="hidden dark:block md:w-12 md:h-12 h-9 w-9"
           />
           <span className="font-bold">StanStats</span>
         </div>
