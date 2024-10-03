@@ -3,8 +3,8 @@
 import { supabase } from "@/lib/supabase";
 import {
   DISPLAY_ARTISTS,
-  defaultArtists,
   DEFAULT_ARTIST_SAMPLE_SIZE,
+  getRandomSequentialIntegers,
 } from "@/lib/utils";
 import { ArtistDetailsResponse, ArtistSample } from "@/lib/types";
 import { SupabaseClient } from "@supabase/supabase-js";
@@ -18,13 +18,13 @@ export const fetchHeroArtists = unstable_cache(
     return details.meta;
   },
   ["fetchHeroArtists"],
-  { revalidate: 43200, tags: ["hero-artists"] }
+  { revalidate: 3600, tags: ["hero-artists"] }
 );
 
 export const fetchDefaultArtistDetails = unstable_cache(
-  async (
-    artistRanks: number[] = defaultArtists
-  ): Promise<ArtistDetailsResponse> => {
+  async (): Promise<ArtistDetailsResponse> => {
+    const artistRanks = getRandomSequentialIntegers();
+
     const { data, error } = await supabase
       .from("spotify_artists_meta")
       .select("id, name")
@@ -42,7 +42,7 @@ export const fetchDefaultArtistDetails = unstable_cache(
     return details;
   },
   ["fetchDefaultArtistDetails"],
-  { revalidate: 21600, tags: ["default-artist-details"] }
+  { revalidate: 3600, tags: ["default-artist-details"] }
 );
 
 export const fetchDateRange = unstable_cache(
@@ -64,7 +64,7 @@ export const fetchDateRange = unstable_cache(
     };
   },
   ["dateRange"],
-  { revalidate: 21600, tags: ["date-range"] }
+  { revalidate: 3600, tags: ["date-range"] }
 );
 
 export const fetchDefaultArtistSample = unstable_cache(
@@ -84,7 +84,7 @@ export const fetchDefaultArtistSample = unstable_cache(
     return data as ArtistSample[];
   },
   ["fetchDefaultArtistSample"],
-  { revalidate: 21600, tags: ["artist-sample"] }
+  { revalidate: 3600, tags: ["artist-sample"] }
 );
 
 export const fetchTotals = unstable_cache(
@@ -120,7 +120,7 @@ export const fetchTotals = unstable_cache(
     };
   },
   ["fetchTotals"],
-  { revalidate: 21600, tags: ["totals"] }
+  { revalidate: 3600, tags: ["totals"] }
 );
 
 export const getArtistDetails = unstable_cache(
@@ -205,5 +205,5 @@ export const getArtistDetails = unstable_cache(
     };
   },
   ["fetchArtistDetails"],
-  { revalidate: 21600, tags: ["artist-details"] }
+  { revalidate: 3600, tags: ["artist-details"] }
 );

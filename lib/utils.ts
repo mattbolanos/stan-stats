@@ -70,8 +70,6 @@ export function getRandomSequentialIntegers(
   return [start, start + 1];
 }
 
-export const defaultArtists = getRandomSequentialIntegers();
-
 export const FAKE_ARTIST_ID = "FAKE";
 
 export async function fetchArtistDetails(
