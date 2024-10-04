@@ -56,7 +56,7 @@ export default async function Home() {
         id="explore"
       >
         <SectionTitle text="Artist Trends" icon={TrendingUpIcon} />
-        <div className="flex justify-center sm:gap-3.5 gap-2.5 w-full flex-col items-center">
+        <div className="flex justify-center sm:gap-5 gap-3 w-full flex-col items-center">
           <ExploreCardsParent
             defaultArtistSample={defaultArtistSample}
             defaultDetails={defaultDetails}
