@@ -12,8 +12,8 @@ export const metadata: Metadata = {
   description:
     "Compare your favorite artists daily. See who's hot and who's not.",
   icons: {
-    icon: [{ url: "/favicon-small.png", type: "image/png" }],
-    apple: [{ url: "/favicon-small.png", sizes: "180x180", type: "image/png" }],
+    icon: [{ url: "/apple-icon.png", type: "image/png" }],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
   },
 };
 
@@ -24,6 +24,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className="dark">
+      <head>
+        <link rel="apple-touch-icon" href="/apple-icon.png" />
+      </head>
       <body className={inter.className}>
         <Providers>
           <NavBar />
