@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     "Compare your favorite artists daily. See who's hot and who's not.",
   icons: {
     icon: [{ url: "/favicon-small.png", type: "image/png" }],
-    apple: [{ url: "/favicon-small.png", type: "image/png", sizes: "180x180" }],
+    apple: [{ url: "/favicon-small.png", sizes: "180x180", type: "image/png" }],
   },
 };
 

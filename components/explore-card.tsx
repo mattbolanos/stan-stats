@@ -8,6 +8,7 @@ import {
 } from "./ui/card";
 import {
   cleanGenres,
+  cn,
   createSpotifyURL,
   FAKE_ARTIST_ID,
   formatChartDate,
@@ -52,7 +53,7 @@ const changeText = (change: number, formatFn?: any) => {
 
   return (
     <p className={`text-xs sm:text-sm flex items-center gap-1 ${color}`}>
-      <Icon className="shrink-0 sm:w-5 sm:h-5 w-4 h-4" />
+      <Icon className="shrink-0 sm:w-5 sm:h-5 w-3 h-3" />
       {formattedValue}
     </p>
   );
@@ -181,9 +182,12 @@ export function ExploreCard({
           {artist.image && <ArtistImage artist={artist} />}
           <div className="flex flex-col w-full justify-between h-[90px]">
             <CardTitle
-              className={`${
-                artist.name.length > 25 ? "text-md" : "text-xl"
-              } leading-5`}
+              className={cn(
+                artist.name.length > 25
+                  ? "sm:text-md text-sm"
+                  : "sm:text-xl text-lg",
+                "leading-5"
+              )}
             >
               {artist.name ? artist.name : "No Artist Selected"}
             </CardTitle>
@@ -263,7 +267,7 @@ export function ExploreCard({
         </div>
       </CardHeader>
       <CardContent className="px-5 pb-1 space-y-0.5 mt-auto sm:ml-1.5">
-        <div className="flex justify-start items-center gap-3.5 sm:gap-8">
+        <div className="flex justify-start items-center gap-8">
           {artist.rank > 0 && (
             <div>
               <p className="text-xs sm:text-sm text-muted-foreground">
@@ -279,7 +283,7 @@ export function ExploreCard({
             </div>
           )}
           {artist.currentListens > 0 && (
-            <div>
+            <div className="sm:ml-0 ml-1">
               <p className="text-xs sm:text-sm text-muted-foreground">
                 Monthly Listeners
               </p>
