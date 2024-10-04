@@ -50,12 +50,13 @@ export default function NavBar() {
           <span className="font-bold">StanStats</span>
         </div>
       </div>
-      <div className="flex justify-end gap-1.5 items-center">
+      <div className="flex justify-end gap-3 sm:gap-1.5 items-center">
         <NavButton
           icon={
             <InfoCircledIcon
               height={NAV_BTN_ICON_DIM}
               width={NAV_BTN_ICON_DIM}
+              className="shrink-0 hidden sm:block"
             />
           }
           popoverContent={infoPopoverContent()}

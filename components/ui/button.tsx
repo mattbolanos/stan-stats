@@ -60,15 +60,17 @@ interface NavButtonProps {
   icon: React.ReactNode;
   onClick?: () => void;
   popoverContent?: React.ReactNode;
+  className?: string;
 }
 
 const NavButton: React.FC<NavButtonProps> = ({
   icon,
   onClick,
   popoverContent,
+  className,
 }) => {
   const buttonContent = (
-    <Button size="sm" variant="ghost">
+    <Button size="sm" variant="ghost" className={className}>
       {icon}
     </Button>
   );
@@ -83,7 +85,12 @@ const NavButton: React.FC<NavButtonProps> = ({
   }
 
   return (
-    <Button size="sm" variant="ghost" onClick={onClick ?? undefined}>
+    <Button
+      size="sm"
+      variant="ghost"
+      onClick={onClick ?? undefined}
+      className={className}
+    >
       {icon}
     </Button>
   );
