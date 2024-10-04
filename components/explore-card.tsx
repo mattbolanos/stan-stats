@@ -51,8 +51,8 @@ const changeText = (change: number, formatFn?: any) => {
   }
 
   return (
-    <p className={`text-sm flex items-center gap-1 ${color}`}>
-      <Icon size={18} />
+    <p className={`text-xs sm:text-sm flex items-center gap-1 ${color}`}>
+      <Icon className="shrink-0 sm:w-5 sm:h-5 w-4 h-4" />
       {formattedValue}
     </p>
   );
@@ -150,9 +150,9 @@ export function ExploreCard({
               }}
             >
               {artist.show ? (
-                <EyeOpenIcon className="sm:w-6 sm:h-6 w-5 h-5 shrink-0" />
+                <EyeOpenIcon className="sm:w-6 sm:h-6 w-4 h-4 shrink-0" />
               ) : (
-                <EyeClosedIcon className="sm:w-6 sm:h-6 w-5 h-5 shrink-0" />
+                <EyeClosedIcon className="sm:w-6 sm:h-6 w-4 h-4 shrink-0" />
               )}
             </Button>
             <Button
@@ -168,7 +168,7 @@ export function ExploreCard({
                 });
               }}
             >
-              <Cross2Icon className="sm:w-6 sm:h-6 w-5 h-5 shrink-0 text-red-600" />
+              <Cross2Icon className="sm:w-6 sm:h-6 w-4 h-4 shrink-0 text-red-600" />
             </Button>
           </div>
         )}
@@ -263,14 +263,14 @@ export function ExploreCard({
         </div>
       </CardHeader>
       <CardContent className="px-5 pb-1 space-y-0.5 mt-auto sm:ml-1.5">
-        <div className="flex justify-start items-center gap-4 sm:gap-8">
+        <div className="flex justify-start items-center gap-3.5 sm:gap-8">
           {artist.rank > 0 && (
             <div>
               <p className="text-xs sm:text-sm text-muted-foreground">
                 Artist Rank
               </p>
-              <div className="flex items-center space-x-1.5 text-xs">
-                <p className="text-base sm:text-lg font-bold">#{artist.rank}</p>
+              <div className="flex items-center space-x-1.5">
+                <p className="text-xs sm:text-lg font-bold">#{artist.rank}</p>
 
                 {artist.prevRank > 0 &&
                   artist.rank > 0 &&
@@ -283,8 +283,8 @@ export function ExploreCard({
               <p className="text-xs sm:text-sm text-muted-foreground">
                 Monthly Listeners
               </p>
-              <div className="flex items-center space-x-1.5 text-xs">
-                <p className="text-base sm:text-lg font-bold">
+              <div className="flex items-center space-x-1.5">
+                <p className="text-xs sm:text-lg font-bold">
                   {artist.id &&
                     (artist.currentListens > 0
                       ? artist.currentListens.toLocaleString()
