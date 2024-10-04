@@ -1,13 +1,7 @@
 "use client";
 
 import { ArtistSample } from "@/lib/types";
-import {
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import * as React from "react";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -43,18 +37,20 @@ export default function ExploreArtistSelect({
   const isMobile = useMediaQuery("(max-width: 640px)");
 
   const { selectedArtists } = useExplore();
-  const [open, setOpen] = useState(
+  const [open, setOpen] = React.useState(
     selectedArtists.find((a) => a.selectIndex === selectIndex)?.id ===
       FAKE_ARTIST_ID
   );
-  const [value, setValue] = useState("");
-  const [search, setSearch] = useState("");
+  const [value, setValue] = React.useState("");
+  const [search, setSearch] = React.useState("");
   const exploreDispatch = useExploreDispatch();
-  const [artists, setArtists] = useState(defaultArtistSample);
-  const [loading, setLoading] = useState(false);
-  const [listSize, setListSize] = useState<number>(DEFAULT_ARTIST_SAMPLE_SIZE);
-  const [hasMore, setHasMore] = useState(true);
-  const listRef = useRef<HTMLDivElement | null>(null);
+  const [artists, setArtists] = React.useState(defaultArtistSample);
+  const [loading, setLoading] = React.useState(false);
+  const [listSize, setListSize] = React.useState<number>(
+    DEFAULT_ARTIST_SAMPLE_SIZE
+  );
+  const [hasMore, setHasMore] = React.useState(true);
+  const listRef = React.useRef<HTMLDivElement | null>(null);
   const debouncedSearch = useDebouncedCallback((value: string) => {
     if (value) {
       setListSize(DEFAULT_ARTIST_SAMPLE_SIZE);
@@ -74,7 +70,7 @@ export default function ExploreArtistSelect({
     }
   };
 
-  const handleScroll = useCallback(async () => {
+  const handleScroll = React.useCallback(async () => {
     const list = listRef.current;
     if (list) {
       const { scrollTop, scrollHeight, clientHeight } = list;
@@ -112,7 +108,7 @@ export default function ExploreArtistSelect({
     }
   }, [listSize, search, loading, hasMore, artists.length]);
 
-  const handleSearch = useCallback(
+  const handleSearch = React.useCallback(
     async (value: string) => {
       if (!value) {
         setArtists(defaultArtistSample);
@@ -124,7 +120,8 @@ export default function ExploreArtistSelect({
         if (!response.ok) {
           return [];
         }
-        const data: SetStateAction<ArtistSample[]> = await response.json();
+        const data: React.SetStateAction<ArtistSample[]> =
+          await response.json();
         setArtists(data);
       } catch (err) {
         setArtists([]);
@@ -135,7 +132,7 @@ export default function ExploreArtistSelect({
     [defaultArtistSample]
   );
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (search) {
       setLoading(true);
     }
@@ -173,48 +170,51 @@ export default function ExploreArtistSelect({
 
   if (isMobile) {
     return (
-      <Dialog open={open} onOpenChange={handleOnOpenChange}>
-        <DialogTrigger asChild>
-          <Button role="combobox" aria-expanded={open} size="md">
-            Change
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="w-5/6 rounded-lg">
-          <Command shouldFilter={false}>
-            <CommandInput
-              placeholder="Search artist..."
-              className="h-9"
-              value={search}
-              onValueChange={(value) => {
-                setSearch(value);
-              }}
-              endContent={loading && <Spinner />}
-            />
-            <CommandList
-              className="max-h-[200px] overflow-y-auto"
-              ref={listRef}
-              onScroll={handleScroll}
-            >
-              <CommandEmpty>No artists found.</CommandEmpty>
-              <CommandGroup>
-                {artists.map((artist) => (
-                  <CommandItem
-                    key={artist.id}
-                    keywords={[artist.name]}
-                    onSelect={() => handleSelect(artist.id)}
-                    disabled={
-                      selectedArtists.find((a) => a.id === artist.id) !==
-                      undefined
-                    }
-                  >
-                    {artist.name}
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            </CommandList>
-          </Command>
-        </DialogContent>
-      </Dialog>
+      <div className="flex items-center gap-2">
+        {value && currentArtist !== value && <Spinner size={5} />}
+        <Dialog open={open} onOpenChange={handleOnOpenChange}>
+          <DialogTrigger asChild>
+            <Button role="combobox" aria-expanded={open} size="md">
+              Change
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="w-5/6 rounded-lg">
+            <Command shouldFilter={false}>
+              <CommandInput
+                placeholder="Search artist..."
+                className="h-9"
+                value={search}
+                onValueChange={(value) => {
+                  setSearch(value);
+                }}
+                endContent={loading && <Spinner />}
+              />
+              <CommandList
+                className="max-h-[200px] overflow-y-auto"
+                ref={listRef}
+                onScroll={handleScroll}
+              >
+                <CommandEmpty>No artists found.</CommandEmpty>
+                <CommandGroup>
+                  {artists.map((artist) => (
+                    <CommandItem
+                      key={artist.id}
+                      keywords={[artist.name]}
+                      onSelect={() => handleSelect(artist.id)}
+                      disabled={
+                        selectedArtists.find((a) => a.id === artist.id) !==
+                        undefined
+                      }
+                    >
+                      {artist.name}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+          </DialogContent>
+        </Dialog>
+      </div>
     );
   }
   return (
