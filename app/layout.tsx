@@ -8,6 +8,7 @@ import { Analytics } from "@vercel/analytics/react";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://stanstats.vercel.app"),
   title: "StanStats | Artist popularity by the numbers",
   description:
     "Compare your favorite artists daily. See who's hot and who's not.",
