@@ -192,7 +192,14 @@ export function ExploreCard({
               {artist.name ? artist.name : "No Artist Selected"}
             </CardTitle>
             <CardDescription className="text-[10px] sm:text-xs flex justify-between">
-              <div className="flex flex-col space-y-1.5 sm:max-w-[110px] sm:w-[110px] w-[80px]">
+              <div
+                className={cn(
+                  "flex flex-col space-y-1.5",
+                  artist.latestReleaseName
+                    ? "sm:max-w-[115px] sm:w-[115px] w-[80px]"
+                    : ""
+                )}
+              >
                 {artist.genres.length > 0 && (
                   <TooltipProvider>
                     <Tooltip delayDuration={150}>
@@ -208,19 +215,14 @@ export function ExploreCard({
                     </Tooltip>
                   </TooltipProvider>
                 )}
-
-                {artist.albumsCount > 0 && (
-                  <p>
-                    <span className="text-muted-foreground">Albums</span>{" "}
-                    <span>{artist.albumsCount}</span>
-                  </p>
-                )}
-                {artist.singlesCount > 0 && (
-                  <p>
-                    <span className="text-muted-foreground">Singles</span>{" "}
-                    <span>{artist.singlesCount}</span>
-                  </p>
-                )}
+                <p>
+                  <span className="text-muted-foreground">Albums</span>{" "}
+                  <span>{artist.albumsCount || "N/A"}</span>
+                </p>
+                <p>
+                  <span className="text-muted-foreground">Singles</span>{" "}
+                  <span>{artist.singlesCount || "N/A"}</span>
+                </p>
               </div>
               {artist.latestReleaseName && (
                 <div className="flex flex-col space-y-1.5 sm:max-w-[125px] sm:w-[125px] w-[95px]">
