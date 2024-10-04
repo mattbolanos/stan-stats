@@ -110,7 +110,9 @@ export function ExploreChart({
   }).concat(chartData[chartData.length - 1]?.date);
 
   return (
-    <Card className={`mt-1 max-w-4xl w-full border border-muted ${className}`}>
+    <Card
+      className={`mt-1 max-w-[1228px] w-full border border-muted ${className}`}
+    >
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-xs sm:text-base">
           <Image
@@ -127,16 +129,19 @@ export function ExploreChart({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig}>
+        <ChartContainer
+          config={chartConfig}
+          className="aspect-auto h-[200px] w-full sm:h-[350px]"
+        >
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
               accessibilityLayer
               data={chartData}
               margin={{
-                left: isDesktop ? 0 : -10,
-                right: isDesktop ? 12 : 12,
-                top: isDesktop ? 20 : 12,
-                bottom: isDesktop ? 20 : 10,
+                left: isDesktop ? 0 : -15,
+                right: isDesktop ? 5 : 11,
+                top: isDesktop ? 20 : 15,
+                bottom: isDesktop ? 20 : 15,
               }}
             >
               <CartesianGrid vertical={false} />
