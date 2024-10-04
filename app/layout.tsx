@@ -15,6 +15,13 @@ export const metadata: Metadata = {
     icon: [{ url: "/apple-icon.png", type: "image/png" }],
     apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "StanStats | Artist popularity by the numbers",
+    description:
+      "Compare your favorite artists daily. See who's hot and who's not.",
+    images: ["/og-image.png"],
+  },
 };
 
 export default function RootLayout({

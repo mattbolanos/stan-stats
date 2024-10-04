@@ -30,7 +30,6 @@ import {
   fetchArtistDetails,
 } from "@/lib/utils";
 import { useDebouncedCallback } from "use-debounce";
-import { Pencil2Icon } from "@radix-ui/react-icons";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
@@ -176,13 +175,8 @@ export default function ExploreArtistSelect({
     return (
       <Dialog open={open} onOpenChange={handleOnOpenChange}>
         <DialogTrigger asChild>
-          <Button
-            variant="ghost"
-            role="combobox"
-            aria-expanded={open}
-            size="mini"
-          >
-            <Pencil2Icon className="w-5 h-5 shrink-0" />
+          <Button role="combobox" aria-expanded={open} size="md">
+            Change
           </Button>
         </DialogTrigger>
         <DialogContent className="w-5/6 rounded-lg">
@@ -228,13 +222,8 @@ export default function ExploreArtistSelect({
       {value && currentArtist !== value && <Spinner size={5} />}
       <Popover open={open} onOpenChange={handleOnOpenChange}>
         <PopoverTrigger asChild>
-          <Button
-            variant="ghost"
-            role="combobox"
-            aria-expanded={open}
-            size="mini"
-          >
-            <Pencil2Icon className="w-5 h-5 shrink-0" />
+          <Button role="combobox" aria-expanded={open} size="md">
+            Change
           </Button>
         </PopoverTrigger>
         <PopoverContent className="sm:w-[200px] w-full p-0">
