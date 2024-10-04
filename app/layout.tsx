@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     title: "StanStats | Artist popularity by the numbers",
     description:
       "Compare your favorite artists daily. See who's hot and who's not.",
-    images: ["/twitter-image.png"],
+    images: ["https://stanstats.vercel.app/twitter-image.png"],
   },
 };
 
