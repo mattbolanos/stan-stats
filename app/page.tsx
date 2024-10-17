@@ -12,17 +12,18 @@ import {
   fetchTotals,
 } from "./actions";
 
-export const dynamic = "force-dynamic";
-
 export default async function Home() {
-  const [defaultArtistSample, dateRange, defaultDetails, totals] =
-    await Promise.all([
-      fetchDefaultArtistSample(),
-      fetchDateRange(),
-      fetchDefaultArtistDetails(),
-      fetchTotals(),
-    ]);
-  const { totalArtists, totalAlbums, totalSingles } = totals;
+  const [
+    defaultArtistSample,
+    dateRange,
+    defaultDetails,
+    { totalArtists, totalAlbums, totalSingles },
+  ] = await Promise.all([
+    fetchDefaultArtistSample(),
+    fetchDateRange(),
+    fetchDefaultArtistDetails(),
+    fetchTotals(),
+  ]);
 
   return (
     <main className="px-8 sm:px-16 sm:mt-28 mt-8 mb-10 flex flex-col gap-10">

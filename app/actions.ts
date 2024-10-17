@@ -205,5 +205,5 @@ export const getArtistDetails = unstable_cache(
     };
   },
   ["fetchArtistDetails"],
-  { revalidate: 3600, tags: ["artist-details"] }
+  { revalidate: 300, tags: ["artist-details"] }
 );
