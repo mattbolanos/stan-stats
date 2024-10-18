@@ -21,29 +21,25 @@ export const fetchHeroArtists = unstable_cache(
   { revalidate: 3600, tags: ["hero-artists"] }
 );
 
-export const fetchDefaultArtistDetails = unstable_cache(
-  async (): Promise<ArtistDetailsResponse> => {
-    const artistRanks = getRandomSequentialIntegers();
+export async function fetchDefaultArtistDetails(): Promise<ArtistDetailsResponse> {
+  const artistRanks = getRandomSequentialIntegers();
 
-    const { data, error } = await supabase
-      .from("spotify_artists_meta")
-      .select("id, name")
-      .in("artist_rank", artistRanks);
+  const { data, error } = await supabase
+    .from("spotify_artists_meta")
+    .select("id, name")
+    .in("artist_rank", artistRanks);
 
-    if (error) {
-      throw error;
-    }
+  if (error) {
+    throw error;
+  }
 
-    const details = await getArtistDetails(
-      supabase,
-      data.map((artist) => artist.id)
-    );
+  const details = await getArtistDetails(
+    supabase,
+    data.map((artist) => artist.id)
+  );
 
-    return details;
-  },
-  ["fetchDefaultArtistDetails"],
-  { revalidate: 3600, tags: ["default-artist-details"] }
-);
+  return details;
+}
 
 export const fetchDateRange = unstable_cache(
   async (): Promise<{
