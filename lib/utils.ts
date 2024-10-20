@@ -81,7 +81,8 @@ export async function fetchArtistDetails(
   }
 
   const response = await fetch(
-    `/api/artists/details?artistId=${artistId}&selectIndex=${selectIndex}`
+    `/api/artists/details?artistId=${artistId}&selectIndex=${selectIndex}`,
+    { cache: "no-store" }
   );
   if (!response.ok) {
     return [];
