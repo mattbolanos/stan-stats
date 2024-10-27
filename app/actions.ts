@@ -21,7 +21,7 @@ export const fetchHeroArtists = unstable_cache(
   { revalidate: 3600, tags: ["hero-artists"] }
 );
 
-export async function fetchDefaultArtistDetails(): Promise<ArtistDetailsResponse> {
+export async function fetchDefaultSelectedArtists(): Promise<string[]> {
   const artistRanks = getRandomSequentialIntegers();
 
   const { data, error } = await supabase
@@ -33,12 +33,7 @@ export async function fetchDefaultArtistDetails(): Promise<ArtistDetailsResponse
     throw error;
   }
 
-  const details = await getArtistDetails(
-    supabase,
-    data.map((artist) => artist.id)
-  );
-
-  return details;
+  return data.map((artist) => artist.id);
 }
 
 export const fetchDateRange = unstable_cache(
@@ -121,79 +116,83 @@ export const fetchTotals = unstable_cache(
 
 export const getArtistDetails = async (
   supabase: SupabaseClient<any, "public", any>,
-  artistIds: string | string[],
+  artistIds: string[],
   selectIndex?: number
 ): Promise<ArtistDetailsResponse> => {
-  const queryIds = Array.isArray(artistIds) ? artistIds : [artistIds];
-
-  const [streamsResult, metaResult, maxResult] = await Promise.all([
-    supabase
-      .from("spotify_artists_streams")
-      .select("id, monthly_listeners, updated_at")
-      .in("id", queryIds)
-      .order("updated_at", { ascending: true }),
-    supabase
-      .from("spotify_artists_meta")
-      .select(
+  try {
+    const [streamsResult, metaResult, maxResult] = await Promise.all([
+      supabase
+        .from("spotify_artists_streams")
+        .select("id, monthly_listeners, updated_at")
+        .in("id", artistIds)
+        .order("updated_at", { ascending: true }),
+      supabase
+        .from("spotify_artists_meta")
+        .select(
+          `
+        id, name, image, genres, singles_count, albums_count,
+        url_twitter, url_instagram, 
+        artist_rank, prev_artist_rank,
+        latest_release_date, latest_release_type, latest_release_name, latest_release_share_url
         `
-      id, name, image, genres, singles_count, albums_count,
-      url_twitter, url_instagram, 
-      artist_rank, prev_artist_rank,
-      latest_release_date, latest_release_type, latest_release_name, latest_release_share_url
-      `
-      )
-      .in("id", queryIds),
-    supabase
-      .from("spotify_artists_streams")
-      .select("id, max_update:updated_at.max()")
-      .in("id", queryIds)
-      .not("monthly_listeners", "is", null),
-  ]);
-
-  if (streamsResult.error) {
-    throw streamsResult.error;
-  }
-
-  if (metaResult.error) {
-    throw metaResult.error;
-  }
-
-  if (maxResult.error) {
-    throw maxResult.error;
-  }
-
-  return {
-    streams: streamsResult.data,
-    meta: metaResult.data.map((artist) => ({
-      show: true,
-      id: artist.id,
-      name: artist.name,
-      image: artist.image,
-      genres: artist.genres,
-      selectIndex: selectIndex ?? artistIds.indexOf(artist.id),
-      currentListens: streamsResult.data.find(
-        (stream) =>
-          stream.id === artist.id &&
-          stream.updated_at ===
-            maxResult.data.find((stream) => stream.id === artist.id)?.max_update
-      )?.monthly_listeners,
-      prevListens: streamsResult.data
-        .filter((stream) => stream.id === artist.id)
-        .sort(
-          (a, b) =>
-            new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
         )
-        .slice(1, 2)[0]?.monthly_listeners,
-      rank: artist.artist_rank,
-      prevRank: artist.prev_artist_rank,
-      singlesCount: artist.singles_count,
-      albumsCount: artist.albums_count,
-      urlTwitter: artist.url_twitter,
-      urlInstagram: artist.url_instagram,
-      latestReleaseDate: artist.latest_release_date,
-      latestReleaseType: artist.latest_release_type,
-      latestReleaseName: artist.latest_release_name,
-      latestReleaseShareUrl: artist.latest_release_share_url,
-    })),
-  };
+        .in("id", artistIds),
+      supabase
+        .from("spotify_artists_streams")
+        .select("id, max_update:updated_at.max()")
+        .in("id", artistIds)
+        .not("monthly_listeners", "is", null),
+    ]);
+
+    if (streamsResult.error) {
+      throw streamsResult.error;
+    }
+
+    if (metaResult.error) {
+      throw metaResult.error;
+    }
+
+    if (maxResult.error) {
+      throw maxResult.error;
+    }
+
+    return {
+      streams: streamsResult.data,
+      meta: metaResult.data.map((artist, index) => ({
+        show: true,
+        id: artist.id,
+        name: artist.name,
+        image: artist.image,
+        genres: artist.genres,
+        selectIndex: artistIds.length < 2 ? selectIndex || 0 : index,
+        currentListens: streamsResult.data.find(
+          (stream) =>
+            stream.id === artist.id &&
+            stream.updated_at ===
+              maxResult.data.find((stream) => stream.id === artist.id)
+                ?.max_update
+        )?.monthly_listeners,
+        prevListens: streamsResult.data
+          .filter((stream) => stream.id === artist.id)
+          .sort(
+            (a, b) =>
+              new Date(b.updated_at).getTime() -
+              new Date(a.updated_at).getTime()
+          )
+          .slice(1, 2)[0]?.monthly_listeners,
+        rank: artist.artist_rank,
+        prevRank: artist.prev_artist_rank,
+        singlesCount: artist.singles_count,
+        albumsCount: artist.albums_count,
+        urlTwitter: artist.url_twitter,
+        urlInstagram: artist.url_instagram,
+        latestReleaseDate: artist.latest_release_date,
+        latestReleaseType: artist.latest_release_type,
+        latestReleaseName: artist.latest_release_name,
+        latestReleaseShareUrl: artist.latest_release_share_url,
+      })),
+    };
+  } catch (error) {
+    throw error;
+  }
 };

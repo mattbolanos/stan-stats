@@ -1,6 +1,6 @@
 "use client";
 
-import { ArtistDetailsResponse, ArtistSample } from "@/lib/types";
+import { ArtistSample } from "@/lib/types";
 import { useExplore, useExploreDispatch } from "@/contexts/ExploreContext";
 import React, { useEffect } from "react";
 import { FAKE_ARTIST_ID } from "@/lib/utils";
@@ -33,12 +33,19 @@ const SkeletonCard = () => {
   );
 };
 
+const fetchArtistDetails = async (artistId: string) => {
+  const response = await fetch(`/api/artists/details?artistId=${artistId}`, {
+    cache: "no-store",
+  });
+  return response.json();
+};
+
 export default function ExploreCardsParent({
   defaultArtistSample = [],
-  defaultDetails,
+  defaultSelectedArtists,
 }: {
   defaultArtistSample: ArtistSample[];
-  defaultDetails: ArtistDetailsResponse;
+  defaultSelectedArtists: string[];
 }) {
   const { selectedArtists, artistStreams } = useExplore();
   const exploreDispatch = useExploreDispatch();
@@ -47,15 +54,17 @@ export default function ExploreCardsParent({
 
   useEffect(() => {
     if (intialLoad) {
-      exploreDispatch?.({
-        type: "ADD_ARTIST_DETAILS",
-        payload: defaultDetails,
+      fetchArtistDetails(defaultSelectedArtists.join(",")).then((details) => {
+        exploreDispatch?.({
+          type: "ADD_ARTIST_DETAILS",
+          payload: details,
+        });
       });
     }
   }, [
     selectedArtists,
     exploreDispatch,
-    defaultDetails,
+    defaultSelectedArtists,
     artistStreams.length,
     intialLoad,
   ]);

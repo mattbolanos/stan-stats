@@ -8,7 +8,7 @@ import { SectionTitle } from "@/components/section-title";
 import {
   fetchDefaultArtistSample,
   fetchDateRange,
-  fetchDefaultArtistDetails,
+  fetchDefaultSelectedArtists,
   fetchTotals,
 } from "./actions";
 
@@ -16,12 +16,12 @@ export default async function Home() {
   const [
     defaultArtistSample,
     dateRange,
-    defaultDetails,
+    defaultSelectedArtists,
     { totalArtists, totalAlbums, totalSingles },
   ] = await Promise.all([
     fetchDefaultArtistSample(),
     fetchDateRange(),
-    fetchDefaultArtistDetails(),
+    fetchDefaultSelectedArtists(),
     fetchTotals(),
   ]);
 
@@ -64,7 +64,7 @@ export default async function Home() {
         <div className="flex justify-center sm:gap-5 gap-3 w-full flex-col items-center">
           <ExploreCardsParent
             defaultArtistSample={defaultArtistSample}
-            defaultDetails={defaultDetails}
+            defaultSelectedArtists={defaultSelectedArtists}
           />
           <ExploreChart dateRange={dateRange} />
         </div>

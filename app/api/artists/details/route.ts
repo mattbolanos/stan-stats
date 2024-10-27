@@ -10,7 +10,9 @@ export async function GET(request: Request): Promise<Response> {
     return Response.json([]);
   }
 
-  const details = await getArtistDetails(supabase, artistId, selectIndex);
+  const artistIds = artistId.includes(",") ? artistId.split(",") : [artistId];
+
+  const details = await getArtistDetails(supabase, artistIds, selectIndex);
 
   return Response.json(details);
 }
