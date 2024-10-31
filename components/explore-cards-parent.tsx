@@ -73,7 +73,7 @@ export default function ExploreCardsParent({
     <div className="flex flex-col items-center gap-3.5">
       {selectedArtists.length < 3 && (
         <Button
-          className="bg-site max-w-52 w-full"
+          className="bg-site max-w-52 w-full mb-2.5"
           variant="outline"
           onClick={() =>
             exploreDispatch?.({
