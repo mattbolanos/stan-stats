@@ -8,18 +8,13 @@ import {
 } from "@/lib/utils";
 import { ArtistDetailsResponse, ArtistSample } from "@/lib/types";
 import { SupabaseClient } from "@supabase/supabase-js";
-import { unstable_cache } from "next/cache";
 
-export const fetchHeroArtists = unstable_cache(
-  async (
-    artistIds: string[] = DISPLAY_ARTISTS
-  ): Promise<ArtistDetailsResponse["meta"]> => {
-    const details = await getArtistDetails(supabase, artistIds);
-    return details.meta;
-  },
-  ["fetchHeroArtists"],
-  { revalidate: 3600, tags: ["hero-artists"] }
-);
+export async function fetchHeroArtists(
+  artistIds: string[] = DISPLAY_ARTISTS
+): Promise<ArtistDetailsResponse["meta"]> {
+  const details = await getArtistDetails(supabase, artistIds);
+  return details.meta;
+}
 
 export async function fetchDefaultSelectedArtists(): Promise<string[]> {
   const artistRanks = getRandomSequentialIntegers();
@@ -36,89 +31,77 @@ export async function fetchDefaultSelectedArtists(): Promise<string[]> {
   return data.map((artist) => artist.id);
 }
 
-export const fetchDateRange = unstable_cache(
-  async (): Promise<{
-    min: string;
-    max: string;
-  }> => {
-    const { data, error } = await supabase
-      .from("spotify_artists_streams")
-      .select("updated_at.min(), updated_at.max()");
+export const fetchDateRange = async (): Promise<{
+  min: string;
+  max: string;
+}> => {
+  const { data, error } = await supabase
+    .from("spotify_artists_streams")
+    .select("updated_at.min(), updated_at.max()");
 
-    if (error) {
-      throw error;
-    }
+  if (error) {
+    throw error;
+  }
 
-    return {
-      min: data[0].min,
-      max: data[0].max,
-    };
-  },
-  ["dateRange"],
-  { revalidate: 3600, tags: ["date-range"] }
-);
+  return {
+    min: data[0].min,
+    max: data[0].max,
+  };
+};
 
-export const fetchDefaultArtistSample = unstable_cache(
-  async (
-    size: number = DEFAULT_ARTIST_SAMPLE_SIZE
-  ): Promise<ArtistSample[]> => {
-    const { data, error } = await supabase
+export async function fetchDefaultArtistSample(
+  size: number = DEFAULT_ARTIST_SAMPLE_SIZE
+): Promise<ArtistSample[]> {
+  const { data, error } = await supabase
+    .from("spotify_artists_meta")
+    .select("id, name")
+    .order("artist_rank", { ascending: true })
+    .range(0, size);
+
+  if (error) {
+    throw error;
+  }
+
+  return data as ArtistSample[];
+}
+
+export async function fetchTotals(): Promise<{
+  totalArtists: number;
+  totalAlbums: number;
+  totalSingles: number;
+}> {
+  const [artistCount, albumTotal, singleTotal] = await Promise.all([
+    supabase
       .from("spotify_artists_meta")
-      .select("id, name")
-      .order("artist_rank", { ascending: true })
-      .range(0, size);
+      .select("id", { count: "exact", head: true })
+      .then(({ count }) => count),
+    supabase
+      .from("spotify_artists_meta")
+      .select("album_total:albums_count.sum()")
+      .not("albums_count", "is", null)
+      .single()
+      .then(({ data }) => data?.album_total),
 
-    if (error) {
-      throw error;
-    }
+    supabase
+      .from("spotify_artists_meta")
+      .select("single_total:singles_count.sum()")
+      .not("singles_count", "is", null)
+      .single()
+      .then(({ data }) => data?.single_total),
+  ]);
 
-    return data as ArtistSample[];
-  },
-  ["fetchDefaultArtistSample"],
-  { revalidate: 3600, tags: ["artist-sample"] }
-);
+  return {
+    totalArtists: artistCount ?? 0,
+    totalAlbums: albumTotal ?? 0,
+    totalSingles: singleTotal ?? 0,
+  };
+}
 
-export const fetchTotals = unstable_cache(
-  async (): Promise<{
-    totalArtists: number;
-    totalAlbums: number;
-    totalSingles: number;
-  }> => {
-    const [artistCount, albumTotal, singleTotal] = await Promise.all([
-      supabase
-        .from("spotify_artists_meta")
-        .select("id", { count: "exact", head: true })
-        .then(({ count }) => count),
-      supabase
-        .from("spotify_artists_meta")
-        .select("album_total:albums_count.sum()")
-        .not("albums_count", "is", null)
-        .single()
-        .then(({ data }) => data?.album_total),
-
-      supabase
-        .from("spotify_artists_meta")
-        .select("single_total:singles_count.sum()")
-        .not("singles_count", "is", null)
-        .single()
-        .then(({ data }) => data?.single_total),
-    ]);
-
-    return {
-      totalArtists: artistCount ?? 0,
-      totalAlbums: albumTotal ?? 0,
-      totalSingles: singleTotal ?? 0,
-    };
-  },
-  ["fetchTotals"],
-  { revalidate: 3600, tags: ["totals"] }
-);
-
-export const getArtistDetails = async (
+export async function getArtistDetails(
   supabase: SupabaseClient<any, "public", any>,
   artistIds: string[],
   selectIndex?: number
-): Promise<ArtistDetailsResponse> => {
+): Promise<ArtistDetailsResponse> {
   try {
     const [streamsResult, metaResult, maxResult] = await Promise.all([
       supabase
@@ -195,4 +178,4 @@ export const getArtistDetails = async (
   } catch (error) {
     throw error;
   }
-};
+}

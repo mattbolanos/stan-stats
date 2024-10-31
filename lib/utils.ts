@@ -72,24 +72,6 @@ export function getRandomSequentialIntegers(
 
 export const FAKE_ARTIST_ID = "FAKE";
 
-export async function fetchArtistDetails(
-  artistId: string | undefined,
-  selectIndex: number
-) {
-  if (!artistId) {
-    return [];
-  }
-
-  const response = await fetch(
-    `/api/artists/details?artistId=${artistId}&selectIndex=${selectIndex}`,
-    { cache: "no-store" }
-  );
-  if (!response.ok) {
-    return [];
-  }
-  return response.json();
-}
-
 export function cleanGenres(genreString: string): string {
   if (!genreString) {
     return "N/A";
