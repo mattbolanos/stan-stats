@@ -12,8 +12,6 @@ import {
   fetchTotals,
 } from "./actions";
 
-export const dynamic = "force-dynamic";
-
 export default async function Home() {
   const [
     defaultArtistSample,
