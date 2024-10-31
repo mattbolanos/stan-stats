@@ -18,14 +18,28 @@ import {
 } from "@/components/ui/popover";
 import { useExploreDispatch, useExplore } from "@/contexts/ExploreContext";
 import { Spinner } from "./ui/spinner";
-import {
-  DEFAULT_ARTIST_SAMPLE_SIZE,
-  FAKE_ARTIST_ID,
-  fetchArtistDetails,
-} from "@/lib/utils";
+import { DEFAULT_ARTIST_SAMPLE_SIZE, FAKE_ARTIST_ID } from "@/lib/utils";
 import { useDebouncedCallback } from "use-debounce";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+
+async function fetchArtistDetails(
+  artistId: string | undefined,
+  selectIndex: number
+) {
+  if (!artistId) {
+    return [];
+  }
+
+  const response = await fetch(
+    `/api/artists/details?artistId=${artistId}&selectIndex=${selectIndex}`,
+    { cache: "no-store" }
+  );
+  if (!response.ok) {
+    return [];
+  }
+  return response.json();
+}
 
 export default function ExploreArtistSelect({
   defaultArtistSample = [],
