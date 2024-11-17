@@ -217,11 +217,11 @@ export function ExploreCard({
                 )}
                 <p>
                   <span className="text-muted-foreground">Albums</span>{" "}
-                  <span>{artist.albumsCount || "N/A"}</span>
+                  <span>{artist.albumsCount || "0"}</span>
                 </p>
                 <p>
                   <span className="text-muted-foreground">Singles</span>{" "}
-                  <span>{artist.singlesCount || "N/A"}</span>
+                  <span>{artist.singlesCount || "0"}</span>
                 </p>
               </div>
               {artist.latestReleaseName && (
