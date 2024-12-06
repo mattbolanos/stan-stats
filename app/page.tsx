@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { ArtistBanner } from "@/components/hero-artist-banner";
 import ExploreCardsParent from "@/components/explore-cards-parent";
 import { ExploreChart } from "@/components/explore-chart";
