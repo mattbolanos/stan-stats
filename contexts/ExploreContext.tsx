@@ -3,7 +3,6 @@ import { ExploreAction, ExploreState, ProviderProps } from "./types";
 import { FAKE_ARTIST_ID, getFirstAvailableIndex } from "@/lib/utils";
 import { SelectedArtist } from "@/lib/types";
 
-// default values
 const defaultState: ExploreState = {
   artistStreams: [],
   selectedArtists: [
