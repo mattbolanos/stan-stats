@@ -111,7 +111,7 @@ export function ExploreChart({
 
   return (
     <Card
-      className={`mt-1 max-w-[1228px] w-full border border-muted ${className}`}
+      className={`mt-1 max-w-screen-md w-full border border-muted ${className}`}
     >
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-xs sm:text-base">
@@ -139,7 +139,7 @@ export function ExploreChart({
               data={chartData}
               margin={{
                 left: isDesktop ? 0 : -15,
-                right: isDesktop ? 5 : 11,
+                right: isDesktop ? 25 : 11,
                 top: isDesktop ? 20 : 15,
                 bottom: isDesktop ? 20 : 15,
               }}
