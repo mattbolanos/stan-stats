@@ -111,7 +111,7 @@ export function ExploreChart({
 
   return (
     <Card
-      className={`mt-1 max-w-screen-md w-full border border-muted ${className}`}
+      className={`mt-1 max-w-screen-lg w-full border border-muted ${className}`}
     >
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-xs sm:text-base">
