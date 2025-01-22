@@ -15,7 +15,7 @@ const HeroCard = ({
 }: {
   icon: React.ElementType;
   title: string;
-  description: string | JSX.Element;
+  description: string | React.ReactNode;
 }) => {
   return (
     <Card className="w-full lg:w-[calc(33%-0.5rem)] p-0.5 min-h-[145px] bg-primary-foreground">
