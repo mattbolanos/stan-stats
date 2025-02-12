@@ -3,26 +3,44 @@
 import * as React from "react";
 import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes";
 import { type ThemeProviderProps } from "next-themes/dist/types";
-import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
-import { NavButton } from "@/components/ui/button";
+import { Moon, Sun } from "lucide-react";
 
 export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
 }
 
 export function ThemeToggle() {
-  const { setTheme, resolvedTheme } = useTheme();
+  const { setTheme, theme } = useTheme();
+  const id = React.useId();
 
   return (
-    <NavButton
-      onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-      icon={
-        <>
-          <SunIcon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <MoonIcon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-          <span className="sr-only">Toggle theme</span>
-        </>
-      }
-    />
+    <div className="flex flex-col justify-center">
+      <input
+        type="checkbox"
+        name={id}
+        id={id}
+        className="peer sr-only"
+        checked={theme === "dark"}
+        onChange={() => setTheme(theme === "dark" ? "light" : "dark")}
+      />
+      <label
+        className="group relative inline-flex size-9 cursor-pointer items-center justify-center rounded-lg bg-background text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+        htmlFor={id}
+        aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+      >
+        <Moon
+          size={16}
+          strokeWidth={2}
+          className="shrink-0 scale-0 opacity-0 transition-all peer-checked:group-[]:scale-100 peer-checked:group-[]:opacity-100"
+          aria-hidden="true"
+        />
+        <Sun
+          size={16}
+          strokeWidth={2}
+          className="absolute shrink-0 scale-100 opacity-100 transition-all peer-checked:group-[]:scale-0 peer-checked:group-[]:opacity-0"
+          aria-hidden="true"
+        />
+      </label>
+    </div>
   );
 }
