@@ -63,13 +63,6 @@ export function formatDateRange(startDate: string, endDate: string): string {
   return `${startFormatted} - ${formatDateToMonthYear(end)}`;
 }
 
-export function getRandomSequentialIntegers(
-  max: number = 100
-): [number, number] {
-  const start = Math.floor(Math.random() * (max - 1)) + 1;
-  return [start, start + 1];
-}
-
 export const FAKE_ARTIST_ID = "FAKE";
 
 export function cleanGenres(genreString: string): string {

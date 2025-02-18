@@ -1,13 +1,18 @@
 "use server";
 
 import { supabase } from "@/lib/supabase";
-import {
-  DISPLAY_ARTISTS,
-  DEFAULT_ARTIST_SAMPLE_SIZE,
-  getRandomSequentialIntegers,
-} from "@/lib/utils";
+import { DISPLAY_ARTISTS, DEFAULT_ARTIST_SAMPLE_SIZE } from "@/lib/utils";
 import { ArtistDetailsResponse, ArtistSample } from "@/lib/types";
 import { unstable_cacheLife as cacheLife } from "next/cache";
+
+async function getRandomSequentialIntegers(
+  max: number = 100
+): Promise<[number, number]> {
+  "use cache";
+  cacheLife("minutes");
+  const start = Math.floor(Math.random() * (max - 1)) + 1;
+  return [start, start + 1];
+}
 
 export async function fetchHeroArtists(
   artistIds: string[] = DISPLAY_ARTISTS
@@ -17,9 +22,7 @@ export async function fetchHeroArtists(
 }
 
 export async function fetchDefaultSelectedArtists(): Promise<string[]> {
-  "use cache";
-
-  const artistRanks = getRandomSequentialIntegers();
+  const artistRanks = await getRandomSequentialIntegers();
 
   const { data, error } = await supabase
     .from("spotify_artists_meta")
