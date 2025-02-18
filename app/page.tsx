@@ -17,7 +17,7 @@ export default async function Home() {
     await Promise.all([fetchDateRange(), fetchTotals()]);
 
   return (
-    <main className="px-2 sm:px-16 sm:mt-28 mt-8 mb-10 flex flex-col gap-10">
+    <main className="px-4 md:px-16 sm:mt-28 mt-8 mb-10 flex flex-col gap-10">
       <div className="flex flex-col justify-center items-center text-center sm:space-y-8 space-y-4">
         <h1 className="text-xl sm:text-5xl font-bold tracking-tight">
           Spotify Artist <span className="color-site-primary">Popularity</span>{" "}
