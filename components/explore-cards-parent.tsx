@@ -2,12 +2,13 @@
 
 import { ArtistSample } from "@/lib/types";
 import { useExplore, useExploreDispatch } from "@/contexts/ExploreContext";
-import React, { useEffect } from "react";
+import React from "react";
 import { FAKE_ARTIST_ID } from "@/lib/utils";
 import { ExploreCard } from "./explore-card";
 import { Button } from "./ui/button";
 import { Skeleton } from "./ui/skeleton";
 import { PlusIcon } from "@radix-ui/react-icons";
+import { getArtistDetails } from "@/app/actions";
 
 const SkeletonCard = () => {
   return (
@@ -33,28 +34,23 @@ const SkeletonCard = () => {
   );
 };
 
-const fetchArtistDetails = async (artistId: string) => {
-  const response = await fetch(`/api/artists/details?artistId=${artistId}`, {
-    cache: "no-store",
-  });
-  return response.json();
-};
-
 export default function ExploreCardsParent({
-  defaultArtistSample = [],
-  defaultSelectedArtists,
+  defaultArtistSamplePromise,
+  defaultSelectedArtistsPromise,
 }: {
-  defaultArtistSample: ArtistSample[];
-  defaultSelectedArtists: string[];
+  defaultArtistSamplePromise: Promise<ArtistSample[]>;
+  defaultSelectedArtistsPromise: Promise<string[]>;
 }) {
+  const defaultArtistSample = React.use(defaultArtistSamplePromise);
+  const defaultSelectedArtists = React.use(defaultSelectedArtistsPromise);
   const { selectedArtists, artistStreams } = useExplore();
   const exploreDispatch = useExploreDispatch();
 
   const intialLoad = selectedArtists[0].id === FAKE_ARTIST_ID;
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (intialLoad) {
-      fetchArtistDetails(defaultSelectedArtists.join(",")).then((details) => {
+      getArtistDetails(defaultSelectedArtists).then((details) => {
         exploreDispatch?.({
           type: "ADD_ARTIST_DETAILS",
           payload: details,

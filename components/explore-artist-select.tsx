@@ -22,24 +22,7 @@ import { DEFAULT_ARTIST_SAMPLE_SIZE, FAKE_ARTIST_ID } from "@/lib/utils";
 import { useDebouncedCallback } from "use-debounce";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-
-async function fetchArtistDetails(
-  artistId: string | undefined,
-  selectIndex: number
-) {
-  if (!artistId) {
-    return [];
-  }
-
-  const response = await fetch(
-    `/api/artists/details?artistId=${artistId}&selectIndex=${selectIndex}`,
-    { cache: "no-store" }
-  );
-  if (!response.ok) {
-    return [];
-  }
-  return response.json();
-}
+import { getArtistDetails } from "@/app/actions";
 
 export default function ExploreArtistSelect({
   defaultArtistSample = [],
@@ -153,19 +136,14 @@ export default function ExploreArtistSelect({
     debouncedSearch(search);
   }, [search, debouncedSearch]);
 
-  const handleSelect = (value: string) => {
+  const handleSelect = async (value: string) => {
     setOpen(false);
     setValue(value);
-    fetchArtistDetails(value, selectIndex)
-      .then((data) => {
-        exploreDispatch?.({
-          type: "ADD_ARTIST_DETAILS",
-          payload: data,
-        });
-      })
-      .catch((error) => {
-        throw error;
-      });
+    const artistDetails = await getArtistDetails([value], selectIndex);
+    exploreDispatch?.({
+      type: "ADD_ARTIST_DETAILS",
+      payload: artistDetails,
+    });
   };
 
   const handleOnOpenChange = (open: boolean) => {

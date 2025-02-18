@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic";
-
 import { ArtistBanner } from "@/components/hero-artist-banner";
 import ExploreCardsParent from "@/components/explore-cards-parent";
 import { ExploreChart } from "@/components/explore-chart";
@@ -15,17 +13,8 @@ import {
 } from "./actions";
 
 export default async function Home() {
-  const [
-    defaultArtistSample,
-    dateRange,
-    defaultSelectedArtists,
-    { totalArtists, totalAlbums, totalSingles },
-  ] = await Promise.all([
-    fetchDefaultArtistSample(),
-    fetchDateRange(),
-    fetchDefaultSelectedArtists(),
-    fetchTotals(),
-  ]);
+  const [dateRange, { totalArtists, totalAlbums, totalSingles }] =
+    await Promise.all([fetchDateRange(), fetchTotals()]);
 
   return (
     <main className="px-2 sm:px-16 sm:mt-28 mt-8 mb-10 flex flex-col gap-10">
@@ -65,8 +54,8 @@ export default async function Home() {
         <SectionTitle text="Artist Trends" icon={TrendingUpIcon} />
         <div className="flex justify-center sm:gap-5 gap-3 w-full flex-col items-center">
           <ExploreCardsParent
-            defaultArtistSample={defaultArtistSample}
-            defaultSelectedArtists={defaultSelectedArtists}
+            defaultArtistSamplePromise={fetchDefaultArtistSample()}
+            defaultSelectedArtistsPromise={fetchDefaultSelectedArtists()}
           />
           <ExploreChart dateRange={dateRange} />
         </div>

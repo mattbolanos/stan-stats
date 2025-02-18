@@ -7,16 +7,18 @@ import {
   getRandomSequentialIntegers,
 } from "@/lib/utils";
 import { ArtistDetailsResponse, ArtistSample } from "@/lib/types";
-import { SupabaseClient } from "@supabase/supabase-js";
+import { unstable_cacheLife as cacheLife } from "next/cache";
 
 export async function fetchHeroArtists(
   artistIds: string[] = DISPLAY_ARTISTS
 ): Promise<ArtistDetailsResponse["meta"]> {
-  const details = await getArtistDetails(supabase, artistIds);
+  const details = await getArtistDetails(artistIds);
   return details.meta;
 }
 
 export async function fetchDefaultSelectedArtists(): Promise<string[]> {
+  "use cache";
+
   const artistRanks = getRandomSequentialIntegers();
 
   const { data, error } = await supabase
@@ -97,11 +99,13 @@ export async function fetchTotals(): Promise<{
   };
 }
 
-export const getArtistDetails = async (
-  supabase: SupabaseClient<any, "public", any>,
+export async function getArtistDetails(
   artistIds: string[],
   selectIndex?: number
-): Promise<ArtistDetailsResponse> => {
+): Promise<ArtistDetailsResponse> {
+  "use cache";
+  cacheLife("minutes");
+
   try {
     const [streamsResult, metaResult, maxResult] = await Promise.all([
       supabase
@@ -178,4 +182,4 @@ export const getArtistDetails = async (
   } catch (error) {
     throw error;
   }
-};
+}
