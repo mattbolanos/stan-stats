@@ -51,9 +51,9 @@ export default async function Home() {
         <div className="flex items-center gap-3">
           <AlertTriangle className="size-7 text-yellow-600 dark:text-yellow-500 shrink-0" />
           <p className="text-yellow-800 dark:text-yellow-200">
-            Important Notice: This site will not be updated for the time being
-            due to recent changes in Spotify&apos;s API that have affected my
-            ability to retrieve daily monthly listener data.
+            This site will not be updated for the time being due to recent
+            changes in Spotify&apos;s API that have affected my ability to
+            retrieve daily monthly listener data.
           </p>
         </div>
       </div>
