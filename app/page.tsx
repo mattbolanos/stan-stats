@@ -3,7 +3,7 @@ import ExploreCardsParent from "@/components/explore-cards-parent";
 import { ExploreChart } from "@/components/explore-chart";
 import { HeroCards } from "@/components/hero-cards";
 import { WelcomeButton } from "@/components/hero-button";
-import { DatabaseIcon, TrendingUpIcon } from "lucide-react";
+import { DatabaseIcon, TrendingUpIcon, AlertTriangle } from "lucide-react";
 import { SectionTitle } from "@/components/section-title";
 import {
   fetchDefaultArtistSample,
@@ -47,6 +47,16 @@ export default async function Home() {
         totalAlbums={totalAlbums}
         totalSingles={totalSingles}
       />
+      <div className="w-full max-w-4xl mx-auto bg-yellow-100 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 mb-4">
+        <div className="flex items-center gap-3">
+          <AlertTriangle className="size-7 text-yellow-600 dark:text-yellow-500 shrink-0" />
+          <p className="text-yellow-800 dark:text-yellow-200">
+            Important Notice: This site will not be updated for the time being
+            due to recent changes in Spotify&apos;s API that have affected my
+            ability to retrieve daily monthly listener data.
+          </p>
+        </div>
+      </div>
       <section
         className="flex flex-col items-center sm:mt-3 mt-2 gap-10 scroll-mt-20"
         id="explore"
